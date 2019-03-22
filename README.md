@@ -1,2 +1,2 @@
 # FgoScript
-Automatic sign and battle or Get reWards for Fgo Base on the android virtual machine “TianTianClient” This is just for study！
+Automatically sign in and fight or receive reward for FGO. Based on the "Everyday" Android simulator,  This project is only for learning!
