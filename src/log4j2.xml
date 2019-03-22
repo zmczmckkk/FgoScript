@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status="OFF"，可以去掉，它的含义为是否记录log4j2本身的event信息，默认是OFF -->
+<configuration status="OFF">
+    <!-- 定义下面的引用名 -->
+    <Properties>
+    	<!-- 打印样式 -->
+        <Property name="console_layout_pattern">[%t] %logger{36} Line:%L- %msg%n</Property>
+		<Property name="file_layout_pattern">%d{MM-dd HH:mm:ss} [%t] [%level] %logger{36} Line:%L- %msg%n</Property>
+		<!-- 根目录 -->
+        <Property name="root-path">${env:USERPROFILE}\OneDrive\Code\FgoLogs\FileLogs</Property>
+		<!-- 输出文件路径 -->
+        <property name="rollingfile_debug-file">${root-path}/fgo-${env:USERNAME}-debug.log</property>
+        <property name="rollingfile_info-file">${root-path}/fgo-${env:USERNAME}-info.log</property>
+        <!-- 文件名分割样式 -->
+        <property name="rollingfile_debug-file_pattern">${root-path}/logs/-debug-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
+        <property name="rollingfile_info-file_pattern" >${root-path}/logs/-info-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
+
+    </Properties>
+    <!--先定义所有的appender -->
+    <appenders>
+        <!--输出控制台的配置 -->
+        <Console name="Console" target="SYSTEM_OUT">
+         	<Filters>
+				<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="NEUTRAL" />
+ 			</Filters>
+            <PatternLayout pattern="${console_layout_pattern}" />
+        </Console>
+		<!--输出查看日志的配置 -->	
+       	<RollingFile name="InfoFile" fileName="${rollingfile_info-file}"
+			filePattern="${rollingfile_info-file_pattern}">
+			<PatternLayout pattern="${file_layout_pattern}" />
+			<Filters>
+				<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+ 			</Filters>
+			<Policies>
+<!-- 				<TimeBasedTriggeringPolicy interval="12" -->
+<!-- 					modulate="true" /> -->
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+		</RollingFile>
+		<!--输出调试日志的配置 -->	
+       	<RollingFile name="DebugFile" fileName="${rollingfile_debug-file}"
+			filePattern="${rollingfile_info-file_pattern}">
+			<PatternLayout pattern="${file_layout_pattern}" />
+			<Filters>
+				<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+ 			</Filters>
+			<Policies>
+<!-- 				<TimeBasedTriggeringPolicy interval="12" -->
+<!-- 					modulate="true" /> -->
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+		</RollingFile>
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+    <loggers>
+    	<Root level="debug">
+      		<AppenderRef ref="InfoFile"/>
+      		<AppenderRef ref="DebugFile"/>
+      		<AppenderRef ref="Console"/>
+   		</Root>
+    </loggers>
+</configuration>
