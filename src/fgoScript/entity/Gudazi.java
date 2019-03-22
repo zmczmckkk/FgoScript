@@ -227,10 +227,8 @@ public class Gudazi extends TimerTask {
 	}
 
 	public void openEvent() throws Exception {
-		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
-		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"), true);
-		int account = StringUtils.isBlank(openAccountStr) ? FgoRewardArray[0] : Integer.valueOf(openAccountStr);
-		countNum = account;
+		int account = FgoPanel.getAccount();
+		countNum = FgoPanel.getAccount();;
 		try {
 			reNewRobot();
 			// 打开窗口
@@ -887,14 +885,7 @@ public class Gudazi extends TimerTask {
 		ZButton btTemp = FgoPanel.instance().getBts()[3];
 		btTemp.setEnabled(btTemp.isEnableStatus());
 		btTemp.setExcuteColor();
-		if (!btTemp.isEnableStatus()) {
-			String text = btTemp.getText();
-			if (text.lastIndexOf("(") != -1 && text.lastIndexOf("(") != 0) {
-				btTemp.setText(text.substring(0, text.lastIndexOf("(")) + "(执行中)");
-			}else {
-				btTemp.setText(text + " (执行中)");
-			}
-		}
+		FgoPanel.setExcuteText(btTemp);
 		btTemp.run();
 		if (GameUtil.isSTOP_SCRIPT()==true) {
 			LOGGER.info(">>>>>>>>>>  当前计划已经终止！     <<<<<<<<<<<");

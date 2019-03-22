@@ -1,31 +1,21 @@
 package fgoScript;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.SwingConstants;
-
-import org.apache.commons.lang3.StringUtils;
-
+import aoshiScript.entity.WuNa;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
-
-import aoshiScript.entity.WuNa;
 import fgoScript.entity.Gudazi;
 import fgoScript.entity.ZButton;
 import fgoScript.entity.Zpanel;
 import fgoScript.service.TimerManager;
 import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 //创建全局快捷键
 public class FgoPanel extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -38,38 +28,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			return p;
 		}
 	}
-    private Icon wallpaper; 
-    private HotkeyListener listener;
-    protected void paintComponent(Graphics g) {  
-        if (null != wallpaper) {  
-            processBackground(g);  
-        }  
-    }  
-  
-    public void setBackground(Icon wallpaper) {  
-        this.wallpaper = wallpaper;  
-        this.repaint();  
-    }  
-  
-    private void processBackground(Graphics g) {  
-        ImageIcon icon = (ImageIcon) wallpaper;  
-        Image image = icon.getImage();  
-        int cw = getWidth();  
-        int ch = getHeight();  
-        int iw = image.getWidth(this);  
-        int ih = image.getHeight(this);  
-        int x = 0;  
-        int y = 0;  
-        while (y <= ch) {  
-            g.drawImage(image, x, y, this);  
-            x += iw;  
-            if (x >= cw) {  
-                x = 0;  
-                y += ih;  
-            }  
-        }  
-    }  
-//	private static final Logger LOGGER = LogManager.getLogger(FgoPanel.class);
+
 	private ZButton[] bts = {
 			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
@@ -270,22 +229,22 @@ public class FgoPanel extends JFrame implements ActionListener {
 				public void runMethod() {
 					this.selectIfRestart();
 				}
-			},new ZButton("坐标",JIntellitype.MOD_ALT, (int) KeyEvent.VK_1,false, false, ZButton.pink) {
+			},new ZButton("坐标",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
-				public void runMethod() throws Exception {
+				public void runMethod() {
 					WuNa.instance().configClick(this);
 				}
 			},new ZButton("清空",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
-				public void runMethod() throws Exception {
+				public void runMethod() {
 					WuNa.instance().falshClick(this);
 				}
 			},new ZButton("解除激活",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
-				public void runMethod() throws Exception {
+				public void runMethod() {
 					deActiveAll();
 				}
 			}
@@ -300,7 +259,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 	private Zpanel eastPanel01 = new Zpanel();
 	
 	// 初始化
-	public FgoPanel() {
+	private FgoPanel() {
 		init();
 	}
 	// 初始化
@@ -315,7 +274,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		southPanel04.setLayout(new GridLayout(1, 1));
 		eastPanel01.setLayout(new GridLayout(1, 3));
 		// 添加按钮
-		ZButton jbTemp = null;
+		ZButton jbTemp;
 		int size = bts.length;
 		int skillcount = 0;
 		int len = 2;
@@ -332,28 +291,22 @@ public class FgoPanel extends JFrame implements ActionListener {
 					jbTemp.setSkillsStatus(2);
 				}
 				skillcount++;
-			}else if (jbTemp.getText().indexOf("monster")!=-1) {
+			}else if (jbTemp.getText().contains("monster")) {
 				jbTemp.setText(jbTemp.getToMonsterText());
 				jbTemp.addActionListener(this);
 				southPanel03.add(jbTemp);
-			}else if (jbTemp.getText().indexOf("person")!=-1) {
+			}else if (jbTemp.getText().contains("person")) {
 				jbTemp.setText(jbTemp.getToPersonText());
 				jbTemp.addActionListener(this);
 				southPanel02.add(jbTemp);
 			}else if ("终止".equals(jbTemp.getText())) {
 				jbTemp.setText("终止");
-				jbTemp.addActionListener(this);
-				jbTemp.setAllowRepeat(true);
-				JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
-				southPanel04.add(jbTemp);
-				
+				addSouthPanle04(jbTemp);
+
 			}else if ("暂停".equals(jbTemp.getText())) {
 				jbTemp.setText("暂停");
-				jbTemp.addActionListener(this);
-				jbTemp.setAllowRepeat(true);
-				JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
-				southPanel04.add(jbTemp);
-				
+				addSouthPanle04(jbTemp);
+
 			}else if ("超时".equals(jbTemp.getText())) {
 				jbTemp.setText("超时");
 				jbTemp.addActionListener(this);
@@ -396,15 +349,12 @@ public class FgoPanel extends JFrame implements ActionListener {
 		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 8438279990543323489L;
 			@Override
-			public void runMethod() throws Exception {
+			public void runMethod() {
 				this.selectAccount();
 			}
 		};
-		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
-		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
-		int account =	StringUtils.isBlank(openAccountStr)?
-					FgoRewardArray[0]:
-					Integer.valueOf(openAccountStr);
+
+		int account = getAccount();
 		jbTemp.setText("账号" + account);
 		jbTemp.setBounds(210, 5 + (4 * (30+len)), 115, 25+len);
 		jbTemp.addActionListener(this);
@@ -413,7 +363,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		ZButton showPicBt = new ZButton("显示背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
-			public void runMethod() throws Exception {
+			public void runMethod() {
 				showBackGround();
 			}
 		};
@@ -421,7 +371,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		ZButton changePicBt = new ZButton("切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
-			public void runMethod() throws Exception {
+			public void runMethod() {
 				changeGround();
 			}
 		};
@@ -430,11 +380,9 @@ public class FgoPanel extends JFrame implements ActionListener {
 		eastPanel01.add(showPicBt);
 		eastPanel01.add(changePicBt);
 		// 添加热键监听器
-		listener = new HotkeyListener() {
-			public void onHotKey(int markCode) {
-				ZButton zbt = bts[markCode];
-				new Thread(zbt).start();
-			}
+		HotkeyListener listener = markCode -> {
+			ZButton zbt = bts[markCode];
+			new Thread(zbt).start();
 		};
 		centerPanel.setOpaque(false);
 		buttonPanel.setOpaque(false);
@@ -464,18 +412,31 @@ public class FgoPanel extends JFrame implements ActionListener {
 		
 		// 启动定时任务
 		new TimerManager();
-	}  
+	}
+
+	public static int getAccount() {
+		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
+		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
+		return StringUtils.isBlank(openAccountStr)?
+					FgoRewardArray[0]:
+					Integer.valueOf(openAccountStr);
+	}
+
+	private void addSouthPanle04(ZButton jbTemp) {
+		jbTemp.addActionListener(this);
+		jbTemp.setAllowRepeat(true);
+		JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
+		southPanel04.add(jbTemp);
+	}
+
 	private void showBackGround() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				centerPanel.setVisible(false);
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-				}
-				centerPanel.setVisible(true);
+		new Thread(() -> {
+			centerPanel.setVisible(false);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException ignored) {
 			}
+			centerPanel.setVisible(true);
 		}).start();
 	}
 	private void changeGround() {
@@ -485,19 +446,12 @@ public class FgoPanel extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ZButton btTemp = (ZButton) e.getSource();
-		if (e.getActionCommand().indexOf(btTemp.getText()) != -1) {
+		if (e.getActionCommand().contains(btTemp.getText())) {
 			btTemp.setEnabled(btTemp.isEnableStatus());
 			if (btTemp.isExcuteble()) {
 				btTemp.setExcuteColor();
 				new Thread(btTemp).start();
-				if (!btTemp.isEnableStatus()) {
-					String text = btTemp.getText();
-					if (text.lastIndexOf("(") != -1 && text.lastIndexOf("(") != 0) {
-						btTemp.setText(text.substring(0, text.lastIndexOf("(")) + "(执行中)");
-					}else {
-						btTemp.setText(text + " (执行中)");
-					}
-				}
+				setExcuteText(btTemp);
 			}else {
 				if ("点击设置".equals(btTemp.getText())) {
 					btTemp.setText("选择条件");
@@ -509,28 +463,28 @@ public class FgoPanel extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
+	public static void setExcuteText(ZButton btTemp) {
+		if (!btTemp.isEnableStatus()) {
+			String text = btTemp.getText();
+			if (text.lastIndexOf("(") != -1 && text.lastIndexOf("(") != 0) {
+				btTemp.setText(text.substring(0, text.lastIndexOf("(")) + "(执行中)");
+			}else {
+				btTemp.setText(text + " (执行中)");
+			}
+		}
+	}
+
 	public ZButton[] getBts() {
 		return bts;
 	}
 
-	public void setBts(ZButton[] bts) {
-		this.bts = bts;
-	}
-	
-	public HotkeyListener getListener() {
-		return listener;
-	}
-
-	public void setListener(HotkeyListener listener) {
-		this.listener = listener;
-	}
 	private void deActiveAll() {
 		ZButton[] zts = this.getBts();
 		ZButton btTemp;
 		String textTemp;
-		for (int i = 0; i < zts.length; i++) {
-			btTemp = zts[i];
+		for (ZButton zt : zts) {
+			btTemp = zt;
 			if (!btTemp.isExcuteble()) {
 				JIntellitype.getInstance().unregisterHotKey(btTemp.getMarkCode());
 				btTemp.setEnabled(true);
@@ -538,13 +492,8 @@ public class FgoPanel extends JFrame implements ActionListener {
 				btTemp.setText(textTemp.replace(" (已激活)", ""));
 			}
 		}
-//		bt.lightForAwhile();
 	}
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				p = new FgoPanel();
-			}
-		});
+		EventQueue.invokeLater(() -> p = new FgoPanel());
 	}
 }
