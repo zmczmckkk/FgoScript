@@ -885,7 +885,7 @@ public class Gudazi extends TimerTask {
 		ZButton btTemp = FgoPanel.instance().getBts()[3];
 		btTemp.setEnabled(btTemp.isEnableStatus());
 		btTemp.setExcuteColor();
-		FgoPanel.setExcuteText(btTemp);
+		FgoPanel.setExcutebleText(btTemp);
 		btTemp.run();
 		if (GameUtil.isSTOP_SCRIPT()==true) {
 			LOGGER.info(">>>>>>>>>>  当前计划已经终止！     <<<<<<<<<<<");

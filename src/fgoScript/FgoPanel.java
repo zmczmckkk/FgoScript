@@ -451,7 +451,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			if (btTemp.isExcuteble()) {
 				btTemp.setExcuteColor();
 				new Thread(btTemp).start();
-				setExcuteText(btTemp);
+				setExcutebleText(btTemp);
 			}else {
 				if ("点击设置".equals(btTemp.getText())) {
 					btTemp.setText("选择条件");
@@ -464,7 +464,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		}
 	}
 
-	public static void setExcuteText(ZButton btTemp) {
+	public static void setExcutebleText(ZButton btTemp) {
 		if (!btTemp.isEnableStatus()) {
 			String text = btTemp.getText();
 			if (text.lastIndexOf("(") != -1 && text.lastIndexOf("(") != 0) {
