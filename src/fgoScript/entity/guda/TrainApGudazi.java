@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -88,12 +86,12 @@ public class TrainApGudazi extends AbstractApGudazi {
 		Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		List<Point> pointList = new ArrayList<Point>();
+		List<Point> pointList = new ArrayList<>();
 		pointList.add(ps1);
 		pointList.add(ps2);
 		pointList.add(ps3);
 		pointList.add(ps4);
-		int eveValue = 0;
+		int eveValue;
 		int battleRounds = 0;
 		int MaxRounds = 20;
 		// 第一回合
@@ -126,7 +124,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		Point ps8 = new Point(909, 84);// 颜色：248;248;248 Color c = new Color(248, 248, 248);
 		Point ps13 = new Point(915, 78);// 颜色：252;252;252 Color c = new Color(252, 252, 252);
 
-		pointList = new ArrayList<Point>();
+		pointList = new ArrayList<>();
 		pointList.add(ps5);
 		pointList.add(ps6);
 		pointList.add(ps7);
@@ -163,7 +161,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		Point ps11 = new Point(908, 84);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
 		Point ps14 = new Point(918, 80);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 
-		pointList = new ArrayList<Point>();
+		pointList = new ArrayList<>();
 		pointList.add(ps9);
 		pointList.add(ps10);
 		pointList.add(ps11);
@@ -178,7 +176,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		while (eveValue > THRESHOLD&& battleRounds < MaxRounds) {
 			battleRounds++;
 			// 宝具平A
-			isReDo = attackBAA(bCount, isReDo, apNum);
+			isReDo = attackBAA(isReDo, apNum);
 			// 等待
 			waitToAttack("3");
 			// 羁绊结算三角
@@ -204,7 +202,7 @@ public class TrainApGudazi extends AbstractApGudazi {
         blueAttackSelect();
         // 开始点击卡片
 		List<Point> pList = getCommondCards();
-		Point pTemp = null;
+		Point pTemp;
 		// 大小大的攻击顺序
 		pTemp = pList.get(4);
 		GameUtil.mouseMoveByPoint(pTemp);
@@ -220,9 +218,9 @@ public class TrainApGudazi extends AbstractApGudazi {
 	private List<Point> getCommondCards() {
 		GameUtil.delay(GameConstant.DELAY*2);
 		Point[]  p_supports = PointInfo.P_SUPPORTS;
-		Color color = null;
-		Point point = null;
-		PointColor pc = null;
+		Color color;
+		Point point;
+		PointColor pc;
 		List<PointColor> pcList = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
 			point = p_supports[i];
@@ -230,16 +228,10 @@ public class TrainApGudazi extends AbstractApGudazi {
 			pc = new PointColor(point, color, true);
 			pcList.add(pc);
 		}
-		Collections.sort(pcList, new Comparator<PointColor>() {
-			@Override
-			public int compare(PointColor pc1, PointColor pc2) {
-				int result = pc1.getColor().getRed() + pc1.getColor().getBlue() + pc1.getColor().getGreen()
-						- pc2.getColor().getRed() - pc2.getColor().getBlue() - pc2.getColor().getGreen();
-				return result;
-			}
-		});
-		List<Point> pList = new ArrayList<Point>();
-		Point pTemp = null;
+		pcList.sort((pc1, pc2) -> pc1.getColor().getRed() + pc1.getColor().getBlue() + pc1.getColor().getGreen()
+				- pc2.getColor().getRed() - pc2.getColor().getBlue() - pc2.getColor().getGreen());
+		List<Point> pList = new ArrayList<>();
+		Point pTemp;
 		int size = pcList.size();
 		for (int i = 0; i < size; i++) {
 			PointColor pointColor = pcList.get(i);
@@ -249,7 +241,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		}
 		return pList;
 	}
-	private void battleSkill1() throws Exception {
+	private void battleSkill1() {
 		Point p6 = new Point(906, 475);// 颜色：2;3;3 Color c = new Color(2, 3, 3);
 		Point p7 = new Point(675, 474);// 颜色：254;238;211 Color c = new Color(254, 238, 211);
 		// 战斗服选择
@@ -271,7 +263,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 	 * 
 	 * @throws Exception
 	 */
-	private boolean attackBAA(int i, boolean isReDo, int apNum) throws Exception {
+	private boolean attackBAA(boolean isReDo, int apNum) throws Exception {
 		Point pNp = new Point(856, 720);
 
 		Color cNp = GameUtil.getScreenPixel(pNp);
@@ -283,7 +275,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		LOGGER.info("有宝具吗？  " + (c1 != c2));
 		if (c1 != c2) {
 			// 等待
-			if (isReDo == false && apNum > 20) {
+			if (!isReDo && apNum > 20) {
 				// 等待
 				waitToAttack(null);
 				// 战斗服技能
@@ -309,7 +301,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 			GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
 			List<Point> pList = getCommondCards();
-			Point pTemp = null;
+			Point pTemp;
 			// 大大的攻击顺序
 			pTemp = pList.get(4);
 			GameUtil.mouseMoveByPoint(pTemp);
@@ -411,7 +403,7 @@ public class TrainApGudazi extends AbstractApGudazi {
         blueAttackSelect();
         // 开始点击卡片
 		List<Point> pList = getCommondCards();
-		Point pTemp = null;
+		Point pTemp;
 		// 大小大的攻击顺序
 		pTemp = pList.get(4);
 		GameUtil.mouseMoveByPoint(pTemp);

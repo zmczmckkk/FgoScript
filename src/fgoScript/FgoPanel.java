@@ -29,7 +29,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		}
 	}
 
-	private ZButton[] bts = {
+	private final ZButton[] bts = {
 			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
 				@Override
@@ -249,15 +249,14 @@ public class FgoPanel extends JFrame implements ActionListener {
 				}
 			}
 	};
-	private Zpanel backPanel = new Zpanel();
-	private Zpanel centerPanel = new Zpanel();
-	private Zpanel buttonPanel = new Zpanel();
-	private Zpanel southPanel01 = new Zpanel();
-	private Zpanel southPanel02 = new Zpanel();
-	private Zpanel southPanel03 = new Zpanel();
-	private Zpanel southPanel04 = new Zpanel();
-	private Zpanel eastPanel01 = new Zpanel();
-	
+	private final Zpanel backPanel = new Zpanel();
+	private final Zpanel centerPanel = new Zpanel();
+	private final Zpanel buttonPanel = new Zpanel();
+	private final Zpanel southPanel01 = new Zpanel();
+	private final Zpanel southPanel02 = new Zpanel();
+	private final Zpanel southPanel03 = new Zpanel();
+	private final Zpanel southPanel04 = new Zpanel();
+	private final Zpanel eastPanel01 = new Zpanel();
 	// 初始化
 	private FgoPanel() {
 		init();
@@ -493,6 +492,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			}
 		}
 	}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> p = new FgoPanel());
 	}

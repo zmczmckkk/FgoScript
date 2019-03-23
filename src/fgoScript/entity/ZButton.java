@@ -39,7 +39,7 @@ public abstract class ZButton extends JButton implements Runnable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LogManager.getLogger(ZButton.class);
-	static class MyLock {};
+	static class MyLock {}
 	static final Object LOCK = new MyLock();
 	public int shortcunt01;
 	public int shortcunt02;
@@ -47,25 +47,28 @@ public abstract class ZButton extends JButton implements Runnable{
 	private int markCode;
 	public  abstract void runMethod() throws Exception;
 	/* 决定圆角的弧度 */
-    public static int radius = 4;
+    public static final int radius = 4;
     private Color COLOR1, COLOR2;
     private Color MY_GRID_COLOR01, MY_GRID_COLOR02, MY_FONT_COLOR;
-    public static int pink = 3, ashen = 2, sky = 1, stone = 0;
+    public static final int pink = 3;
+	public static final int ashen = 2;
+	public static final int sky = 1;
+	public static final int stone = 0;
     /* 粉红 */
-	public static Color mainStyle01 = new Color(100, 0, 0);
-	public static Color mainStyle02 = new Color(0, 0, 100);
+	public static final Color mainStyle01 = new Color(100, 0, 0);
+	public static final Color mainStyle02 = new Color(0, 0, 100);
 	/* 激活颜色 */
-	public static Color active01 = new Color(100, 149, 237);
-	public static Color active02 = new Color(100, 149, 237);
+	public static final Color active01 = new Color(100, 149, 237);
+	public static final Color active02 = new Color(100, 149, 237);
 	/* 深宝石蓝 */
-	public static Color stone1 = new Color(255, 0, 0);
-	public static Color stone2 = new Color(39, 121, 181);
+	public static final Color stone1 = new Color(255, 0, 0);
+	public static final Color stone2 = new Color(39, 121, 181);
 	/* 执行颜色 */
-	public static Color excuteStyle01 = new Color(205, 150, 205);
-	public static Color excuteStyle02 = new Color(205, 150, 205);
+	public static final Color excuteStyle01 = new Color(205, 150, 205);
+	public static final Color excuteStyle02 = new Color(205, 150, 205);
 	/* 技能任务组颜色 */
-	public static Color skillColor01 = new Color(100, 0, 0);
-	public static Color skillColor02 = new Color(0, 0, 80);
+	public static final Color skillColor01 = new Color(100, 0, 0);
+	public static final Color skillColor02 = new Color(0, 0, 80);
 	
 	private int skillsStatus;
     private boolean isActive;
@@ -119,7 +122,7 @@ public abstract class ZButton extends JButton implements Runnable{
     }
     public String getSkilStateText() {
     	String value = PropertiesUtil.getValueFromSkillsFile(getFromPerson());
-    	if (value.indexOf("" + getFromSkill())!=-1) {
+    	if (value.contains("" + getFromSkill())) {
     		setActive(true);
 			return "√";
 		}
@@ -179,9 +182,9 @@ public abstract class ZButton extends JButton implements Runnable{
     	setActive(!isActive());
     	String tempFromSkill;
     	String tempValue = PropertiesUtil.getValueFromSkillsFile(getFromPerson());
-    	if (isActive==true) {
+    	if (isActive) {
     		this.setText("√");
-    		if (tempValue.indexOf(getFromSkill()+"")==-1) {
+    		if (!tempValue.contains(getFromSkill() + "")) {
     			tempFromSkill = tempValue+","+getFromSkill();
     			tempFromSkill = tempFromSkill.replaceAll(",,", ",");
         	}else {
@@ -189,7 +192,7 @@ public abstract class ZButton extends JButton implements Runnable{
         	}
 		}else {//2,3
 			 this.setText(" ");
-			 if (tempValue.indexOf(getFromSkill()+"")!=-1) {
+			 if (tempValue.contains(getFromSkill() + "")) {
     			tempFromSkill = tempValue.replace(""+getFromSkill(), "");
     			tempFromSkill = tempFromSkill.replaceAll(",,", ",");
         	 }else {
@@ -201,7 +204,7 @@ public abstract class ZButton extends JButton implements Runnable{
     	PropertiesUtil.setValueForSkills(map);
     }
 	public void selectIfRestart() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
     	if (this.getText().equals("重开")) {
     		 this.setText("新开");
     		 map.put("ifRestart", "false");
@@ -276,7 +279,7 @@ public abstract class ZButton extends JButton implements Runnable{
 	public void selectAccount() {
 		int[] FgoRewardArray = GameUtil.strToIntArray(PropertiesUtil.getValueFromConfig("FgoRewardArray"),true);
 		String text = this.getText();
-		text = text.substring(text.indexOf("账号")+2, text.length());
+		text = text.substring(text.indexOf("账号")+2);
 		int account = Integer.valueOf(text);
 		int next = 0;
 		int size = FgoRewardArray.length;
@@ -419,7 +422,7 @@ public abstract class ZButton extends JButton implements Runnable{
 
 	private void paintcolor() {
         setMargin(new Insets(0, 0, 0, 0));
-        setFont(new Font("微软雅黑", 1, 13));
+        setFont(new Font("微软雅黑", Font.BOLD, 13));
         setBorderPainted(false);
         setForeground(Color.WHITE);
         setBackground(Color.BLACK);

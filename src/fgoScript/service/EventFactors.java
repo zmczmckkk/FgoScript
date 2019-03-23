@@ -16,15 +16,15 @@ import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
 
 public class EventFactors {
-	public static Point P_INSIDE = new Point(1218,564);
-	public static Color C_INSIDE = new Color(240, 167, 17);
-	public static Point P_OUTSIDE = new Point(1215,490);
-	public static Color C_OUTSIDE = new Color(247, 173, 14);
-	public static Point P_BBSIDE = new Point(1219,632);
-	public static Color C_BBSIDE = new Color(247, 166, 24);
+	public static final Point P_INSIDE = new Point(1218,564);
+	public static final Color C_INSIDE = new Color(240, 167, 17);
+	public static final Point P_OUTSIDE = new Point(1215,490);
+	public static final Color C_OUTSIDE = new Color(247, 173, 14);
+	public static final Point P_BBSIDE = new Point(1219,632);
+	public static final Color C_BBSIDE = new Color(247, 166, 24);
 	public static int INSIDE = 0;
 	public static int OUTSIDE = 1;
-	public static int BBSIDE = 2;
+	public static final int BBSIDE = 2;
 	public static Point[] sidePoints= {P_INSIDE, P_OUTSIDE, P_BBSIDE};
 	public static Color[] sideColors= {C_INSIDE, C_OUTSIDE, C_BBSIDE};
 	/**
@@ -65,17 +65,17 @@ public class EventFactors {
 	 * 进入副本后支援的职介
 	 */
 	public static Point supportServant = PointInfo.P_SERVANT_FOUR;
-	public static int battleRounds = 3;
+	public static final int battleRounds = 3;
 	/**
 	 * 第一回事是否仍副宝具
 	 * 
 	 */
-	public static boolean ifNP = false;
+	public static final boolean ifNP = false;
 	/**
 	 * 第二回合是否允许主宝具释放
 	 * 
 	 */
-	public static boolean ifSecondNP = false;
+	public static final boolean ifSecondNP = false;
 	/**
 	 * 连续技能Map null为自动选3
 	 * @return
@@ -83,27 +83,27 @@ public class EventFactors {
 	public static List<Map<String, Object>> getPreSkills(Color[][] DEFAULT_SKILL_COLORS){
 	
 		List<Map<String, Object>> list = new LinkedList<>();
-		Map<String, Object> tempMap = null;
+		Map<String, Object> tempMap;
 		//位置3	
 		int[] array03 = GameUtil.strToIntArray(PropertiesUtil.getValueFromSkillsFile("skills03"),true);
 		tempMap = new HashMap<>();
 		tempMap.put("from", 2);
 		String toP = PropertiesUtil.getValueFromSkillsFile("person03");
-		tempMap.put("to", StringUtils.isBlank(toP) == true ? 2 : Integer.valueOf(toP));
+		tempMap.put("to", StringUtils.isBlank(toP) ? 2 : Integer.valueOf(toP));
 		tempMap.put("skills", array03);
 		list.add(tempMap);
 		int[] array02 = GameUtil.strToIntArray(PropertiesUtil.getValueFromSkillsFile("skills02"),true);
 		tempMap = new HashMap<>();
 		tempMap.put("from", 1);
 		toP = PropertiesUtil.getValueFromSkillsFile("person02");
-		tempMap.put("to", StringUtils.isBlank(toP) == true ? 1 : Integer.valueOf(toP));
+		tempMap.put("to", StringUtils.isBlank(toP) ? 1 : Integer.valueOf(toP));
 		tempMap.put("skills", array02);
 		list.add(tempMap);
 		int[] array01 = GameUtil.strToIntArray(PropertiesUtil.getValueFromSkillsFile("skills01"),true);
 		tempMap = new HashMap<>();
 		tempMap.put("from", 0);
 		toP = PropertiesUtil.getValueFromSkillsFile("person01");
-		tempMap.put("to", StringUtils.isBlank(toP) == true ? 0 : Integer.valueOf(toP));
+		tempMap.put("to", StringUtils.isBlank(toP) ? 0 : Integer.valueOf(toP));
 		tempMap.put("skills", array01);
 		list.add(tempMap);
 		
@@ -113,7 +113,7 @@ public class EventFactors {
 
 	public static List<Map<String, Object>> getQpPreSkills(Color[][] DEFAULT_SKILL_COLORS){
 		List<Map<String, Object>> list = new LinkedList<>();
-		Map<String, Object> tempMap = null;
+		Map<String, Object> tempMap;
 		//位置3
 		tempMap = new HashMap<>();
 		int[] array03 = {0,1};
@@ -141,7 +141,7 @@ public class EventFactors {
 	}
 	public static List<Map<String, Object>> getExpPreSkills(Color[][] DEFAULT_SKILL_COLORS){
 		List<Map<String, Object>> list = new LinkedList<>();
-		Map<String, Object> tempMap = null;
+		Map<String, Object> tempMap;
 		//位置3
 		tempMap = new HashMap<>();
 		int[] array03 = {0};
@@ -193,11 +193,11 @@ public class EventFactors {
 		Color[][] fileColors = new Color[3][3];
 		String skillColors = PropertiesUtil.getValueFromColorFile("skillColors");
 		String[] roles = skillColors.split(";");
-		String[] skills = null;
-		String[] colors = null;
-		Color temp = null;
+		String[] skills;
+		String[] colors;
+		Color temp;
 		int roleSize = roles.length;
-		int skillSize = 0;
+		int skillSize;
 		for (int i = 0; i < roleSize; i++) {
 			skills = roles[i].split("-");
 			skillSize = skills.length;
@@ -214,10 +214,10 @@ public class EventFactors {
 	}
 	private static void setUsefulSkills(Color[][] DEFAULT_SKILL_COLORS, List<Map<String, Object>> list) {
  		Color[][] NEW_SKILL_COLORS = getSkillColors();
-		Color defaultTemp = null;
-		Color newTemp = null;
-		List<Integer> newSkillsList= null;
-		int[] newSkills = null;
+		Color defaultTemp;
+		Color newTemp;
+		List<Integer> newSkillsList;
+		int[] newSkills;
 		int size = list.size();
 		for (int j = 0; j < size; j++) {
 			Map<String, Object> map = list.get(j);
@@ -245,7 +245,7 @@ public class EventFactors {
 	 */
 	public static List<Map<String, Object>> getRound2ClothSkill(){
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> tempMap =null;
+		Map<String, Object> tempMap;
 		
 		tempMap = new HashMap<>();
 		int[] array01 = {0};
@@ -259,7 +259,7 @@ public class EventFactors {
 	 */
 	public static List<Map<String, Object>> getRound2ClothSkillto3(){
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> tempMap =null;
+		Map<String, Object> tempMap;
 
 		tempMap = new HashMap<>();
 		int[] array01 = {0};
@@ -276,7 +276,7 @@ public class EventFactors {
 	 */
 	public static List<Map<String, Object>> getNPSkills01(Color[][] DEFAULT_SKILL_COLORS){
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> tempMap = null;
+		Map<String, Object> tempMap;
 		
 		tempMap = new HashMap<>();
 		int[] array01 = {0,1,2};
@@ -302,7 +302,7 @@ public class EventFactors {
 	 */
 	public static List<Map<String, Object>> getNPSkills03(Color[][] DEFAULT_SKILL_COLORS){
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> tempMap =null;
+		Map<String, Object> tempMap;
 		
 		tempMap = new HashMap<>();
 		int[] array01 = {0,1,2};
@@ -320,7 +320,7 @@ public class EventFactors {
 	 */
 	public static List<Map<String, Object>> getNPSkills02(Color[][] DEFAULT_SKILL_COLORS){
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> tempMap =null;
+		Map<String, Object> tempMap;
 
 		tempMap = new HashMap<>();
 		int[] array01 = {0,1,2};
@@ -333,25 +333,22 @@ public class EventFactors {
 		return list;
 	}
 	public static void writeDefaultSkillColors(Color[][] colors) {
-		String colorStrs = "";
-		Color[] tempColors = null;
-		Color tempColor = null;
+		StringBuilder colorStrs = new StringBuilder();
+		Color[] tempColors;
+		Color tempColor;
 		int size = colors.length;
-		int len = 0;
+		int len;
 		for (int i = 0; i < size; i++) {
 			tempColors = colors[i];
 			len = colors[i].length;
 			for (int j = 0; j < len; j++) {
 				tempColor = tempColors[j];
-				colorStrs += tempColor.getRed()
-						+"_" +tempColor.getGreen()
-						+"_" +tempColor.getBlue()
-						+"-";
+				colorStrs.append(tempColor.getRed()).append("_").append(tempColor.getGreen()).append("_").append(tempColor.getBlue()).append("-");
 			}
-			colorStrs += ";";
+			colorStrs.append(";");
 		}
 		Map<String, String> maps = new HashMap<>();
-		maps.put("skillColors", colorStrs);
+		maps.put("skillColors", colorStrs.toString());
 		PropertiesUtil.setValue(maps);
 	}
 	public static Color[][] getSkillColors() {
@@ -391,7 +388,7 @@ public class EventFactors {
 	public static Point getMonsterPoint() {
 		Point p =null;
 		String toM = PropertiesUtil.getValueFromSkillsFile("monster03");
-		switch (StringUtils.isBlank(toM) == true ? 2 : Integer.valueOf(toM)) {
+		switch (StringUtils.isBlank(toM) ? 2 : Integer.valueOf(toM)) {
 		case 0:
 			p = PointInfo.P_MOSTER01;
 			break;
@@ -405,7 +402,5 @@ public class EventFactors {
 			break;
 		}
 		return p;
-	}
-	public static void main(String[] args) {
 	}
 }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +34,7 @@ import fgoScript.service.ProcessDeal;
 import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
 
+@SuppressWarnings("ALL")
 public abstract class AbstractApGudazi {
     private static final Logger LOGGER = LogManager.getLogger(AbstractApGudazi.class);
     private String PREFIX = GameUtil.getPreFix();
@@ -137,7 +139,7 @@ public abstract class AbstractApGudazi {
 				}
 				// 检测公告
 				LOGGER.info("开始检测是否重开。。。");
-				PointColor pc = open2GudaOrRestart();
+				PointColor pc = CommonMethods.open2GudaOrRestart();
 				rebootFlag = pc.getColor().getRGB() == PointInfo.C_BUTTON_RESTART_YES.getRGB();
 			}
             if (rebootFlag) {
@@ -297,66 +299,28 @@ public abstract class AbstractApGudazi {
         GameUtil.moveToLeftTop();
 
         // 检测loading是否完毕
-        Point p_loading = new Point(516, 722);// 颜色：247;255;255
-        Color c_loading = new Color(247, 255, 255);
+        checkLoadingAndTransferPage(countNum);
+        return;
+    }
 
-        Point p_transfer = new Point(911, 670);// 颜色：0;60;165
-        Color c_transfer = new Color(0, 60, 165);
-
-        java.util.List<PointColor> pcList = new ArrayList<PointColor>();
-        pcList.add(new PointColor(p_loading, c_loading, PointInfo.DEAD_POINT, true));
-        pcList.add(new PointColor(p_transfer, c_transfer, PointInfo.DEAD_POINT, true));
+    private void checkLoadingAndTransferPage(int countNum) throws Exception {
+        List<PointColor> pcList = new ArrayList<PointColor>();
+        pcList.add(new PointColor(PointInfo.P_LOADING, PointInfo.C_LOADING, PointInfo.DEAD_POINT, true));
+        pcList.add(new PointColor(PointInfo.P_TRANSFER, PointInfo.C_TRANSFER, PointInfo.DEAD_POINT, true));
         List<PointColor> finishPCList = new ArrayList<PointColor>();
-        finishPCList.add(new PointColor(p_transfer, c_transfer, PointInfo.DEAD_POINT, true));
+        finishPCList.add(new PointColor(PointInfo.P_TRANSFER, PointInfo.C_TRANSFER, PointInfo.DEAD_POINT, true));
         AutoAct ac = new AutoAct(pcList, finishPCList) {
             @Override
             public void doSomeThing() {
                 Color cWait = this.getPcWait().getColor();
-                if (GameUtil.isEqualColor(c_transfer, cWait)) {
+                if (GameUtil.isEqualColor(PointInfo.C_TRANSFER, cWait)) {
                     GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_引继页面.");
                 }
             }
         };
         ac.autoAct();
     }
-    private PointColor open2GudaOrRestart() throws Exception {
-        // 公告×点
-        Point p_notice_exit = PointInfo.P_NOTICE_EXIT;
-        Color c_notice_exit = PointInfo.C_NOTICE_EXIT;
-        // 公告×点
-        Point p_notice_exit_dark = PointInfo.P_NOTICE_EXIT_DARK;
-        Color c_notice_exit_dark = PointInfo.C_NOTICE_EXIT_DARK;
-        // 盲点
-        Point dead_point = PointInfo.DEAD_POINT;
-        // 咕哒子
-        Point p_guda = PointInfo.P_GUDA;
-        Color c_guda = PointInfo.C_GUDA;
-        // 引继页面
-        Point p_transfer = new Point(911, 670);// 颜色：0;60;165
-        Color c_transfer = new Color(0, 60, 165);
-        // 再开按钮（是）
-        Point p_button_restart_yes = PointInfo.P_BUTTON_RESTART_YES;
-        Color c_button_restart_yes = PointInfo.C_BUTTON_RESTART_YES;
 
-        List<PointColor> pcList = new ArrayList<PointColor>();
-        pcList.add(new PointColor(p_guda, c_guda, dead_point, true));
-        pcList.add(new PointColor(p_notice_exit, c_notice_exit, p_notice_exit, true));
-        pcList.add(new PointColor(p_notice_exit_dark, c_notice_exit_dark, p_notice_exit_dark, true));
-        pcList.add(new PointColor(p_transfer, c_transfer, PointInfo.DEAD_POINT, true));
-        pcList.add(new PointColor(p_button_restart_yes, c_button_restart_yes, p_button_restart_yes, true));
-        List<PointColor> finishPCList = new ArrayList<PointColor>();
-        finishPCList.add(new PointColor(p_guda, c_guda, dead_point, true));
-        finishPCList.add(new PointColor(p_button_restart_yes, c_button_restart_yes, p_button_restart_yes, true));
-
-        AutoAct ac = new AutoAct(pcList, finishPCList) {
-            @Override
-            public void doSomeThing() {
-            }
-        };
-        ac.autoAct();
-        PointColor pc = ac.getPcWait();
-        return pc;
-    }
     private void waitForHomePage() throws Exception {
         GameUtil.getRb().delay(GameConstant.DELAY*5);
         // 公告×点
@@ -815,7 +779,7 @@ public abstract class AbstractApGudazi {
             	  GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
               }else {
             	  GameUtil.mouseMoveByPoint(trueList.get(2).getpLoc());
-                  GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK); 
+                  GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
               }
               GameUtil.mouseMoveByPoint(trueList.get(1).getpLoc());
               GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);

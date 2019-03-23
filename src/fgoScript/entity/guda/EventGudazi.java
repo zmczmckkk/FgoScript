@@ -22,7 +22,7 @@ public class EventGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(EventGudazi.class);
 	@Override
 	public void intoAndSelect(int apNum) throws Exception {
-		insertIntoEventRoom(apNum);
+		insertIntoEventRoom();
 	}
 	@Override
 	public void fightAndStop(boolean rebootFlag, int apNum) throws Exception {
@@ -32,7 +32,7 @@ public class EventGudazi extends AbstractApGudazi {
 	public Point getSuppotServant() {
 		return PointInfo.P_SERVANT_MIX;
 	}
-	private void insertIntoEventRoom(int apNum) throws Exception {
+	private void insertIntoEventRoom() throws Exception {
     	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
@@ -67,12 +67,12 @@ public class EventGudazi extends AbstractApGudazi {
 		Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		List<Point> pointList = new ArrayList<Point>();
+		List<Point> pointList = new ArrayList<>();
 		pointList.add(ps1);
 		pointList.add(ps2);
 		pointList.add(ps3);
 		pointList.add(ps4);
-		int eveValue = 0;
+		int eveValue;
 		int battleRounds = 0;
 		int MaxRounds = 20;
 		int rounds = EventFactors.battleRounds;
@@ -90,15 +90,15 @@ public class EventGudazi extends AbstractApGudazi {
 		}
 		while (eveValue > GameConstant.THRESHOLD && battleRounds < MaxRounds) {
 			battleRounds++;
-			/**
-			 * 连续使用技能组
+			/*
+			  连续使用技能组
 			 */
 			giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 			waitToAttack(null);
 			// 平A
 			if (EventFactors.ifNP) {
 				// 副宝具平a
-				hases = attackBAAForEvent(false, hases);
+				attackBAAForEvent(false, hases);
 			}else {
 				// 平a
 				attackNPAAA();
@@ -109,30 +109,24 @@ public class EventGudazi extends AbstractApGudazi {
 		}
 		// 第二回合
 		// 2回合数字高亮点
-		Point ps5 = new Point(909, 69);// 颜色：209;209;209 Color c = new Color(209, 209, 209);
-		Point ps6 = new Point(917, 70);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps7 = new Point(916, 76);// 颜色：247;247;247 Color c = new Color(247, 247, 247);
-		Point ps8 = new Point(909, 84);// 颜色：248;248;248 Color c = new Color(248, 248, 248);
-		Point ps13 = new Point(915, 78);// 颜色：252;252;252 Color c = new Color(252, 252, 252);
-
-		pointList = new ArrayList<Point>();
-		pointList.add(ps5);
-		pointList.add(ps6);
-		pointList.add(ps7);
-		pointList.add(ps8);
-		pointList.add(ps13);
+		pointList = new ArrayList<>();
+		pointList.add(new Point(909, 69));
+		pointList.add(new Point(917, 70));
+		pointList.add(new Point(916, 76));
+		pointList.add(new Point(909, 84));
+		pointList.add(new Point(915, 78));
 		waitToAttack(null);
 		LOGGER.info("第二回合开始：");
 		eveValue = GameUtil.getColorEveValue(pointList);
 		
 		boolean hasSelect = false;
 		int count = 0;
-		PointColor pc = null;
+		PointColor pc;
 		boolean ifSecondNP = EventFactors.ifSecondNP;
 		while (eveValue > GameConstant.THRESHOLD&& battleRounds < MaxRounds) {
 			battleRounds++;
-			/**
-			 * 连续使用技能组
+			/*
+			  连续使用技能组
 			 */
 			giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 			if (!hasSelect) {
@@ -150,12 +144,12 @@ public class EventGudazi extends AbstractApGudazi {
 			if ("attack".equals(pc.getName())) {
 				if (rounds==3 ) {
 					if (ifSecondNP) {
-						hases = attackBAAForEvent(true, hases);
+						attackBAAForEvent(true, hases);
 					}else {
-						hases = attackBAAForEvent(false, hases);
+						attackBAAForEvent(false, hases);
 					}
 				}else {
-					hases = attackBAAForEvent(true, hases);
+					attackBAAForEvent(true, hases);
 				}
 			}else {
 				LOGGER.info("羁绊了，跳出来");
@@ -168,16 +162,11 @@ public class EventGudazi extends AbstractApGudazi {
 		}
 		if (rounds==3) {
 			// 3回合数字高亮点
-			Point ps9 = new Point(917, 69);// 颜色：243;243;243 Color c = new Color(243, 243, 243);
-			Point ps10 = new Point(909, 69);// 颜色：221;221;221 Color c = new Color(221, 221, 221);
-			Point ps11 = new Point(908, 84);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
-			Point ps14 = new Point(918, 80);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-			
-			pointList = new ArrayList<Point>();
-			pointList.add(ps9);
-			pointList.add(ps10);
-			pointList.add(ps11);
-			pointList.add(ps14);
+			pointList = new ArrayList<>();
+			pointList.add(new Point(917, 69));
+			pointList.add(new Point(909, 69));
+			pointList.add(new Point(908, 84));
+			pointList.add(new Point(918, 80));
 			// 第三回合
 			// 等待
 			waitToAttack(null);
@@ -186,8 +175,8 @@ public class EventGudazi extends AbstractApGudazi {
 			hasSelect= false;
 			while (eveValue > GameConstant.THRESHOLD && battleRounds < MaxRounds) {
 				battleRounds++;
-				/**
-				 * 连续使用技能组
+				/*
+				  连续使用技能组
 				 */
 				giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 				if (!hasSelect) {
@@ -203,7 +192,7 @@ public class EventGudazi extends AbstractApGudazi {
 				// 宝具平A
 				pc = waitToAttack("3");
 				if ("attack".equals(pc.getName())) {
-					hases = attackBAAForEvent(true, hases);
+					attackBAAForEvent(true, hases);
 				}else {
 					LOGGER.info("羁绊了，跳出来");
 					break;
@@ -217,50 +206,45 @@ public class EventGudazi extends AbstractApGudazi {
 	/**
 	 * 宝具平a攻击
 	 * 
-	 * @throws Exception
+	 * @throws Exception 异常
 	 */
-	private boolean[] attackBAAForEvent(boolean goMainNP, boolean[] hases) throws Exception {
+	private void attackBAAForEvent(boolean goMainNP, boolean[] hases) throws Exception {
 		Point pNp01 = PointInfo.NP_CHECK;
 		Point pNp02 = new Point((int)pNp01.getX()+ GameConstant.HEAD_SPACE, (int)pNp01.getY());
 		Point pNp03 = new Point((int)pNp01.getX()+ GameConstant.HEAD_SPACE*2, (int)pNp01.getY());
 		Color cNp01 = GameUtil.getScreenPixel(pNp01);
 		Color cNp02 = GameUtil.getScreenPixel(pNp02);
 		Color cNp03 = GameUtil.getScreenPixel(pNp03);
-		int rgb01 = cNp01.getRGB();
-		int rgb02 = cNp02.getRGB();
-		int rgb03 = cNp03.getRGB();
+		GameUtil.delay(100);
 		Color cNp01_Delay = GameUtil.getScreenPixel(pNp01);
 		Color cNp02_Delay = GameUtil.getScreenPixel(pNp02);
 		Color cNp03_Delay = GameUtil.getScreenPixel(pNp03);
-		int rgb01_Delay = cNp01_Delay.getRGB();
-		int rgb02_Delay = cNp02_Delay.getRGB();
-		int rgb03_Delay = cNp03_Delay.getRGB();
-		boolean has = rgb01 != rgb01_Delay 
-				|| rgb02 != rgb02_Delay
-				|| rgb03 != rgb03_Delay;
 		int npCount = 0;
-		boolean hasNp01 = rgb01 != rgb01_Delay;
-		boolean hasNp02 = rgb02 != rgb02_Delay;
-		boolean hasNp03 = rgb03 != rgb03_Delay;
+		boolean hasNp01 = cNp01.getRGB() != cNp01_Delay.getRGB();
+		boolean hasNp02 = cNp02.getRGB() != cNp02_Delay.getRGB();
+		boolean hasNp03 = cNp03.getRGB() != cNp03_Delay.getRGB();
+		boolean has = hasNp01
+				|| hasNp02
+				|| hasNp03;
 		LOGGER.info("有宝具吗？  " + (has));
 		if ( has ) {
 			// 等待
 			if (hasNp01) {
-				if (hases[0] == false && goMainNP) {
+				if (!hases[0] && goMainNP) {
 					// 战斗服技能
 					battleSkillForP01();
 					hases[0] = true;
 					// 等待
 					waitToAttack(null);
-					/**
-					 * 宝具技能组01
+					/*
+					  宝具技能组01
 					 */
 					giveServantSkills(EventFactors.getNPSkills01(DEFAULT_SKILL_COLORS));
 				}
 			}
 			if (hasNp02) {
-				/**
-				 * 宝具技能组02
+				/*
+				  宝具技能组02
 				 */
 				giveServantSkills(EventFactors.getNPSkills02(DEFAULT_SKILL_COLORS));
 			}	
@@ -269,7 +253,7 @@ public class EventGudazi extends AbstractApGudazi {
 			// 蓝色圆板选择
             blueAttackSelect();
             // 开始点击卡片
-			Map<String, List<CommonCard>> scMap = null;
+			Map<String, List<CommonCard>> scMap;
 			if (hasNp01 && goMainNP) {
 				scMap = getWeakCommondCards(CardComparator.getRbgComparotor());
 			}else {
@@ -299,8 +283,8 @@ public class EventGudazi extends AbstractApGudazi {
 			List<CommonCard> trueList = scMap.get("trueList");
 			List<CommonCard> falseList = scMap.get("falseList");
 			int size = trueList.size();
-			for (int j = 0; j < size; j++) {
-				GameUtil.mouseMoveByPoint(trueList.get(j).getpLoc());
+			for (CommonCard commonCard : trueList) {
+				GameUtil.mouseMoveByPoint(commonCard.getpLoc());
 				GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 			}
 			if (size < (3-npCount)) {
@@ -314,7 +298,6 @@ public class EventGudazi extends AbstractApGudazi {
 			attackNPAAA();
 		}
 		checkExitCardSelect();
-		return hases;
 	}
 	private void battleSkillForP01() throws Exception {
 		// 战斗服选择

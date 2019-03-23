@@ -77,7 +77,7 @@ public class ProcessDeal {
 		try {
 			Process proc = Runtime.getRuntime().exec("tasklist -fi " + '"' + "imagename eq " + processName + '"');
 			bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			String line = null;
+			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				if (line.contains(processName)) {
 					return true;
@@ -91,7 +91,7 @@ public class ProcessDeal {
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
-				} catch (Exception ex) {
+				} catch (Exception ignored) {
 				}
 			}
 		}
@@ -158,7 +158,6 @@ public class ProcessDeal {
 			if (exist) {
 				// 存在，那么就先杀死该进程
 				killProc(procName);
-			} else {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

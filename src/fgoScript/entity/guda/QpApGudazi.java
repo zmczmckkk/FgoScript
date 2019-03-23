@@ -58,12 +58,12 @@ public class QpApGudazi extends AbstractApGudazi{
         Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
         Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
         Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-        List<Point> pointList = new ArrayList<Point>();
+        List<Point> pointList = new ArrayList<>();
         pointList.add(ps1);
         pointList.add(ps2);
         pointList.add(ps3);
         pointList.add(ps4);
-        int eveValue = 0;
+        int eveValue;
         int battleRounds = 0;
         int MaxRounds = 20;
         // 第一回合
@@ -80,13 +80,13 @@ public class QpApGudazi extends AbstractApGudazi{
         }
         while (eveValue > THRESHOLD && battleRounds < MaxRounds) {
             battleRounds++;
-            /**
-             * 连续使用技能组
+            /*
+              连续使用技能组
              */
             giveServantSkills(EventFactors.getQpPreSkills(DEFAULT_SKILL_COLORS));
             waitToAttack(null);
             // 平A
-            hases = attackBAAForEvent(true, hases);
+            attackBAAForEvent(true, hases);
             // 等待
             waitToAttack("1");
             eveValue = GameUtil.getColorEveValue(pointList);
@@ -99,7 +99,7 @@ public class QpApGudazi extends AbstractApGudazi{
         Point ps8 = new Point(909, 84);// 颜色：248;248;248 Color c = new Color(248, 248, 248);
         Point ps13 = new Point(915, 78);// 颜色：252;252;252 Color c = new Color(252, 252, 252);
 
-        pointList = new ArrayList<Point>();
+        pointList = new ArrayList<>();
         pointList.add(ps5);
         pointList.add(ps6);
         pointList.add(ps7);
@@ -111,11 +111,11 @@ public class QpApGudazi extends AbstractApGudazi{
 
         boolean hasSelect = false;
         int count = 0;
-        PointColor pc = null;
+        PointColor pc;
         while (eveValue > THRESHOLD&& battleRounds < MaxRounds) {
             battleRounds++;
-            /**
-             * 连续使用技能组
+            /*
+              连续使用技能组
              */
             giveServantSkills(EventFactors.getQpPreSkills(DEFAULT_SKILL_COLORS));
             if (!hasSelect) {
@@ -131,7 +131,7 @@ public class QpApGudazi extends AbstractApGudazi{
             }
             pc = waitToAttack(null);
             if ("attack".equals(pc.getName())) {
-                hases = attackBAAForEvent(false, hases);
+                attackBAAForEvent(false, hases);
             }else {
                 LOGGER.info("羁绊了，跳出来");
                 break;
@@ -147,7 +147,7 @@ public class QpApGudazi extends AbstractApGudazi{
         Point ps11 = new Point(908, 84);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
         Point ps14 = new Point(918, 80);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 
-        pointList = new ArrayList<Point>();
+        pointList = new ArrayList<>();
         pointList.add(ps9);
         pointList.add(ps10);
         pointList.add(ps11);
@@ -160,8 +160,8 @@ public class QpApGudazi extends AbstractApGudazi{
         hasSelect= false;
         while (eveValue > THRESHOLD && battleRounds < MaxRounds) {
             battleRounds++;
-            /**
-             * 连续使用技能组
+            /*
+              连续使用技能组
              */
             giveServantSkills(EventFactors.getQpPreSkills(DEFAULT_SKILL_COLORS));
             if (!hasSelect) {
@@ -177,7 +177,7 @@ public class QpApGudazi extends AbstractApGudazi{
             // 宝具平A
             pc = waitToAttack("3");
             if ("attack".equals(pc.getName())) {
-                hases = attackBAAForEvent(true, hases);
+                attackBAAForEvent(true, hases);
             }else {
                 LOGGER.info("羁绊了，跳出来");
                 break;
@@ -253,8 +253,8 @@ public class QpApGudazi extends AbstractApGudazi{
         LOGGER.info("有宝具吗？  " + (has));
         if ( has ) {
             if (hasNp03 && goMainNP) {
-                /**
-                 * 宝具技能组03
+                /*
+                  宝具技能组03
                  */
                 giveServantSkills(EventFactors.getNPSkills03(DEFAULT_SKILL_COLORS));
             }
@@ -263,7 +263,7 @@ public class QpApGudazi extends AbstractApGudazi{
             // 蓝色圆板选择
             blueAttackSelect();
             // 开始点击卡片
-            Map<String, List<CommonCard>> scMap = null;
+            Map<String, List<CommonCard>> scMap;
             if (hasNp01 && goMainNP) {
                 scMap = getWeakCommondCards(CardComparator.getRbgComparotor());
             }else {

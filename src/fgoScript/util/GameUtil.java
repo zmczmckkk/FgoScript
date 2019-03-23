@@ -49,10 +49,9 @@ import fgoScript.service.EventFactors;
 
 public class GameUtil {
 	private static final Logger LOGGER = LogManager.getLogger(GameUtil.class);
-	private static int OUT_TIME = Integer.parseInt(PropertiesUtil.getValueFromConfig("OUT_TIME"));// 超时时间(分)
-	private static int DIS_NUM = 25;// 颜色误差
-	private static int CHECK_TIMES = Integer.parseInt(PropertiesUtil.getValueFromConfig("CHECK_TIMES"));
-	private static int EROOR_ROUND = 8;// 循环检查系数(DELAY*X*Y)
+	private static final int OUT_TIME = Integer.parseInt(PropertiesUtil.getValueFromConfig("OUT_TIME"));// 超时时间(分)
+	private static final int CHECK_TIMES = Integer.parseInt(PropertiesUtil.getValueFromConfig("CHECK_TIMES"));
+	private static final int EROOR_ROUND = 8;// 循环检查系数(DELAY*X*Y)
 	private static boolean GO_FLAG = true;
 	private static int CHECK_COUNT = 0;// 检测基数
 	private static boolean STOP_SCRIPT = false;
@@ -65,13 +64,11 @@ public class GameUtil {
 	
 	public static Point getMousePosition() {
 		PointerInfo pinfo = MouseInfo.getPointerInfo();
-		Point p = pinfo.getLocation();
-		return p;
+		return pinfo.getLocation();
 	}
 	private static Robot rb = null;
 	public static Color getScreenPixel(Point p) {
-		Color color = getRb().getPixelColor((int) p.getX(), (int) p.getY());
-		return color;
+		return getRb().getPixelColor((int) p.getX(), (int) p.getY());
 	}
 	public static void reNewRobot() {
 		try {
@@ -159,7 +156,7 @@ public class GameUtil {
 		setSTOP_SCRIPT(false);
 		GO_FLAG = true;
 		rb = getRb();
-		boolean flag = true;
+		boolean flag;
 		PointColor returnPC = null;
 		Point p;
 		Color c0;
@@ -168,17 +165,16 @@ public class GameUtil {
 		int count = 0;
 		int check = 0;
 
-		String Str = "";
+		StringBuilder Str = new StringBuilder();
 		int size = pocoList.size();
-		PointColor pointColor = null;
+		PointColor pointColor;
 		for (int i = 0; i < size; i++) {
 			pointColor = pocoList.get(i);
 			Color c = pointColor.getColor();
-			Str += c.getRed() + ":" + c.getGreen() + ":" + c.getBlue() + "_";
+			Str.append(c.getRed()).append(":").append(c.getGreen()).append(":").append(c.getBlue()).append("_");
 		}
 		LOGGER.debug("当前等待颜色组：" + Str);
 		do {
-			count = 0;
 			for (int i = 0; i < size; i++) {
 				pointColor = pocoList.get(i);
 				p = pointColor.getPoint();
@@ -200,11 +196,7 @@ public class GameUtil {
 				waitInteruptSolution();
 			}
 			check++;
-			try {
-				Thread.sleep(GameConstant.DELAY*CHECK_TIMES);
-			} catch (InterruptedException e) {
-				throw e;
-			}
+			Thread.sleep(GameConstant.DELAY*CHECK_TIMES);
 			if (!GO_FLAG && CHECK_COUNT == 0) {
 				return null;
 			}
@@ -229,13 +221,7 @@ public class GameUtil {
 
 	public static PointColor waitUntilOneColor(List<PointColor> pocoList) throws FgoNeedRestartException, FgoNeedStopException  {
 		PointColor returnPC = null;
-		Callable<PointColor> task = new Callable<PointColor>() {
-			@Override
-			public PointColor call() throws Exception {
-				PointColor returnPC = waitUntilOneColorInner(pocoList);
-				return returnPC;
-			}
-		};
+		Callable<PointColor> task = () -> waitUntilOneColorInner(pocoList);
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		Future<PointColor> future = executorService.submit(task);
 		
@@ -243,7 +229,7 @@ public class GameUtil {
 			future.get(OUT_TIME, TimeUnit.MINUTES);
 			returnPC = future.get();
 		}catch (TimeoutException e) {
-			boolean flag = false;
+			boolean flag;
 			flag = future.cancel(true);
 			LOGGER.info("超时了" + "_" + flag);
 			if (OUTTIME_COUNT-->0 || isWAIT_FLAG()) {
@@ -273,19 +259,16 @@ public class GameUtil {
 	}
 
 	public static void waitUntilAllColor(List<PointColor> pocoList, int delay) throws FgoNeedRestartException, FgoNeedStopException{
-		Callable<String> task = new Callable<String>() {
-			@Override
-			public String call() throws Exception {
-				waitUntilAllColorInner(pocoList, delay);
-				return null;
-			}
+		Callable<String> task = () -> {
+			waitUntilAllColorInner(pocoList, delay);
+			return null;
 		};
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		Future<String> future = executorService.submit(task);
 		try {
 			future.get(OUT_TIME, TimeUnit.MINUTES);
 		} catch (TimeoutException e) {
-			boolean flag = false;
+			boolean flag;
 			flag = future.cancel(true);
 			LOGGER.info("超时了" + "_" + flag);
 			if (OUTTIME_COUNT-->0 || isWAIT_FLAG()) {
@@ -314,22 +297,22 @@ public class GameUtil {
 
 	private static void waitUntilAllColorInner(List<PointColor> pocoList, int delay) throws FgoNeedRestartException, FgoNeedStopException, InterruptedException {
 		setSTOP_SCRIPT(false);
-		boolean flag = true;
+		boolean flag;
 		Point p;
 		Color c0;
 		Color c1;
 		boolean isEqual;
-		int count = 0;
+		int count;
 		int check = 0;
-		boolean toCheck = true;
+		boolean toCheck;
 
-		String Str = "";
+		StringBuilder Str = new StringBuilder();
 		int size = pocoList.size();
-		PointColor pointColor = null;
+		PointColor pointColor;
 		for (int i = 0; i < size; i++) {
 			pointColor = pocoList.get(i);
 			Color c = pointColor.getColor();
-			Str += c.getRed() + ":" + c.getGreen() + ":" + c.getBlue() + "_";
+			Str.append(c.getRed()).append(":").append(c.getGreen()).append(":").append(c.getBlue()).append("_");
 		}
 		LOGGER.debug("当前等待颜色组：" + Str);
 		do {
@@ -354,11 +337,7 @@ public class GameUtil {
 				waitInteruptSolution();
 			}
 			check++;
-			try {
-				Thread.sleep(delay*CHECK_TIMES);
-			} catch (InterruptedException e) {
-				throw e;
-			}
+			Thread.sleep(delay*CHECK_TIMES);
 			if (STOP_SCRIPT) {
 				throw new FgoNeedStopException();
 			}
@@ -385,7 +364,7 @@ public class GameUtil {
 		Point P_CONNECT_YES = PointInfo.P_CONNECT_YES;
 		Color C_CONNECT_YES = PointInfo.C_CONNECT_YES;
 
-		List<PointColor> pocoList = new ArrayList<PointColor>();
+		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(P_CONNECT_YES, C_CONNECT_YES, true));
 		int count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -397,7 +376,7 @@ public class GameUtil {
 		Point p_connect_end = PointInfo.P_CONNECT_END;
 		Color c_connect_end = PointInfo.C_CONNECT_END;
 		
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_connect_end, c_connect_end, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -409,7 +388,7 @@ public class GameUtil {
 		Point P_RE_CONNECT_YES = PointInfo.P_RE_CONNECT_YES;
 		Color C_RE_CONNECT_YES = PointInfo.C_RE_CONNECT_YES;
 
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(P_RE_CONNECT_YES, C_RE_CONNECT_YES, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -426,7 +405,7 @@ public class GameUtil {
 		Point p6 = new Point(516, 621);// 颜色：0;0;0
 		Color c6 = new Color(0, 0, 0);
 
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p4, c4, true));
 		pocoList.add(new PointColor(p5, c5, true));
 		pocoList.add(new PointColor(p6, c6, true));
@@ -443,7 +422,7 @@ public class GameUtil {
 		Point p38 = new Point(666, 628);// 颜色：201;199;202
 		Color c38 = new Color(201, 199, 202);
 
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p39, c39, true));
 		pocoList.add(new PointColor(p37, c37, true));
 		pocoList.add(new PointColor(p38, c38, true));
@@ -458,7 +437,7 @@ public class GameUtil {
 		Point p_button_fail_back = PointInfo.P_BUTTON_FAIL_BACK;
 		Color c_button_fail_back = PointInfo.C_BUTTON_FAIL_BACK;
 
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_button_fail_back, c_button_fail_back, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -478,7 +457,7 @@ public class GameUtil {
 		Point p_update_no = PointInfo.P_UPDATE_NO;
 		Color c_update_no = PointInfo.C_UPDATE_NO;
 
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_update, c_update, true));
 		pocoList.add(new PointColor(p_update_no, c_update_no, true));
 		count = ColorMatchCount(pocoList);
@@ -492,7 +471,7 @@ public class GameUtil {
 		// 奖励处理
 		Point p29 = PointInfo.P_REWARD_ACTION;
 		Color c29 = PointInfo.C_REWARD_ACTION;
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p29, c29, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -504,7 +483,7 @@ public class GameUtil {
 		// 更新支援
 		Point p_no_support = PointInfo.P_NO_SUPPORT;
 		Color c_no_support = PointInfo.C_NO_SUPPORT;
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_no_support, c_no_support, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -520,7 +499,7 @@ public class GameUtil {
 		// 无法更新支援
 		Point p_support_no_confirm = PointInfo.P_SUPPORT_NO_CONFIRM;
 		Color c_support_no_confirm = PointInfo.C_SUPPORT_NO_CONFIRM;
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_support_no_confirm, c_support_no_confirm, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -531,7 +510,7 @@ public class GameUtil {
 		// 技能关闭按钮处理
 		Point p_close_md = PointInfo.P_CLOSE_MD;
 		Color C_close_md = PointInfo.C_CLOSE_MD;
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_close_md, C_close_md, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -553,7 +532,7 @@ public class GameUtil {
 		// 怪物详情退出
 		Point p_moster_dt_exit = PointInfo.P_MOSTER_DT_EXIT;
 		Color c_moster_dt_exit = PointInfo.C_MOSTER_DT_EXIT;
-		pocoList = new ArrayList<PointColor>();
+		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_moster_dt_exit, c_moster_dt_exit, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
@@ -561,7 +540,7 @@ public class GameUtil {
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 			LOGGER.info("怪物详情关闭");
 		}
-		return msg;
+		return null;
 	}
 
 	public static int ColorMatchCount(List<PointColor> pocoList) {
@@ -596,8 +575,7 @@ public class GameUtil {
 			c = GameUtil.getScreenPixel(p);
 			addtion += c.getRed() + c.getGreen() + c.getBlue();
 		}
-		int eveValue = (int) addtion / (pointList.size() * 3);
-		return eveValue;
+		return (int) addtion / (pointList.size() * 3);
 	}
 
 	public static int ColorMatchCountProper(List<PointColor> pocoList) {
@@ -612,6 +590,8 @@ public class GameUtil {
 			p = pc.getPoint();
 			c = pc.getColor();
 			temp = GameUtil.getScreenPixel(p);
+			// 颜色误差
+			int DIS_NUM = 25;
 			result = Math.abs((c.getRed() + c.getGreen() + c.getBlue() - temp.getRed() - temp.getGreen()
 					- temp.getBlue())) < DIS_NUM;
 			if (!pc.isEqual()) {
@@ -682,8 +662,8 @@ public class GameUtil {
 		Color temp;
 		Color temp2;
 		int count =10;
-		boolean flag = false;
-		boolean flag2 = false;
+		boolean flag;
+		boolean flag2;
 		do {
 			rb.delay(GameConstant.DELAY/2);
 			rb.mousePress(key);
@@ -725,40 +705,32 @@ public class GameUtil {
 	}
 	
 	public static boolean isEqualColor(Color c1, Color c2) {
-		boolean flag = (Math.abs(c1.getGreen() - c2.getGreen()) 
-				+ Math.abs(c1.getBlue() - c2.getBlue()) 
+		return (Math.abs(c1.getGreen() - c2.getGreen())
+				+ Math.abs(c1.getBlue() - c2.getBlue())
 		+ Math.abs(c1.getRed() - c2.getRed())) < 10;
-		return flag;
 	}
 	public static boolean isLargerColor(Color c1, Color c2) {
-		boolean flag = (c1.getRed()+c1.getGreen()+c1.getBlue()
+		return (c1.getRed()+c1.getGreen()+c1.getBlue()
 						- c2.getRed()-c2.getGreen()-c2.getBlue())>0;
-		return flag;
 	}
 
 	public static List<Point> getCommondCards() {
 		Point p_support = PointInfo.P_SUPPORT;
-		Color color = null;
-		Point point = null;
-		PointColor pc = null;
-		List<PointColor> pcList = new LinkedList<PointColor>();
+		Color color;
+		Point point;
+		PointColor pc;
+		List<PointColor> pcList = new LinkedList<>();
 		for (int i = 0; i < 5; i++) {
 			point = new Point((int) p_support.getX() + i * 257, (int) p_support.getY());
 			color = GameUtil.getScreenPixel(point);
 			pc = new PointColor(point, color, true);
 			pcList.add(pc);
 		}
-		Collections.sort(pcList, new Comparator<PointColor>() {
-			@Override
-			public int compare(PointColor pc1, PointColor pc2) {
-				int result = pc1.getColor().getRed() + pc1.getColor().getBlue() + pc1.getColor().getGreen()
-						- pc2.getColor().getRed() - pc2.getColor().getBlue() - pc2.getColor().getGreen();
-				return result;
-			}
-		});
-		List<Point> pList = new LinkedList<Point>();
-		Point pTemp = null;
-		Color cTemp = null;
+		pcList.sort((pc1, pc2) -> pc1.getColor().getRed() + pc1.getColor().getBlue() + pc1.getColor().getGreen()
+				- pc2.getColor().getRed() - pc2.getColor().getBlue() - pc2.getColor().getGreen());
+		List<Point> pList = new LinkedList<>();
+		Point pTemp;
+		Color cTemp;
 		for (PointColor pointColor : pcList) {
 			cTemp = pointColor.getColor();
 			LOGGER.debug(cTemp.getRed() + "_" + cTemp.getGreen() + "_" + cTemp.getBlue());
@@ -773,17 +745,16 @@ public class GameUtil {
 		StringWriter sw = new StringWriter(); 
         e.printStackTrace(new PrintWriter(sw, true)); 
         String strs = sw.toString(); 
-		return strs.toString();
+		return strs;
 	}
 	public static String getPreFix() {
 		String ROOT_PATH = PropertiesUtil.getValueFromConfig("ROOT_PATH");
 
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss\\");
-		String prefix = System.getenv("USERPROFILE")
+		return System.getenv("USERPROFILE")
 				+ ROOT_PATH + "\\"
 				+ sdf.format(date).toString();
-		return prefix;
 	}
 	public static ImageIcon getBackGroundPreFix(int width, int length) {
 		String rootPath= System.getenv("USERPROFILE") + "\\OneDrive\\图片\\桌面背景\\";
@@ -792,11 +763,11 @@ public class GameUtil {
 		List<File> fileList = new ArrayList<>();
 		if (rootFile.isDirectory()) {
 			File[] files = rootFile.listFiles();
-			int size = files.length;
+			int size = files != null ? files.length : 0;
 			File tempFile;
 			for (int i = 0; i < size; i++) {
 				tempFile = files[i];
-				if (tempFile.getName().indexOf("background")!=-1) {
+				if (tempFile.getName().contains("background")) {
 					fileList.add(tempFile);
 				}
 			}
@@ -834,8 +805,7 @@ public class GameUtil {
 	public static int colorMinus(Point pa, Point pb) {
 		Color ca = GameUtil.getScreenPixel(pa);
 		Color cb = GameUtil.getScreenPixel(pb);
-		int result = ca.getGreen() + ca.getRed() + ca.getBlue() - cb.getGreen() - cb.getRed() - cb.getBlue();
-		return result;
+		return ca.getGreen() + ca.getRed() + ca.getBlue() - cb.getGreen() - cb.getRed() - cb.getBlue();
 	}
 	public static int[] strToIntArray(String ArrayStr,boolean ifSort) {
 		int[] intArray;

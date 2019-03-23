@@ -65,7 +65,7 @@ public class ClipBoardUtil {
     /**
      * 4.复制图片到剪切板。
      */
-    public static void setClipboardImage(final Image image)throws Exception {
+    public static void setClipboardImage(final Image image) {
         Transferable trans = new Transferable() {
             public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] { DataFlavor.imageFlavor };
@@ -76,7 +76,7 @@ public class ClipBoardUtil {
             }
 
             public Object getTransferData(DataFlavor flavor)
-                    throws UnsupportedFlavorException, IOException {
+                    throws UnsupportedFlavorException {
                 if (isDataFlavorSupported(flavor))
                     return image;
                 throw new UnsupportedFlavorException(flavor);
@@ -102,7 +102,7 @@ public class ClipBoardUtil {
                 OutputStreamWriter osw = new OutputStreamWriter(
                         new FileOutputStream("d:\\test.rtf"));
                 char[] c = new char[1024];
-                int leng = -1;
+                int leng;
                 while ((leng = reader.read(c)) != -1) {
                     osw.write(c, wholeLength, leng);
                 }
@@ -118,11 +118,11 @@ public class ClipBoardUtil {
 			InputStream is = new FileInputStream("C:\\Users\\zmczmckkk\\OneDrive\\Code\\FgoScript\\src\\NewFile.html");
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(is));
-			String str = null;
+			String str;
 			while (true) {
 				str = reader.readLine();
 				if(str!=null) {
-					if (str.indexOf("<")!=-1 || str.indexOf(">") !=-1) {
+					if (str.contains("<") || str.contains(">")) {
 						str = reduceStr(str);
 					}
 					System.out.println(str);
@@ -140,16 +140,16 @@ public class ClipBoardUtil {
 		String ss ="";
 		int lLoc = str.indexOf("<");
 		int rLoc = str.indexOf(">");
-		if (lLoc < rLoc && lLoc!=-1 && rLoc!=-1) {
-			ss = str.substring(0, lLoc)+ str.substring(rLoc+1, str.length());
-		}else if (lLoc > rLoc && lLoc!=-1 && rLoc!=-1) {
-			ss = str.substring(rLoc+1, str.length());
+		if (lLoc < rLoc && lLoc != -1) {
+			ss = str.substring(0, lLoc)+ str.substring(rLoc+1);
+		}else if (lLoc > rLoc && rLoc != -1) {
+			ss = str.substring(rLoc+1);
 		}else if (lLoc!=-1 && rLoc==-1) {
 			ss = str.substring(0, lLoc);
 		}else if (lLoc==-1 && rLoc!=-1) {
-			ss = str.substring(rLoc+1, str.length());
+			ss = str.substring(rLoc+1);
 		}
-		if (ss.indexOf("<")!=-1 || ss.indexOf(">") !=-1) {
+		if (ss.contains("<") || ss.contains(">")) {
 			ss = reduceStr(ss);
 		}
 		return ss;

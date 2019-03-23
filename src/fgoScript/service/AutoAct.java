@@ -63,7 +63,7 @@ public abstract class AutoAct {
 	public boolean autoAct() throws Exception {
 		boolean match=false;
 		int size = pcList.size() * 10;
-		Point clickPoint = null;
+		Point clickPoint;
 		for (int i = 0; i < size; i++) {
 			pcWait = GameUtil.waitUntilOneColor(pcList);
 			if (pcWait!=null) {
@@ -77,7 +77,7 @@ public abstract class AutoAct {
 				for (int j = 0; j < finishPCList.size(); j++) {
 					pcTemp = finishPCList.get(j);
 					match = GameUtil.isEqualColor(pcWait.getColor(), pcTemp.getColor());
-					if (match==true) {
+					if (match) {
 						break;
 					}
 				}

@@ -1,15 +1,5 @@
 package fgoScript.entity.guda;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.CardComparator;
@@ -17,6 +7,14 @@ import fgoScript.entity.CommonCard;
 import fgoScript.entity.PointColor;
 import fgoScript.service.EventFactors;
 import fgoScript.util.GameUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ExpApGudazi extends AbstractApGudazi {
     private static final Logger LOGGER = LogManager.getLogger(ExpApGudazi.class);
@@ -49,8 +47,7 @@ public class ExpApGudazi extends AbstractApGudazi {
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 进入训练场
         // 周回进去
-        Point p4 = PointInfo.getP_WEEK_ENTRANCE();
-        GameUtil.mouseMoveByPoint(p4);
+        GameUtil.mouseMoveByPoint(PointInfo.getP_WEEK_ENTRANCE());
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         
         GameUtil.delay(GameConstant.DELAY*5);
@@ -89,12 +86,12 @@ public class ExpApGudazi extends AbstractApGudazi {
 		Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		List<Point> pointList = new ArrayList<Point>();
+		List<Point> pointList = new ArrayList<>();
 		pointList.add(ps1);
 		pointList.add(ps2);
 		pointList.add(ps3);
 		pointList.add(ps4);
-		int eveValue = 0;
+		int eveValue;
 		int battleRounds = 0;
 		int MaxRounds = 20;
 		// 第一回合
@@ -111,13 +108,13 @@ public class ExpApGudazi extends AbstractApGudazi {
 		}
 		while (eveValue > THRESHOLD && battleRounds < MaxRounds) {
 			battleRounds++;
-			/**
-			 * 连续使用技能组
+			/*
+			  连续使用技能组
 			 */
 			giveServantSkills(EventFactors.getExpPreSkills(DEFAULT_SKILL_COLORS));
 			waitToAttack(null);
 			// 副宝具平a
-			hases = attackBAAForEvent(false, hases);
+			attackBAAForEvent(false, hases);
 			// 等待
 			waitToAttack("1");
 			eveValue = GameUtil.getColorEveValue(pointList);
@@ -130,7 +127,7 @@ public class ExpApGudazi extends AbstractApGudazi {
 		Point ps8 = new Point(909, 84);// 颜色：248;248;248 Color c = new Color(248, 248, 248);
 		Point ps13 = new Point(915, 78);// 颜色：252;252;252 Color c = new Color(252, 252, 252);
 
-		pointList = new ArrayList<Point>();
+		pointList = new ArrayList<>();
 		pointList.add(ps5);
 		pointList.add(ps6);
 		pointList.add(ps7);
@@ -140,16 +137,16 @@ public class ExpApGudazi extends AbstractApGudazi {
 		LOGGER.info("第二回合开始：");
 		eveValue = GameUtil.getColorEveValue(pointList);
 		
-		PointColor pc = null;
+		PointColor pc;
 		while (eveValue > THRESHOLD&& battleRounds < MaxRounds) {
 			battleRounds++;
-			/**
-			 * 连续使用技能组
+			/*
+			  连续使用技能组
 			 */
 			giveServantSkills(EventFactors.getExpPreSkills(DEFAULT_SKILL_COLORS));
 			pc = waitToAttack(null);
 			if ("attack".equals(pc.getName())) {
-				hases = attackBAAForEvent(true, hases);
+				attackBAAForEvent(true, hases);
 			}else {
 				LOGGER.info("羁绊了，跳出来");
 				break;
@@ -165,7 +162,7 @@ public class ExpApGudazi extends AbstractApGudazi {
 		Point ps23 = new Point(908, 84);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
 		Point ps24 = new Point(918, 80);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		
-		pointList = new ArrayList<Point>();
+		pointList = new ArrayList<>();
 		pointList.add(ps21);
 		pointList.add(ps22);
 		pointList.add(ps23);
@@ -177,14 +174,14 @@ public class ExpApGudazi extends AbstractApGudazi {
 		eveValue = GameUtil.getColorEveValue(pointList);
 		while (eveValue > THRESHOLD && battleRounds < MaxRounds) {
 			battleRounds++;
-			/**
-			 * 连续使用技能组
+			/*
+			  连续使用技能组
 			 */
 			giveServantSkills(EventFactors.getExpPreSkills(DEFAULT_SKILL_COLORS));
 			// 宝具平A
 			pc = waitToAttack("3");
 			if ("attack".equals(pc.getName())) {
-				hases = attackBAAForEvent(true, hases);
+				attackBAAForEvent(true, hases);
 			}else {
 				LOGGER.info("羁绊了，跳出来");
 				break;
@@ -225,7 +222,7 @@ public class ExpApGudazi extends AbstractApGudazi {
 			// 蓝色圆板选择
             blueAttackSelect();
             // 开始点击卡片
-			Map<String, List<CommonCard>> scMap = null;
+			Map<String, List<CommonCard>> scMap;
 			if (hasNp01 && goMainNP) {
 				scMap = getWeakCommondCards(CardComparator.getRbgComparotor());
 			}else {

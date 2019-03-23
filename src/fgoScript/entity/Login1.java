@@ -37,14 +37,12 @@ public class Login1 {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Login1 window = new Login1();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                Login1 window = new Login1();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -205,7 +203,7 @@ public class Login1 {
         userNameField.setBounds(50, 220, 235, 50);
         userNameField.setBorder(bottomBorder);
         userNameField.setText("  用户名");
-        userNameField.setFont(new Font("微软雅黑", 0, 14));
+        userNameField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
         userNameField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
         userNameField.addFocusListener(new FocusAdapter() {
             //获取光标事件
@@ -223,7 +221,7 @@ public class Login1 {
                 //失去焦点时，如果输入框中去掉空格后的字符串为空串则显示用户名
                 if("".equals((userNameField.getText().trim()))){
                     userNameField.setText("  用户名");
-                    userNameField.setFont(new Font("微软雅黑", 0, 14));
+                    userNameField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
                     userNameField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
                 }
             }
@@ -249,7 +247,7 @@ public class Login1 {
         passwordField.setBounds(50, 280, 235, 50);
         passwordField.setBorder(bottomBorder);
         passwordField.setText("  密码");
-        passwordField.setFont(new Font("微软雅黑", 0, 14));
+        passwordField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
         passwordField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
         passwordField.setEchoChar((char)0);//显示密码输入框中内容
         passwordField.addFocusListener(new FocusAdapter() {
@@ -271,7 +269,7 @@ public class Login1 {
                 //失去焦点时，如果输入框中去掉空格后的字符串为空串则显示用户名
                 if("".equals((passwordField.getText().trim()))){
                     passwordField.setText("  密码");
-                    passwordField.setFont(new Font("微软雅黑", 0, 14));
+                    passwordField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
                     passwordField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
                     passwordField.setEchoChar((char)0);//显示密码输入框中内容
                 }
@@ -298,7 +296,7 @@ public class Login1 {
         verifyCodeField.setBounds(50, 340, 135, 50);
         verifyCodeField.setBorder(bottomBorder);
         verifyCodeField.setText("  验证码");
-        verifyCodeField.setFont(new Font("微软雅黑", 0, 14));
+        verifyCodeField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
         verifyCodeField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
         verifyCodeField.addFocusListener(new FocusAdapter() {
             //获取光标事件
@@ -316,7 +314,7 @@ public class Login1 {
                 //失去焦点时，如果输入框中去掉空格后的字符串为空串则显示用户名
                 if("".equals((verifyCodeField.getText().trim()))){
                     verifyCodeField.setText("  验证码");
-                    verifyCodeField.setFont(new Font("微软雅黑", 0, 14));
+                    verifyCodeField.setFont(new Font("微软雅黑", Font.PLAIN, 14));
                     verifyCodeField.setForeground(Color.GRAY);//默认设置输入框中的文字颜色为灰色
                 }
             }
@@ -360,7 +358,7 @@ public class Login1 {
         JLabel reminderMessage = new JLabel("",JLabel.CENTER);
         reminderMessage.setBounds(15, 395, 270, 20);
         reminderMessage.setForeground(Color.red);
-        reminderMessage.setFont(new Font("微软雅黑", 0, 12));
+        reminderMessage.setFont(new Font("微软雅黑", Font.PLAIN, 12));
         frame.getContentPane().add(reminderMessage);
         /**
          * 添加圆角的提交按钮

@@ -64,8 +64,8 @@ public class TimerManager {
 	public static void deleteDirs(File f){
 		if (f.isDirectory()) {
 			File [] b = f.listFiles();//获取包含file对象对应的子目录或者文件
-			File temp = null;
-			for(int i =0;i<b.length;i++){
+			File temp;
+			for(int i = 0; i< (b != null ? b.length : 0); i++){
 				temp = b[i];
 				if(temp.isFile()){//判断是否为文件
 					temp.delete();//如果是就删除
@@ -84,28 +84,28 @@ public class TimerManager {
 			String ROOT_PATH = PropertiesUtil.getValueFromConfig("ROOT_PATH");
 			String path = USERPROFILE + ROOT_PATH;
 			File file = new File(path);
-			File[] files = null;
+			File[] files;
 			boolean isDir = file.isDirectory();
 			long nowTime = System.currentTimeMillis();
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 			String nowString = sf.format(new Date(nowTime));
 			if (isDir) {
 				files  = file.listFiles();
-				File temp = null;
-				File inneFile = null;
-				String fileString = null;
-				String name = null;
-				int loc = 0;
-				int tempFilesSize = 0;
-				File[] tempFiles = null;
-				int rewardCounts = 0;
-				int filesLength = files.length;
+				File temp;
+				File inneFile;
+				String fileString;
+				String name;
+				int loc;
+				int tempFilesSize;
+				File[] tempFiles;
+				int rewardCounts;
+				int filesLength = files != null ? files.length : 0;
 				for (int i = 0; i < filesLength; i++) {
 					temp = files[i];
 					if (temp.isDirectory()) {
 						name = temp.getName();
 						tempFiles = temp.listFiles();
-						tempFilesSize = tempFiles.length;
+						tempFilesSize = tempFiles != null ? tempFiles.length : 0;
 						loc = name.indexOf("_");
 						if (loc != -1) {
 							fileString= name.substring(0, name.indexOf("_"));
@@ -116,7 +116,7 @@ public class TimerManager {
 							rewardCounts = 0;
 							for (int j = 0; j < tempFilesSize; j++) {
 								inneFile = tempFiles[j];
-								if (inneFile.getName().indexOf("奖励")!=-1) {
+								if (inneFile.getName().contains("奖励")) {
 									rewardCounts++;
 								}
 							}

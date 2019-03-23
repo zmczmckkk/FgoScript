@@ -8,13 +8,13 @@ public class Test {
 		new Thread() {
 			public void run() {
 				new InsertData().insert(Thread.currentThread());
-			};
+			}
 		}.start();
 
 		new Thread() {
 			public void run() {
 				new InsertData().insert(Thread.currentThread());
-			};
+			}
 		}.start();
 	}
 }
