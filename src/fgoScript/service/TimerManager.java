@@ -5,7 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import fgoScript.FgoPanel;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +27,10 @@ public class TimerManager {
 	public TimerManager() {
 		String path = GameUtil.getValueFromConfig("EXE_PATH");
 		path = path.replace("^", "");
+		String time = "";
+		//使用ScheduledThreadPoolExecutor线程池执行类调度任务
+		ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2,
+				new BasicThreadFactory.Builder().namingPattern("FgoExcute-pool-%d").daemon(false).build());
 		if (!new File(path).exists()) {
 			LOGGER.info("游戏程序不存在,路径错误！,不执行定时任务");
 		}else {
@@ -28,27 +38,38 @@ public class TimerManager {
 			int HOUR_OF_DAY = Integer.valueOf(GameUtil.getValueFromConfig("HOUR_OF_DAY"));
 			int MINUTE = Integer.valueOf(GameUtil.getValueFromConfig("MINUTE"));
 			int SECOND = Integer.valueOf(GameUtil.getValueFromConfig("SECOND"));
-			
+			time = HOUR_OF_DAY + " : " + MINUTE + " : " + SECOND;
 			/*** 定制每日3:10执行方法 ***/
 			calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
 			calendar.set(Calendar.MINUTE, MINUTE);
 			calendar.set(Calendar.SECOND, SECOND);
-			
 			Date date = calendar.getTime(); // 第一次执行定时任务的时间
-			
-			// 如果第一次执行定时任务的时间 小于 当前的时间
-			// 此时要在 第一次执行定时任务的时间 加周期 直到大于为止。
-			Date nowDate = new Date();
-			date = modifyTime(date, nowDate, PERIOD_TIME);
-			//删除过期图片
+			// 删除过期图片
 			deletePics();
-			Timer timer = new Timer();
-			Gudazi task = new Gudazi();
-			// 安排指定的任务在指定的时间开始进行重复的固定延迟执行。
-			timer.schedule(task, date, PERIOD_TIME);
-			String time = HOUR_OF_DAY + " : " + MINUTE + " : " + SECOND;
+			// 获取第一次延迟执行时间
+			long initDelay  = date.getTime() - System.currentTimeMillis();
+			initDelay = initDelay > 0 ? initDelay : PERIOD_TIME + initDelay;
+			//执行挂机任务
+			executorService.scheduleAtFixedRate(new Gudazi(), initDelay, PERIOD_TIME, TimeUnit.MILLISECONDS);
 			LOGGER.info("定时任务已启动！启动时间：" + time);
+
 		}
+		//执行切换壁纸任务
+		executorService.schedule(new Runnable() {
+			@Override
+			public void run() {
+				do {
+					FgoPanel.instance().changeBackGround();
+					int interval = Integer.parseInt(GameUtil.getValueFromConfig("PicChangeInterval"));
+					try {
+						Thread.sleep(interval);
+					} catch (InterruptedException e) {
+						LOGGER.error(GameUtil.getStackMsg(e));
+					}
+				} while (true);
+			}
+		}, 3000, TimeUnit.MILLISECONDS);
+		LOGGER.info("壁纸切换已启动！启动时间：" + time);
 	}
 
 	// 增加或减少天数
@@ -134,6 +155,6 @@ public class TimerManager {
 		}
 	}
 	public static void main(String[] args) {
-		deletePics();
+		new TimerManager();
 	}
 }

@@ -1,6 +1,7 @@
 package fgoScript;
 
 import aoshiScript.entity.WuNa;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 import fgoScript.entity.Gudazi;
@@ -16,6 +17,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.*;
+
 //创建全局快捷键
 public class FgoPanel extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -371,7 +374,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
-				changeGround();
+				changeBackGround();
 			}
 		};
 		showPicBt.addActionListener(this);
@@ -408,7 +411,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		
+		this.setAlwaysOnTop(true);
 		// 启动定时任务
 		new TimerManager();
 	}
@@ -429,16 +432,23 @@ public class FgoPanel extends JFrame implements ActionListener {
 	}
 
 	private void showBackGround() {
-		new Thread(() -> {
+		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+				.setNameFormat("demo-pool-%d").build();
+		ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
+				0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+		singleThreadPool.execute(()-> {
 			centerPanel.setVisible(false);
 			try {
+				System.out.println(Thread.currentThread().getName());
 				Thread.sleep(3000);
 			} catch (InterruptedException ignored) {
 			}
 			centerPanel.setVisible(true);
-		}).start();
+		});
+		singleThreadPool.shutdown();
 	}
-	private void changeGround() {
+	public void changeBackGround() {
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
 	}
 	// 事件监听
