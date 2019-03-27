@@ -40,7 +40,7 @@ public class ExpApGudazi extends AbstractApGudazi {
 	
 	
 	
-	private void insertIntoExpRoom(int apNum) throws Exception {
+	public void insertIntoExpRoom(int apNum) throws Exception {
     	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);

@@ -238,6 +238,7 @@ public class QpApGudazi extends AbstractApGudazi{
         int rgb01 = cNp01.getRGB();
         int rgb02 = cNp02.getRGB();
         int rgb03 = cNp03.getRGB();
+        GameUtil.delay(GameConstant.DELAY);
         Color cNp01_Delay = GameUtil.getScreenPixel(pNp01);
         Color cNp02_Delay = GameUtil.getScreenPixel(pNp02);
         Color cNp03_Delay = GameUtil.getScreenPixel(pNp03);

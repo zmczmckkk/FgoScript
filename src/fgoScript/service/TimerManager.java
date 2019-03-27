@@ -1,23 +1,20 @@
 package fgoScript.service;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import fgoScript.FgoPanel;
+import fgoScript.entity.Gudazi;
+import fgoScript.util.GameUtil;
+import fgoScript.util.PropertiesUtil;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import fgoScript.entity.Gudazi;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class TimerManager {
 	private static final Logger LOGGER = LogManager.getLogger(TimerManager.class);
@@ -47,6 +44,7 @@ public class TimerManager {
 			// 删除过期图片
 			deletePics();
 			// 获取第一次延迟执行时间
+			date = modifyTime(date,new Date(),PERIOD_TIME);
 			long initDelay  = date.getTime() - System.currentTimeMillis();
 			initDelay = initDelay > 0 ? initDelay : PERIOD_TIME + initDelay;
 			//执行挂机任务
@@ -59,13 +57,13 @@ public class TimerManager {
 			@Override
 			public void run() {
 				do {
-					FgoPanel.instance().changeBackGround();
 					int interval = Integer.parseInt(GameUtil.getValueFromConfig("PicChangeInterval"));
 					try {
 						Thread.sleep(interval);
 					} catch (InterruptedException e) {
 						LOGGER.error(GameUtil.getStackMsg(e));
 					}
+					FgoPanel.instance().changeBackGround();
 				} while (true);
 			}
 		}, 3000, TimeUnit.MILLISECONDS);

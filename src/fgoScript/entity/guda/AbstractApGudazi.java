@@ -106,13 +106,13 @@ public abstract class AbstractApGudazi {
         	key ="hasDo" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         	value = accountNum+"ap"+apNum;
         	String hasDo = PropertiesUtil.getValueFromHasDoFile(key);
-        	if (i>3 || StringUtils.isBlank(hasDo) || hasDo.indexOf(value)==-1) {
+        	if (len < 5 || i>3 || StringUtils.isBlank(hasDo) || !hasDo.contains(value)) {
         		 // 开始战斗
                 LOGGER.info("账号" + accountNum + ",ap场合：" + apNum + " AP 开始");
                 startFight(accountNum, apNum, false, count, len, appleCost);
         		 //写入已经完成的 内容
                 Map<String, String> map = new HashMap<>();
-                if (hasDo.indexOf(value)==-1) {
+                if (!hasDo.contains(value)) {
                 	map.put(key, StringUtils.isBlank(hasDo)?value:hasDo+value);
                 	PropertiesUtil.setValueForHasDo(map);
 				}

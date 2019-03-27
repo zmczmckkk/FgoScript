@@ -405,7 +405,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
 		JIntellitype.getInstance().addHotKeyListener(listener);
 		this.add(backPanel);
-		this.setTitle("FGO辅助大师-Jai制作");
+		this.setTitle("FGO-JAI");
 		this.setSize(335, 500);
 		this.setLocation(1537, 516);
 		this.setVisible(true);
@@ -432,8 +432,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 	}
 
 	private void showBackGround() {
-		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-				.setNameFormat("demo-pool-%d").build();
+		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
 		ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());

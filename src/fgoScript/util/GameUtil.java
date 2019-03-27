@@ -360,13 +360,31 @@ public class GameUtil {
 
 	private static String waitInteruptSolution() throws FgoNeedRestartException {
 		String msg = null;
+		List<PointColor> pocoList = new ArrayList<>();
+		int count;
+		// 更新进度处理
+		Point p_update = PointInfo.P_UPDATE;
+		Color c_update = PointInfo.C_UPDATE;
+		Point p_update_no = PointInfo.P_UPDATE_NO;
+		Color c_update_no = PointInfo.C_UPDATE_NO;
+
+		pocoList = new ArrayList<>();
+		pocoList.add(new PointColor(p_update, c_update, true));
+		pocoList.add(new PointColor(p_update_no, c_update_no, true));
+		count = ColorMatchCount(pocoList);
+		if (count == pocoList.size()) {
+			mouseMoveByPoint(p_update);
+			mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+			mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(p_update_no,c_update_no, false));
+			OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
+			LOGGER.info("更新进度");
+		}
 		// 通信 异常点 直连
 		Point P_CONNECT_YES = PointInfo.P_CONNECT_YES;
 		Color C_CONNECT_YES = PointInfo.C_CONNECT_YES;
 
-		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(P_CONNECT_YES, C_CONNECT_YES, true));
-		int count = ColorMatchCount(pocoList);
+		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
 			mouseMoveByPoint(P_CONNECT_YES);
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
@@ -450,23 +468,6 @@ public class GameUtil {
 			GameUtil.getRb().delay(5000);
 			LOGGER.info("战败处理异常");
 			throw new FgoNeedRestartException();
-		}
-		// 更新进度处理
-		Point p_update = PointInfo.P_UPDATE;
-		Color c_update = PointInfo.C_UPDATE;
-		Point p_update_no = PointInfo.P_UPDATE_NO;
-		Color c_update_no = PointInfo.C_UPDATE_NO;
-
-		pocoList = new ArrayList<>();
-		pocoList.add(new PointColor(p_update, c_update, true));
-		pocoList.add(new PointColor(p_update_no, c_update_no, true));
-		count = ColorMatchCount(pocoList);
-		if (count == pocoList.size()) {
-			mouseMoveByPoint(p_update);
-			mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-			mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(p_update_no,c_update_no, false));
-			OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
-			LOGGER.info("更新进度");
 		}
 		// 奖励处理
 		Point p29 = PointInfo.P_REWARD_ACTION;
@@ -667,7 +668,7 @@ public class GameUtil {
 		do {
 			rb.delay(GameConstant.DELAY/2);
 			rb.mousePress(key);
-			rb.delay(GameConstant.DELAY/2);
+			rb.delay(1000);
 			temp2 = GameUtil.getScreenPixel(p);
 			rb.mouseRelease(key);
 			rb.delay(GameConstant.DELAY*3);
