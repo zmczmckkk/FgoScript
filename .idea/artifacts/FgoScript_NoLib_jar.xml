@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="FgoScript_NoLib:jar">
+    <output-path>$USER_HOME$/OneDrive/Code</output-path>
+    <root id="root">
+      <element id="archive" name="gudazi.jar">
+        <element id="module-output" name="FgoScript" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/jsr305-3.0.2.jar" />
+      </element>
+    </root>
+  </artifact>
+</component>
