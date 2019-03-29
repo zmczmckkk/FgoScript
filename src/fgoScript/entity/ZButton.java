@@ -180,7 +180,7 @@ public abstract class ZButton extends JButton implements Runnable{
     }
     public String getskillStrategy() {
 		String startegy = PropertiesUtil.getValueFromSkillsFile("SKILL_STRATEGY");
-		switch(startegy==""? GameConstant.NO_SKILL : startegy){
+		switch("".equals(startegy)? GameConstant.NO_SKILL : startegy){
 			case GameConstant.NO_SKILL : {
 				return "T1NoNP";
 			}
@@ -324,7 +324,7 @@ public abstract class ZButton extends JButton implements Runnable{
     public void selectStrategy() {
     	String strategy;
 		switch(this.getText()){
-			case "T1NoNp" : {
+			case "T1NoNP" : {
 				this.setText("T1SecondNP");
 				strategy = GameConstant.GO_SECOD_SKILL_FOR_FIRST;
 				break;
@@ -335,7 +335,12 @@ public abstract class ZButton extends JButton implements Runnable{
 				break;
 			}
 			case "T1AllNP" : {
-				this.setText("T1NoNp");
+				this.setText("T1NoNP");
+				strategy = GameConstant.NO_SKILL;
+				break;
+			}
+			case "" : {
+				this.setText("T1NoNP");
 				strategy = GameConstant.NO_SKILL;
 				break;
 			}

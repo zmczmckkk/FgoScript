@@ -96,14 +96,14 @@ public class FgoPanel extends JFrame implements ActionListener {
 					new Gudazi().showPositionAndColor();
 				}
 			},
-			new ZButton("自动战斗(Shift+Q)",JIntellitype.MOD_SHIFT, (int) 'Q',false, false, ZButton.pink) {
+			new ZButton("自动战斗(Alt+Z)",JIntellitype.MOD_ALT, (int) 'Z',false, false, ZButton.pink) {
 				private static final long serialVersionUID = -7389326247723796445L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().onlyFight();
 				}
 			},
-			new ZButton("自动按键(Alt+N)设置(Alt+1)",JIntellitype.MOD_ALT, (int) 'N', false, false, ZButton.pink) {
+			new ZButton("自动按键(Alt+X)设置(Alt+1)",JIntellitype.MOD_ALT, (int) 'X', false, false, ZButton.pink) {
 				private static final long serialVersionUID = -1900866258318497377L;
 				@Override
 				public void runMethod() {
@@ -336,7 +336,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				southPanel04.add(jbTemp);
 			}
 			else {
-				if ("自动按键(Alt+N)设置(Alt+1)".equals(jbTemp.getText())) {
+				if (jbTemp.getText().contains("自动按键")) {
 					jbTemp.setAllowRepeat(true);
 				}
 				if ("开启账号".equals(jbTemp.getText())) {
@@ -355,11 +355,6 @@ public class FgoPanel extends JFrame implements ActionListener {
 			@Override
 			public void runMethod() {
 				this.selectAccount();
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				}
-				this.doClick();
 			}
 		};
 

@@ -98,7 +98,7 @@ public class EventGudazi extends AbstractApGudazi {
 			giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 			waitToAttack(null);
 			startegy = PropertiesUtil.getValueFromSkillsFile("SKILL_STRATEGY");
-			switch(startegy==""? GameConstant.NO_SKILL : startegy){
+			switch("".equals(startegy)? GameConstant.NO_SKILL : startegy){
 			    case GameConstant.NO_SKILL : {
 					attackNPAAA();
 			        break;
