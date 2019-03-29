@@ -18,8 +18,10 @@ public class GameConstant {
 	public static final String BLUE="BLUE";
 	public static final boolean IF_SET_PRE = Boolean.parseBoolean(PropertiesUtil.getValueFromConfig("IF_SET_PRE"));
 	public static final int APPLE_COUNT = Integer.parseInt(PropertiesUtil.getValueFromConfig("APPLE_COUNT"));
-	
-	
+	public static final String NO_SKILL="0";
+	public static final String GO_SECOD_SKILL_FOR_FIRST="1";
+	public static final String GO_ALL_SKILL_FOR_FIRST="2";
+
 
 	/*
 	 * 职介类型

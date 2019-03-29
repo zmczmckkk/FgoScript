@@ -178,6 +178,34 @@ public abstract class ZButton extends JButton implements Runnable{
 			return "新开";
 		}
     }
+    public String getskillStrategy() {
+		String startegy = PropertiesUtil.getValueFromSkillsFile("SKILL_STRATEGY");
+		switch(startegy==""? GameConstant.NO_SKILL : startegy){
+			case GameConstant.NO_SKILL : {
+				return "T1NoNP";
+			}
+			case GameConstant.GO_SECOD_SKILL_FOR_FIRST : {
+				return "T1SecondNP";
+			}
+			case GameConstant.GO_ALL_SKILL_FOR_FIRST : {
+				return "T1AllNP";
+			}
+			default : {
+				return "";
+			}
+		}
+    }
+    public String getIf() {
+    	String value = PropertiesUtil.getValueFromSkillsFile("ifRestart");
+    	switch (value) {
+		case "true":
+			return "重开";
+		case "false":
+			return "新开";
+		default:
+			return "新开";
+		}
+    }
 	public void activeButton() {
     	setActive(!isActive());
     	String tempFromSkill;
@@ -292,6 +320,33 @@ public abstract class ZButton extends JButton implements Runnable{
 		Map<String, String> map = new HashMap<>();
 		map.put("openAccount", "" + FgoRewardArray[next]);
     	PropertiesUtil.setValueForOpen(map);
+    }
+    public void selectStrategy() {
+    	String strategy;
+		switch(this.getText()){
+			case "T1NoNp" : {
+				this.setText("T1SecondNP");
+				strategy = GameConstant.GO_SECOD_SKILL_FOR_FIRST;
+				break;
+			}
+			case "T1SecondNP" : {
+				this.setText("T1AllNP");
+				strategy = GameConstant.GO_ALL_SKILL_FOR_FIRST;
+				break;
+			}
+			case "T1AllNP" : {
+				this.setText("T1NoNp");
+				strategy = GameConstant.NO_SKILL;
+				break;
+			}
+			default : {
+				strategy = "";
+				break;
+			}
+		}
+		Map<String, String> map = new HashMap<>();
+		map.put("SKILL_STRATEGY", strategy);
+    	PropertiesUtil.setValueForSkills(map);
     }
 	
     private void setColor(int style) {

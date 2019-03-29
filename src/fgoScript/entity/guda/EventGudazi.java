@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import fgoScript.util.PropertiesUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -88,6 +89,7 @@ public class EventGudazi extends AbstractApGudazi {
 			DEFAULT_SKILL_COLORS = EventFactors.getSkillColors();
 			EventFactors.writeDefaultSkillColors(DEFAULT_SKILL_COLORS);
 		}
+		String startegy;
 		while (eveValue > GameConstant.THRESHOLD && battleRounds < MaxRounds) {
 			battleRounds++;
 			/*
@@ -95,13 +97,23 @@ public class EventGudazi extends AbstractApGudazi {
 			 */
 			giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 			waitToAttack(null);
-			// 平A
-			if (EventFactors.ifNP) {
-				// 副宝具平a
-				attackBAAForEvent(false, hases);
-			}else {
-				// 平a
-				attackNPAAA();
+			startegy = PropertiesUtil.getValueFromSkillsFile("SKILL_STRATEGY");
+			switch(startegy==""? GameConstant.NO_SKILL : startegy){
+			    case GameConstant.NO_SKILL : {
+					attackNPAAA();
+			        break;
+			    }
+			    case GameConstant.GO_SECOD_SKILL_FOR_FIRST : {
+					attackBAAForEvent(false, hases);
+			        break;
+			    }
+			    case GameConstant.GO_ALL_SKILL_FOR_FIRST : {
+					attackBAAForEvent(true, hases);
+			        break;
+			    }
+			    default : {
+			        break;
+			    }
 			}
 			// 等待
 			waitToAttack("1");
@@ -236,6 +248,7 @@ public class EventGudazi extends AbstractApGudazi {
 					hases[0] = true;
 					// 等待
 					waitToAttack(null);
+					GameUtil.delay(1000);
 					/*
 					  宝具技能组01
 					 */

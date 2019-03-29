@@ -340,7 +340,9 @@ public class FgoPanel extends JFrame implements ActionListener {
 					jbTemp.setAllowRepeat(true);
 				}
 				if ("开启账号".equals(jbTemp.getText())) {
-					jbTemp.setBounds(5, 5 + (i * (30+len)), 200, 25+len);
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 230, 25+len);
+				} else if (jbTemp.getText().contains("自动战斗")) {
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				}else {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 320, 25+len);
 				}
@@ -353,12 +355,28 @@ public class FgoPanel extends JFrame implements ActionListener {
 			@Override
 			public void runMethod() {
 				this.selectAccount();
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+				this.doClick();
 			}
 		};
 
 		int account = getAccount();
 		jbTemp.setText("账号" + account);
-		jbTemp.setBounds(210, 5 + (4 * (30+len)), 115, 25+len);
+		jbTemp.setBounds(240, 5 + (4 * (30+len)), 85, 25+len);
+		jbTemp.addActionListener(this);
+		centerPanel.add(jbTemp);
+		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+			private static final long serialVersionUID = 8438279990546323489L;
+			@Override
+			public void runMethod() {
+				this.selectStrategy();
+			}
+		};
+		jbTemp.setText(jbTemp.getskillStrategy());
+		jbTemp.setBounds(220, 5 + (9 * (30+len)), 105, 25+len);
 		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
 		//显示背景按钮
