@@ -76,7 +76,8 @@ public class WuNa {
 			setGO(false);
 		}
 		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
-		if (StringUtils.isNotBlank(condiTion)) {
+		String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton");
+		if (StringUtils.isNotBlank(condiTion) && startegy.equals("判断")) {
 			condiTion = condiTion.substring(0, condiTion.length()-1);
 			String action = PropertiesUtil.getValueFromAutoClickFile("action");
 			action = action.substring(0, action.length()-1);
