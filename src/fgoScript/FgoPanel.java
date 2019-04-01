@@ -440,7 +440,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		JIntellitype.getInstance().addHotKeyListener(listener);
 		this.add(backPanel);
 		this.setTitle("FGO-JAI");
-		this.setSize(345, 500);
+		this.setSize(335, 500);
 		this.setLocation(1537, 516);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
