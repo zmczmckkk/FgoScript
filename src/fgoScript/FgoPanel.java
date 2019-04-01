@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 //创建全局快捷键
@@ -61,13 +63,6 @@ public class FgoPanel extends JFrame implements ActionListener {
 					new Gudazi().goAll();
 				}
 			},
-			new ZButton("开启账号",JIntellitype.MOD_SHIFT, (int) 'O',true, false, ZButton.pink) {
-				private static final long serialVersionUID = 432750026975346042L;
-				@Override
-				public void runMethod() throws Exception {
-					new Gudazi().openEvent();
-				}
-			},
 			new ZButton("(账号10)开始刷活动(Shift+K)",JIntellitype.MOD_SHIFT, (int) 'K',false, false, ZButton.pink) {
 				private static final long serialVersionUID = 1369499050729104861L;
 				@Override
@@ -96,6 +91,13 @@ public class FgoPanel extends JFrame implements ActionListener {
 					new Gudazi().showPositionAndColor();
 				}
 			},
+			new ZButton("开启账号",JIntellitype.MOD_SHIFT, (int) 'O',true, false, ZButton.pink) {
+				private static final long serialVersionUID = 432750026975346042L;
+				@Override
+				public void runMethod() throws Exception {
+					new Gudazi().openEvent();
+				}
+			},
 			new ZButton("自动战斗(Alt+Z)",JIntellitype.MOD_ALT, (int) 'Z',false, false, ZButton.pink) {
 				private static final long serialVersionUID = -7389326247723796445L;
 				@Override
@@ -103,7 +105,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 					new Gudazi().onlyFight();
 				}
 			},
-			new ZButton("自动按键(Alt+X)设置(Alt+1)",JIntellitype.MOD_ALT, (int) 'X', false, false, ZButton.pink) {
+			new ZButton("自动按键(Alt+X/1)",JIntellitype.MOD_ALT, (int) 'X', false, false, ZButton.pink) {
 				private static final long serialVersionUID = -1900866258318497377L;
 				@Override
 				public void runMethod() {
@@ -336,20 +338,21 @@ public class FgoPanel extends JFrame implements ActionListener {
 				southPanel04.add(jbTemp);
 			}
 			else {
-				if (jbTemp.getText().contains("自动按键")) {
-					jbTemp.setAllowRepeat(true);
-				}
 				if ("开启账号".equals(jbTemp.getText())) {
-					jbTemp.setBounds(5, 5 + (i * (30+len)), 230, 25+len);
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
-				}else {
+				} else if (jbTemp.getText().contains("自动按键")) {
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
+					jbTemp.setAllowRepeat(true);
+				} else {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 320, 25+len);
 				}
 				jbTemp.addActionListener(this);
 				centerPanel.add(jbTemp);
 			}
 		}
+		//选择账号按钮
 		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 8438279990543323489L;
 			@Override
@@ -357,21 +360,39 @@ public class FgoPanel extends JFrame implements ActionListener {
 				this.selectAccount();
 			}
 		};
-
 		int account = getAccount();
 		jbTemp.setText("账号" + account);
-		jbTemp.setBounds(240, 5 + (4 * (30+len)), 85, 25+len);
+		jbTemp.setBounds(220, 5 + (8 * (30+len)), 105, 25+len);
 		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
+		//选择战斗策略按钮
 		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 8438279990546323489L;
 			@Override
 			public void runMethod() {
-				this.selectStrategy();
+				this.selectBattleStrategy();
 			}
 		};
 		jbTemp.setText(jbTemp.getskillStrategy());
 		jbTemp.setBounds(220, 5 + (9 * (30+len)), 105, 25+len);
+		jbTemp.addActionListener(this);
+		centerPanel.add(jbTemp);
+		//按键类型按钮
+		List<String> changeList = new ArrayList<>();
+		changeList.add("左键");
+		changeList.add("判断");
+		jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "clickStrategy", true, true, ZButton.pink);
+		jbTemp.setBounds(220, 5 + (10 * (30+len)), 50, 25+len);
+		jbTemp.addActionListener(this);
+        centerPanel.add(jbTemp);
+		//按键倍率按钮
+        changeList = new ArrayList<>();
+        changeList.add("0倍");
+        changeList.add("1倍");
+        changeList.add("2倍");
+        changeList.add("3倍");
+        jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "multiFactor", true, true, ZButton.pink);
+		jbTemp.setBounds(275, 5 + (10 * (30+len)), 50, 25+len);
 		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
 		//显示背景按钮
@@ -382,7 +403,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				showBackGround();
 			}
 		};
-		//显示背景按钮
+		//切换背景按钮
 		ZButton changePicBt = new ZButton("切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override

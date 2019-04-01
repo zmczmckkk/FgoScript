@@ -70,74 +70,101 @@ public class WuNa {
 		this.clickCount = clickCount;
 	}
 	public void alwaysClick() {
-		if (count++ % 2 == 0) {
+        if (count++ % 2 == 0) {
 			setGO(true);
 		} else{
 			setGO(false);
 		}
-		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
-		String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton");
-		if (StringUtils.isNotBlank(condiTion) && startegy.equals("判断")) {
-			condiTion = condiTion.substring(0, condiTion.length()-1);
-			String action = PropertiesUtil.getValueFromAutoClickFile("action");
-			action = action.substring(0, action.length()-1);
-			String[] pcStr = condiTion.split(";");
-			String[] acStr = action.split(";");
-			int size = pcStr.length;
-			int len = acStr.length;
-			if (size!=len) {
-				LOGGER.info("配置不成对，请重新配置！");
-			}
-			List<PointColor> pcList = new ArrayList<>();
-			String pointStr;
-			String colorStr;
-			
-			for (int i = 0; i < size; i++) {
-				pointStr = pcStr[i].split("_")[0];
-				colorStr = pcStr[i].split("_")[1];
-				pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
-									Integer.parseInt(pointStr.split(",")[1])),
-									new Color(Integer.parseInt(colorStr.split(",")[0]),
-											Integer.parseInt(colorStr.split(",")[1]), 
-											Integer.parseInt(colorStr.split(",")[2])), true));
-				
-			}
-			List<Point> pList = new ArrayList<>();
-			for (int i = 0; i < size; i++) {
-				pList.add(new Point(Integer.parseInt(acStr[i].split(",")[0]),
-						Integer.parseInt(acStr[i].split(",")[1])));
-			}
-			PointColor pointColor = null;
-			Point p;
-			Color c0;
-			Color c1;
-			boolean flag = true;
-			boolean isEqual;
-			Robot rb = GameUtil.getRb(this.getClass().getName());
-			String className = this.getClass().getName();
-			do {
- 				for (int i = 0; i < size; i++) {
-					pointColor = pcList.get(i);
-					p = pointColor.getPoint();
-					c0 = pointColor.getColor();
-					isEqual = pointColor.isEqual();
-					c1 = GameUtil.getScreenPixel(p,className);
-					flag = GameUtil.isEqualColor(c0, c1);
-					if (!isEqual) {
-						flag = !flag;
-					}
-					if (flag) {
-						rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
-						mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-					}
-				}
-			} while (isGO());
-		}else {
-			while (isGO()) {
-				mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-			}
-		}
-		
+        if (isGO()){
+            Robot rb = GameUtil.getRb(this.getClass().getName());
+            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton");
+            int factor = 0;
+            switch(multiFactor){
+                case "0倍" : {
+                    factor = 0;
+                    break;
+                }case "1倍" : {
+                    factor = 1;
+                    break;
+                }
+                case "2倍" : {
+                    factor = 2;
+                    break;
+                }
+                case "3倍" : {
+                    factor = 3;
+                    break;
+                }
+                default : {
+                    factor = 0;
+                    break;
+                }
+            }
+            String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
+            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton");
+            if (StringUtils.isNotBlank(condiTion) && startegy.equals("判断")) {
+                condiTion = condiTion.substring(0, condiTion.length()-1);
+                String action = PropertiesUtil.getValueFromAutoClickFile("action");
+                action = action.substring(0, action.length()-1);
+                String[] pcStr = condiTion.split(";");
+                String[] acStr = action.split(";");
+                int size = pcStr.length;
+                int len = acStr.length;
+                if (size!=len) {
+                    LOGGER.info("配置不成对，请重新配置！");
+                }
+                List<PointColor> pcList = new ArrayList<>();
+                String pointStr;
+                String colorStr;
+
+                for (int i = 0; i < size; i++) {
+                    pointStr = pcStr[i].split("_")[0];
+                    colorStr = pcStr[i].split("_")[1];
+                    pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
+                                        Integer.parseInt(pointStr.split(",")[1])),
+                                        new Color(Integer.parseInt(colorStr.split(",")[0]),
+                                                Integer.parseInt(colorStr.split(",")[1]),
+                                                Integer.parseInt(colorStr.split(",")[2])), true));
+
+                }
+                List<Point> pList = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    pList.add(new Point(Integer.parseInt(acStr[i].split(",")[0]),
+                            Integer.parseInt(acStr[i].split(",")[1])));
+                }
+                PointColor pointColor = null;
+                Point p;
+                Color c0;
+                Color c1;
+                boolean flag = true;
+                boolean isEqual;
+                String className = this.getClass().getName();
+                do {
+                    for (int i = 0; i < size; i++) {
+                        pointColor = pcList.get(i);
+                        p = pointColor.getPoint();
+                        c0 = pointColor.getColor();
+                        isEqual = pointColor.isEqual();
+                        c1 = GameUtil.getScreenPixel(p,className);
+                        flag = GameUtil.isEqualColor(c0, c1);
+                        if (!isEqual) {
+                            flag = !flag;
+                        }
+                        if (flag) {
+                            rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
+                            mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                        }
+                        rb.delay(200 * factor);
+                    }
+                } while (isGO());
+            }else {
+                while (isGO()) {
+                    rb.delay(200 * factor);
+                    mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
+            }
+        }
+
 		
 	}
 	public void configClick(ZButton bt) {

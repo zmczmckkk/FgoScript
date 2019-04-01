@@ -12,9 +12,12 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.naming.Name;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
@@ -79,6 +82,10 @@ public abstract class ZButton extends JButton implements Runnable{
     private String fromPerson;
     private int fromSkill;
     private boolean allowRepeat;
+    //自定义切换按钮
+	private List<String> changeList;
+	private String saveFileString;
+	private String changeListKeyName;
     
  
     public int getDisAbleStyle() {
@@ -115,6 +122,57 @@ public abstract class ZButton extends JButton implements Runnable{
 		this.enableStatus = enableStatus;
         super.setText(name);
         setColor(style);
+    }
+    public void clickButton(){
+		String strategy;
+		int size = changeList.size();
+		int loc=0;
+		for (int i = 0; i < size; i++) {
+			if (this.getText().equals(changeList.get(i))) {
+				loc = i + 1 > size - 1 ? 0 : i + 1;
+				this.setText(changeList.get(loc));
+				break;
+			}
+		}
+		Map<String, String> map = new HashMap<>();
+		map.put(this.getChangeListKeyName(), changeList.get(loc));
+		PropertiesUtil.setValueByFileName(map, this.saveFileString);
+	}
+	public static ZButton getChangeListButton(List<String> changeList, String saveFileString, String changeListKeyName,
+									   boolean excuteble, boolean enableStatus, int style){
+		return new ZButton(changeList,saveFileString,
+				changeListKeyName,
+				excuteble,
+				enableStatus, style) {
+			@Override
+			public void runMethod() throws Exception {
+				this.clickButton();
+			}
+		};
+	}
+	/**
+	 * 可变列表按钮构造器
+	 * @param changeList  可变内容列表
+	 * @param saveFileString  保存的配置文件名称
+	 * @param changeListKeyName 配置文件中，列表所对应的key值。
+	 * @param excuteble 是否可执行
+	 * @param enableStatus 是否需要启动状态
+	 * @param style 颜色样式
+	 */
+    public ZButton(List<String> changeList, String saveFileString, String changeListKeyName,
+				   boolean excuteble, boolean enableStatus, int style) {
+		this.changeList = changeList;
+		this.saveFileString = saveFileString;
+		this.changeListKeyName = changeListKeyName;
+		this.excuteble = excuteble;
+		this.enableStatus = enableStatus;
+		String text = PropertiesUtil.getValueFromFileNameAndKey(changeListKeyName, saveFileString);
+		try {
+			super.setText("".equals(text)? changeList.get(0) : text);
+		} catch (NullPointerException e) {
+			LOGGER.error("按钮列表不能为空！");
+		}
+		setColor(style);
     }
     public ZButton(String name, int style) {
         super.setText(name);
@@ -321,7 +379,7 @@ public abstract class ZButton extends JButton implements Runnable{
 		map.put("openAccount", "" + FgoRewardArray[next]);
     	PropertiesUtil.setValueForOpen(map);
     }
-    public void selectStrategy() {
+    public void selectBattleStrategy() {
     	String strategy;
 		switch(this.getText()){
 			case "T1NoNP" : {
@@ -353,7 +411,6 @@ public abstract class ZButton extends JButton implements Runnable{
 		map.put("SKILL_STRATEGY", strategy);
     	PropertiesUtil.setValueForSkills(map);
     }
-	
     private void setColor(int style) {
     	 paintcolor();
     	 if (style == pink) {
@@ -540,7 +597,9 @@ public abstract class ZButton extends JButton implements Runnable{
                         SwingUtilities2.drawStringUnderlineCharAt(c, g,text, mnemonicIndex,
                                                       textRect.x + getTextShiftOffset(),
                                                       textRect.y + fm.getAscent() + getTextShiftOffset());
-                    }else super.paintText(g, c, textRect, text);
+                    }else {
+                    	super.paintText(g, c, textRect, text);
+					}
                 }
             });
 		}else {
@@ -596,6 +655,30 @@ public abstract class ZButton extends JButton implements Runnable{
 
 	public void setMY_FONT_COLOR(Color mY_FONT_COLOR) {
 		MY_FONT_COLOR = mY_FONT_COLOR;
+	}
+
+	public List<String> getChangeList() {
+		return changeList;
+	}
+
+	public void setChangeList(List<String> changeList) {
+		this.changeList = changeList;
+	}
+
+	public String getSaveFileString() {
+		return saveFileString;
+	}
+
+	public void setSaveFileString(String saveFileString) {
+		this.saveFileString = saveFileString;
+	}
+
+	public String getChangeListKeyName() {
+		return changeListKeyName;
+	}
+
+	public void setChangeListKeyName(String changeListKeyName) {
+		this.changeListKeyName = changeListKeyName;
 	}
 
 	@Override

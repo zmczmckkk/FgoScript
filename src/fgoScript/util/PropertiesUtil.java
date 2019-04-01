@@ -84,7 +84,10 @@ public class PropertiesUtil {
 		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
 		return getValue(filepath, key);
 	}
-
+	public static String getValueFromFileNameAndKey(String key, String fileName){
+		String filepath = System.getProperty("user.dir") + "/config/" + fileName + ".properties";
+		return getValue(filepath, key);
+	}
 	/**
 	 *
 	 * @param map
@@ -145,6 +148,10 @@ public class PropertiesUtil {
 	 */
 	public static void setValueForAutoClick( Map<String, String> map) {
 		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
+		setValueForUpdateAndAdd(map, filepath);
+	}
+	public static void setValueByFileName( Map<String, String> map, String saveFileString) {
+		String filepath = System.getProperty("user.dir") + "/config/"+saveFileString+".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void deleteAutoClickFile() {

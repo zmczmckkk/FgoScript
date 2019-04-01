@@ -21,6 +21,8 @@ public class GameConstant {
 	public static final String NO_SKILL="0";
 	public static final String GO_SECOD_SKILL_FOR_FIRST="1";
 	public static final String GO_ALL_SKILL_FOR_FIRST="2";
+	public static final String ONLY_CLICK="0";
+	public static final String SCRIPT_CLICK="1";
 
 
 	/*
