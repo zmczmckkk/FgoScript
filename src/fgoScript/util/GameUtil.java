@@ -60,8 +60,9 @@ public class GameUtil {
 	private static int OUTTIME_COUNT = 0;
 	private static int WAIT_COUNT = 0;
 	private static Object lock = new Object();
-	
-	
+	private static Map<String, Robot> rbMap = new HashMap<>();
+
+
 	public static Point getMousePosition() {
 		PointerInfo pinfo = MouseInfo.getPointerInfo();
 		return pinfo.getLocation();
@@ -69,6 +70,8 @@ public class GameUtil {
 	private static Robot rb = null;
 	public static Color getScreenPixel(Point p) {
 		return getRb().getPixelColor((int) p.getX(), (int) p.getY());
+	}public static Color getScreenPixel(Point p, String  className) {
+		return getRb(className).getPixelColor((int) p.getX(), (int) p.getY());
 	}
 	public static void reNewRobot() {
 		try {
@@ -87,6 +90,20 @@ public class GameUtil {
 				e.printStackTrace();
 			}
 		}
+		return rb;
+	}public static Robot getRb(String className) {
+		Robot rbTemp;
+			try {
+				rbTemp = rbMap.get(className);
+				if (rbTemp==null){
+					rbTemp = new Robot();
+					rbMap.put(className, rbTemp);
+				}
+				rb = new Robot();
+			} catch (AWTException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return rb;
 	}
 	public static void setRb(Robot r) {
