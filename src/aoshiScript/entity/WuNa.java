@@ -112,19 +112,20 @@ public class WuNa {
 			Color c1;
 			boolean flag = true;
 			boolean isEqual;
+			Robot rb = GameUtil.getRb(this.getClass().getName());
+			String className = this.getClass().getName();
 			do {
  				for (int i = 0; i < size; i++) {
 					pointColor = pcList.get(i);
 					p = pointColor.getPoint();
 					c0 = pointColor.getColor();
 					isEqual = pointColor.isEqual();
-					c1 = GameUtil.getScreenPixel(p);
+					c1 = GameUtil.getScreenPixel(p,className);
 					flag = GameUtil.isEqualColor(c0, c1);
 					if (!isEqual) {
 						flag = !flag;
 					}
 					if (flag) {
-						Robot rb = GameUtil.getRb();
 						rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
 						mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 					}
@@ -179,7 +180,7 @@ public class WuNa {
 		PropertiesUtil.setValueForAutoClick(map);
 	}
 	private  void mousePressAndRelease(int key) {
-		Robot rb = GameUtil.getRb();
+		Robot rb = GameUtil.getRb(this.getClass().getName());
 		rb.mousePress(key);
 		rb.delay(GameConstant.DELAY/10);
 		rb.mouseRelease(key);
