@@ -268,7 +268,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 	}
 	// 初始化
 	private void init() {
-		// 面板对象
+		// 面板对象s
 		backPanel.setLayout(new BorderLayout());
 		centerPanel.setLayout(null);
 		buttonPanel.setLayout(new GridLayout(2, 1));
@@ -408,7 +408,12 @@ public class FgoPanel extends JFrame implements ActionListener {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
-				changeBackGround();
+				FileDialog fd = new FileDialog(JOptionPane.getFrameForComponent(centerPanel), "选择背景");
+				fd.setResizable(true);
+				fd.setVisible(true);
+				String dir = System.getenv("USERPROFILE") + "\\OneDrive\\图片\\桌面背景";
+				fd.setDirectory(dir);
+				changeBackGroundByPath( fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
 		showPicBt.addActionListener(this);
@@ -434,6 +439,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		buttonPanel.setBounds(5, 10 + (12 * (30+len)), 320, 55+len);
 		centerPanel.add(buttonPanel);
 		eastPanel01.setBounds(5, 5 + (11 * (30+len)), 320, 25+len);
+        eastPanel01.setName("bottomButtons");
 		centerPanel.add(eastPanel01);
 		backPanel.add(centerPanel);
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
@@ -471,18 +477,49 @@ public class FgoPanel extends JFrame implements ActionListener {
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 		singleThreadPool.execute(()-> {
-			centerPanel.setVisible(false);
-			try {
-				System.out.println(Thread.currentThread().getName());
-				Thread.sleep(3000);
-			} catch (InterruptedException ignored) {
-			}
-			centerPanel.setVisible(true);
+            centerPanel.setVisible(true);
+            Component[] comps = centerPanel.getComponents();
+            int size = comps.length;
+            Component com;
+            ZButton zt;
+            Component[] temps;
+            int len;
+            for (int i = 0; i < size; i++) {
+                com = comps[i];
+                if ("bottomButtons".equals(com.getName())){
+                    if ( com instanceof Zpanel){
+                        temps = ((Zpanel) com).getComponents();
+                        len = temps.length;
+                        for (int j = 0; j < len; j++) {
+                            if (temps[j] instanceof ZButton){
+                                ZButton ztTemp = (ZButton) temps[j];
+                                if (!(ztTemp.getText().contains("显示")||ztTemp.getText().contains("切换"))){
+                                    ztTemp.setVisible(!ztTemp.isVisible());
+                                }else{
+                                	if (ztTemp.getText().contains("显示背景")){
+										ztTemp.setText("显示按钮");
+										eastPanel01.setBounds(5, 10 + (13 * (30+2)), 320, 25+len);
+									}else if (ztTemp.getText().contains("显示按钮")) {
+										ztTemp.setText("显示背景");
+										eastPanel01.setBounds(5, 5 + (11 * (30+2)), 320, 25+len);
+									}
+                                    ztTemp.setVisible(ztTemp.isVisible());
+
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    com.setVisible(!com.isVisible());
+                }
+            }
 		});
 		singleThreadPool.shutdown();
 	}
 	public void changeBackGround() {
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
+	}public void changeBackGroundByPath(String path) {
+		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
 	}
 	// 事件监听
 	@Override

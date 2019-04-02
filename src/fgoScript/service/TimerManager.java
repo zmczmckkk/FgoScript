@@ -67,7 +67,7 @@ public class TimerManager {
 				} while (true);
 			}
 		}, 3000, TimeUnit.MILLISECONDS);
-		LOGGER.info("壁纸切换已启动！启动时间：" + time);
+		LOGGER.info("壁纸切换已启动！" + time);
 	}
 
 	// 增加或减少天数

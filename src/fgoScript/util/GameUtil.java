@@ -800,6 +800,12 @@ public class GameUtil {
 		me = me.getScaledInstance(width, length, Image.SCALE_DEFAULT);
 		return new ImageIcon(me);
 	}
+	public static ImageIcon getBackGroundPreFix(int width, int length, String filePath) {
+		ImageIcon im = new ImageIcon(filePath);
+		Image me = im.getImage();
+		me = me.getScaledInstance(width, length, Image.SCALE_DEFAULT);
+		return new ImageIcon(me);
+	}
 	public static void moveToLeftTop() {
 		rb = getRb();
 		rb.mouseMove(370, 193);
