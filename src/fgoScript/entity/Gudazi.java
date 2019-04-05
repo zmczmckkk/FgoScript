@@ -364,8 +364,6 @@ public class Gudazi extends TimerTask {
 			temp = GameUtil.getScreenPixel(p3);
 			
 			if (GameUtil.isEqualColor(c3, temp)) {
-				GameUtil.mouseMoveByPoint(p6);
-				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 				Point p7 = new Point(650, 580);// 颜色：30;30;30 也是关闭按钮
 				Color c7 = new Color(30, 30, 30);
 				Point p8 = new Point(722, 579);// 颜色：45;45;45
@@ -373,6 +371,8 @@ public class Gudazi extends TimerTask {
 
 				PointColor pc7 = new PointColor(p7, c7, true);
 				PointColor pc8 = new PointColor(p8, c8, true);
+				GameUtil.mouseMoveByPoint(p6);
+				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pc7);
 				pcList = new ArrayList<>();
 				pcList.add(pc7);
 				pcList.add(pc8);

@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -408,12 +410,24 @@ public class FgoPanel extends JFrame implements ActionListener {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
-				FileDialog fd = new FileDialog(JOptionPane.getFrameForComponent(centerPanel), "选择背景");
-				fd.setResizable(true);
-				fd.setVisible(true);
 				String dir = System.getenv("USERPROFILE") + "\\OneDrive\\图片\\桌面背景";
+                System.out.println(dir);
+
+                FileDialog fd = new FileDialog(JOptionPane.getFrameForComponent(centerPanel), "选择背景");
 				fd.setDirectory(dir);
+				fd.setVisible(true);
+                fd.setFilenameFilter(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        if (name.contains(".jpg")){
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+				fd.setResizable(true);
 				changeBackGroundByPath( fd.getDirectory()+ "\\" + fd.getFile());
+                fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
 		showPicBt.addActionListener(this);
@@ -518,8 +532,12 @@ public class FgoPanel extends JFrame implements ActionListener {
 	}
 	public void changeBackGround() {
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
-	}public void changeBackGroundByPath(String path) {
-		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
+	}
+	public void changeBackGroundByPath(String path) {
+	    File file = new File(path);
+	    if (file.exists()) {
+            backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
+        }
 	}
 	// 事件监听
 	@Override
