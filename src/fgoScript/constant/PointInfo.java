@@ -96,9 +96,9 @@ public class PointInfo {
 	public static final Point P_CONFIRM_RD = new Point(1061,731);
 	public static final Color C_CONFIRM_RD = new Color(222, 219, 222);
 	// 咕哒子
-	public static final Point P_GUDA = new Point(198,741);
-	public static final Color C_GUDA = new Color(238, 224, 154);
-	// 咕哒子 (深色)
+	public static final Point P_GUDA = new Point(198,739);
+	public static final Color C_GUDA = new Color(255, 238, 179);
+    // 咕哒子 (深色)
 	public static final Point P_GUDA_DARK = new Point(200,742);
 	public static final Color C_GUDA_DARK = new Color(62, 61, 59);
 	// 底部菜单关闭按钮
@@ -184,10 +184,10 @@ public class PointInfo {
 	public static final Point P_NO_SUPPORT = new Point(491,486);
 	public static final Color C_NO_SUPPORT = new Color(97, 99, 101);	// 无支援处理
 	// 加载页面
-	public static final Point P_LOADING = new Point(516, 722);
-	public static final Color C_LOADING = new Color(247, 255, 255);// 加载页面
+	public static final Point P_LOADING = new Point(477,720);
+	public static final Color C_LOADING = new Color(111, 188, 217);// 加载页面
 
-	public static final Point P_TRANSFER = new Point(911, 670);
+    public static final Point P_TRANSFER = new Point(911, 670);
 	public static final Color C_TRANSFER = new Color(0, 60, 165);
 
 	public static final Point P_SUPPORT_UPDATE = new Point(887,183);
