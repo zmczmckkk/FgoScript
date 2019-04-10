@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FgoScript.iml" filepath="$PROJECT_DIR$/.idea/FgoScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FgoScript.iml" filepath="$PROJECT_DIR$/FgoScript.iml" />
     </modules>
   </component>
 </project>

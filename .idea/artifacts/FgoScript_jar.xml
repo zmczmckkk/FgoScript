@@ -2,25 +2,25 @@
   <artifact name="FgoScript:jar">
     <output-path>$USER_HOME$/OneDrive/Code</output-path>
     <root id="root">
-      <element id="directory" name="lib">
-        <element id="file-copy" path="$PROJECT_DIR$/lib/animal-sniffer-annotations-1.17.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/checker-qual-2.5.2.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/commons-lang3-3.4.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/error_prone_annotations-2.2.0.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/failureaccess-1.0.1.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/guava-27.1-jre.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/j2objc-annotations-1.1.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/jintellitype-1.3.9.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/jna-5.2.0.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/jna-platform-5.2.0.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/jsr305-3.0.2.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/log4j-api-2.11.2.jar" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/log4j-core-2.11.2.jar" />
-      </element>
       <element id="archive" name="gudazi.jar">
         <element id="module-output" name="FgoScript" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/jsr305-3.0.2.jar" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="Maven: com.github.houbb:markdown-toc:1.0.5" />
+        <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:3.0.2" />
+        <element id="library" level="project" name="Maven: com.google.errorprone:error_prone_annotations:2.2.0" />
+        <element id="library" level="project" name="Maven: com.google.guava:failureaccess:1.0.1" />
+        <element id="library" level="project" name="Maven: com.google.guava:guava:27.1-jre" />
+        <element id="library" level="project" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" />
+        <element id="library" level="project" name="Maven: com.google.j2objc:j2objc-annotations:1.1" />
+        <element id="library" level="project" name="Maven: com.melloware:jintellitype:1.3.9" />
+        <element id="library" level="project" name="Maven: junit:junit:4.11" />
+        <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.8.1" />
+        <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.11.2" />
+        <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.11.2" />
+        <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:2.5.2" />
+        <element id="library" level="project" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.17" />
+        <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
       </element>
     </root>
   </artifact>
