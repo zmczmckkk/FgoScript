@@ -14,7 +14,8 @@ public class Zpanel extends JPanel{
 	    }  
 	  
 	    private Icon wallpaper;  
-	    protected void paintComponent(Graphics g) {  
+	    @Override
+		protected void paintComponent(Graphics g) {
 	        if (null != wallpaper) {  
 	            processBackground(g);  
 	        }  

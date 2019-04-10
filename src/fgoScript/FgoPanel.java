@@ -1,6 +1,7 @@
 package fgoScript;
 
 import aoshiScript.entity.WuNa;
+import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
@@ -344,6 +345,8 @@ public class FgoPanel extends JFrame implements ActionListener {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
+				} else if (jbTemp.getText().contains("获取鼠标")) {
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动按键")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 					jbTemp.setAllowRepeat(true);
@@ -405,6 +408,8 @@ public class FgoPanel extends JFrame implements ActionListener {
 				showBackGround();
 			}
 		};
+		showPicBt.addActionListener(this);
+		eastPanel01.add(showPicBt);
 		//切换背景按钮
 		ZButton changePicBt = new ZButton("切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
@@ -430,10 +435,38 @@ public class FgoPanel extends JFrame implements ActionListener {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
-		showPicBt.addActionListener(this);
 		changePicBt.addActionListener(this);
-		eastPanel01.add(showPicBt);
 		eastPanel01.add(changePicBt);
+		//MD文件生成目录按钮
+		ZButton exportCatalog = new ZButton("md目录",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+			private static final long serialVersionUID = 6504858991507730848L;
+			@Override
+			public void runMethod() {
+
+                FileDialog fd = new FileDialog(JOptionPane.getFrameForComponent(centerPanel), "选择md文件");
+				fd.setVisible(true);
+                fd.setFilenameFilter(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        if (name.contains(".md")){
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+				fd.setResizable(true);
+				String path = fd.getDirectory()+ "\\" + fd.getFile();
+				File tempFile = new File(path);
+				if (tempFile.exists()){
+					//生成md文件的目录
+					AtxMarkdownToc.newInstance().genTocFile(fd.getDirectory()+ "\\" + fd.getFile());
+				}
+                fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
+			}
+		};
+		exportCatalog.addActionListener(this);
+		exportCatalog.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+		centerPanel.add(exportCatalog);
 		// 添加热键监听器
 		HotkeyListener listener = markCode -> {
 			ZButton zbt = bts[markCode];
