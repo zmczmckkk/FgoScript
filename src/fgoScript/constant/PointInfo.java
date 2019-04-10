@@ -110,8 +110,8 @@ public class PointInfo {
 	public static final Point P_LEVEL_UP = new Point(762,337);
 	public static final Color C_LEVEL_UP = new Color(239, 190, 41);
 	// 退出选卡按钮
-	public static final Point P_CARD_EXIT = new Point(1251,736);
-	public static final Color C_CARD_EXIT = new Color(11, 39, 77);
+	public static final Point P_CARD_EXIT = new Point(1201,733);
+	public static final Color C_CARD_EXIT = new Color(0, 184, 233);
 	// 宝具详情退出按钮
 	public static final Point P_NP_DT_EXIT = new Point(1092,135);
 	public static final Color C_NP_DT_EXIT = new Color(193,192,195);

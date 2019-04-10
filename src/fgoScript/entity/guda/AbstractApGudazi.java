@@ -828,4 +828,19 @@ public abstract class AbstractApGudazi {
          // 宝具动画延时
          GameUtil.delay(GameConstant.DELAY * 4);
     }
+
+    public static void main(String[] args) {
+        Point p_card_exit = PointInfo.P_CARD_EXIT;
+        Color c_card_exit = PointInfo.C_CARD_EXIT;
+        PointColor pc = new PointColor(p_card_exit, c_card_exit, true);
+        Point p5 = new Point(1171, 697);
+        GameUtil.mouseMoveByPoint(p5);
+        try {
+            GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, pc);
+        } catch (FgoNeedRestartException e) {
+            e.printStackTrace();
+        }
+        // 宝具动画延时
+        GameUtil.delay(GameConstant.DELAY * 4);
+    }
 }
