@@ -60,5 +60,11 @@
             <artifactId>guava</artifactId>
             <version>27.1-jre</version>
         </dependency>
+        <!-- JsonObject需要的jar包 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.28</version>
+        </dependency>
     </dependencies>
 </project>

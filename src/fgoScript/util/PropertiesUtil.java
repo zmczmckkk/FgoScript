@@ -68,6 +68,10 @@ public class PropertiesUtil {
 		String filepath = System.getProperty("user.dir") + "/config/colors.properties";
 		return getValue(filepath, key);
 	}
+	public static String getValueFromMonitorFile(String key) {
+		String filepath = System.getProperty("user.dir") + "/config/monitor.properties";
+		return getValue(filepath, key);
+	}
 	public static String getValueFromOpenFile(String key) {
 		String filepath = System.getProperty("user.dir") + "/config/open.properties";
 		return getValue(filepath, key);

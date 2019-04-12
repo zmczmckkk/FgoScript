@@ -10,8 +10,10 @@ public class PointColor {
 	private boolean equal;
 	private Point clickPoint;
 	private boolean isConfirm;
-	
-	
+
+	public PointColor() {
+	}
+
 	public PointColor(Point point, Color color, Point clickPoint, boolean equal) {
 		super();
 		this.point = point;
