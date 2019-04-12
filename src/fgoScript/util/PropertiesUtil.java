@@ -155,7 +155,7 @@ public class PropertiesUtil {
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void setValueByFileName( Map<String, String> map, String saveFileString) {
-		String filepath = System.getProperty("user.dir") + "/config/"+saveFileString+".properties";
+		String filepath = System.getProperty("user.dir") + "/config/" +saveFileString+".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void deleteAutoClickFile() {

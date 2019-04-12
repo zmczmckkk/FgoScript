@@ -10,14 +10,10 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,8 +32,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.javafx.image.IntPixelGetter;
 import fgoScript.entity.ColorMonitor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -378,9 +374,55 @@ public class GameUtil {
 		} while (!toCheck);
 		LOGGER.debug("所有颜色组匹配成功");
 	}
+	public static JSONArray ConvertToJsonArray(String path){
+
+		JSONArray jsonArray =null;
+		BufferedReader reader = null;
+		StringBuilder jsonStrs = new StringBuilder();
+		InputStream inputStream=null;
+		try {
+			inputStream = new FileInputStream(path);
+			if(inputStream==null){
+				LOGGER.info(path+" is not exist or the json file is wrong");
+				return jsonArray;
+			}
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+			reader = new BufferedReader(inputStreamReader);
+			String tempStr = null;
+			while ((tempStr = reader.readLine()) != null) {
+				jsonStrs.append(tempStr);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		try{
+			jsonArray=JSONArray.parseArray(jsonStrs.toString().trim());
+		}catch(IllegalStateException ex){
+			LOGGER.error(path+"JSON  File is wrong");
+		}catch(JSONException ex){
+			LOGGER.error(path+"JSON  File is wrong");
+		}
+		return jsonArray;
+	}
 	private static List<ColorMonitor> getColorMonitorList(){
-		String jsonString = PropertiesUtil.getValueFromMonitorFile("monitor");
-		JSONArray monitorJsonArray = JSONArray.parseArray(jsonString);
+		String filepath = System.getProperty("user.dir") + "/config/monitor.properties";
+		JSONArray monitorJsonArray = ConvertToJsonArray(filepath);
 		int size = monitorJsonArray.size();
 		JSONArray monitorJSONArray; 			//monitorJSONArray数组
 
@@ -414,16 +456,17 @@ public class GameUtil {
 
 				tempJsonObject = checkPointJSONArray.getJSONObject(j);
 				xyCoordinate = tempJsonObject.getString("point").split(",");
-				tempPoint = new Point(Integer.parseInt(xyCoordinate[0]), Integer.parseInt(xyCoordinate[1]));
+				tempPoint = new Point(Integer.parseInt(xyCoordinate[0].trim()), Integer.parseInt(xyCoordinate[1].trim()));
 				colorRGB = tempJsonObject.getString("color").split(",");
-				tempColor = new Color(Integer.parseInt(colorRGB[0]),
-						Integer.parseInt(colorRGB[1]),
-						Integer.parseInt(colorRGB[2])
+				tempColor = new Color(Integer.parseInt(colorRGB[0].trim()),
+						Integer.parseInt(colorRGB[1].trim()),
+						Integer.parseInt(colorRGB[2].trim())
 				);
 
 				tempPointColor = new PointColor();
 				tempPointColor.setPoint(tempPoint);
 				tempPointColor.setColor(tempColor);
+				tempPointColor.setEqual(true);
 				checkPcList.add(tempPointColor);
 			}
 			//点击点坐标 Json数组
@@ -433,7 +476,7 @@ public class GameUtil {
 			for (int j = 0; j < clickPointArraySize; j++) {
 				tempJsonObject = clickPointJSONArray.getJSONObject(j);
 				xyCoordinate = tempJsonObject.getString("point").split(",");
-				tempPoint = new Point(Integer.parseInt(xyCoordinate[0]), Integer.parseInt(xyCoordinate[1]));
+				tempPoint = new Point(Integer.parseInt(xyCoordinate[0].trim()), Integer.parseInt(xyCoordinate[1].trim()));
 				clickPointList.add(tempPoint);
 			}
 			//是否抛异常
@@ -479,131 +522,6 @@ public class GameUtil {
 				}
 			}
 		}
-//
-//		String msg = null;
-//		List<PointColor> pocoList = new ArrayList<>();
-//		int count;
-//		// 更新进度处理
-//		Point p_update = PointInfo.P_UPDATE;
-//		Color c_update = PointInfo.C_UPDATE;
-//		Point p_update_no = PointInfo.P_UPDATE_NO;
-//		Color c_update_no = PointInfo.C_UPDATE_NO;
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_update, c_update, true));
-//		pocoList.add(new PointColor(p_update_no, c_update_no, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_update);
-//			mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(p_update_no,c_update_no, false));
-//			OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
-//			LOGGER.info("更新进度");
-//		}
-//		// 通信 异常点 直连
-//		Point P_CONNECT_YES = PointInfo.P_CONNECT_YES;
-//		Color C_CONNECT_YES = PointInfo.C_CONNECT_YES;
-//
-//		pocoList.add(new PointColor(P_CONNECT_YES, C_CONNECT_YES, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(P_CONNECT_YES);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("通信 直连");
-//		}
-//		// 通信 异常点 直连
-//		Point p_connect_end = PointInfo.P_CONNECT_END;
-//		Color c_connect_end = PointInfo.C_CONNECT_END;
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_connect_end, c_connect_end, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_connect_end);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("通信 终了");
-//		}
-		// 通信 异常点 再连
-//		Point P_RE_CONNECT_YES = PointInfo.P_RE_CONNECT_YES;
-//		Color C_RE_CONNECT_YES = PointInfo.C_RE_CONNECT_YES;
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(P_RE_CONNECT_YES, C_RE_CONNECT_YES, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(P_CONNECT_YES);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("通信 再连");
-//		}
-		// 异常重启点（重新下载！）
-//		Point p4 = new Point(467, 604);// 颜色：225;224;225
-//		Color c4 = new Color(225, 224, 225);
-//		Point p5 = new Point(512, 613);// 颜色：217;216;217
-//		Color c5 = new Color(217, 216, 217);
-//
-//		Point p6 = new Point(516, 621);// 颜色：0;0;0
-//		Color c6 = new Color(0, 0, 0);
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p4, c4, true));
-//		pocoList.add(new PointColor(p5, c5, true));
-//		pocoList.add(new PointColor(p6, c6, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p6);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//		}
-//		// 下载文件中断处理
-//		Point p39 = new Point(651, 603);// 颜色：28;28;28
-//		Color c39 = new Color(28, 28, 28);
-//		Point p37 = new Point(701, 612);// 颜色：155;156;155
-//		Color c37 = new Color(155, 156, 155);
-//		Point p38 = new Point(666, 628);// 颜色：201;199;202
-//		Color c38 = new Color(201, 199, 202);
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p39, c39, true));
-//		pocoList.add(new PointColor(p37, c37, true));
-//		pocoList.add(new PointColor(p38, c38, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p39);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("异常重启点异常");
-//			throw new FgoNeedRestartException();
-//		}
-//		// 战败处理
-//		Point p_button_fail_back = PointInfo.P_BUTTON_FAIL_BACK;
-//		Color c_button_fail_back = PointInfo.C_BUTTON_FAIL_BACK;
-//
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_button_fail_back, c_button_fail_back, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_button_fail_back);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//
-//			mouseMoveByPoint(PointInfo.P_BUTTON_FAIL_BACK_YES);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//
-//			mouseMoveByPoint(PointInfo.P_CLOSE_MD);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//
-//			GameUtil.getRb().delay(5000);
-//			LOGGER.info("战败处理异常");
-//			throw new FgoNeedRestartException();
-//		}
-//		// 奖励处理
-//		Point p29 = PointInfo.P_REWARD_ACTION;
-//		Color c29 = PointInfo.C_REWARD_ACTION;
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p29, c29, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p29);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("奖励处理");
-//
-//		}
 		List<PointColor> pocoList = new ArrayList<>();
 		// 更新支援
 		Point p_no_support = PointInfo.P_NO_SUPPORT;
@@ -632,39 +550,6 @@ public class GameUtil {
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 			LOGGER.info("等待更新支援！");
 		}
-//		// 技能关闭按钮处理
-//		Point p_close_md = PointInfo.P_CLOSE_MD;
-//		Color C_close_md = PointInfo.C_CLOSE_MD;
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_close_md, C_close_md, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_close_md);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("技能关闭");
-//		}
-//		// 宝具详情退出
-//		Point p_np_dt_exit = PointInfo.P_NP_DT_EXIT;
-//		Color c_np_dt_exit = PointInfo.C_NP_DT_EXIT;
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_np_dt_exit, c_np_dt_exit, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_np_dt_exit);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("宝具详情关闭");
-//		}
-//		// 怪物详情退出
-//		Point p_moster_dt_exit = PointInfo.P_MOSTER_DT_EXIT;
-//		Color c_moster_dt_exit = PointInfo.C_MOSTER_DT_EXIT;
-//		pocoList = new ArrayList<>();
-//		pocoList.add(new PointColor(p_moster_dt_exit, c_moster_dt_exit, true));
-//		count = ColorMatchCount(pocoList);
-//		if (count == pocoList.size()) {
-//			mouseMoveByPoint(p_moster_dt_exit);
-//			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-//			LOGGER.info("怪物详情关闭");
-//		}
 		return null;
 	}
 
