@@ -3,6 +3,7 @@ package fgoScript.constant;
 import java.awt.Color;
 import java.awt.Point;
 
+import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
 
 public class PointInfo {
@@ -96,8 +97,8 @@ public class PointInfo {
 	public static final Point P_CONFIRM_RD = new Point(1061,731);
 	public static final Color C_CONFIRM_RD = new Color(222, 219, 222);
 	// 咕哒子
-	public static final Point P_GUDA = new Point(198,741);
-	public static final Color C_GUDA = new Color(238, 224, 154);
+	public static final Point P_GUDA = new Point(198,739);
+	public static final Color C_GUDA = new Color(255, 238, 179);
 	// 咕哒子 (深色)
 	public static final Point P_GUDA_DARK = new Point(200,742);
 	public static final Color C_GUDA_DARK = new Color(62, 61, 59);
@@ -110,11 +111,11 @@ public class PointInfo {
 	public static final Point P_LEVEL_UP = new Point(762,337);
 	public static final Color C_LEVEL_UP = new Color(239, 190, 41);
 	// 退出选卡按钮
-	public static final Point P_CARD_EXIT = new Point(1251,736);
-	public static final Color C_CARD_EXIT = new Color(11, 39, 77);
+	public static final Point P_CARD_EXIT = new Point(1201,733);
+	public static final Color C_CARD_EXIT = new Color(0, 184, 233);
 	// 宝具详情退出按钮
-	public static final Point P_NP_DT_EXIT = new Point(1092,135);
-	public static final Color C_NP_DT_EXIT = new Color(193,192,195);
+	public static final Point P_NP_DT_EXIT = new Point(1123,94);
+	public static final Color C_NP_DT_EXIT = new Color(8, 20, 41);
 	// 怪物详情退出按钮
 	public static final Point P_MOSTER_DT_EXIT = new Point(1096,167);
 	public static final Color C_MOSTER_DT_EXIT = new Color(143, 158, 192);
@@ -184,8 +185,8 @@ public class PointInfo {
 	public static final Point P_NO_SUPPORT = new Point(491,486);
 	public static final Color C_NO_SUPPORT = new Color(97, 99, 101);	// 无支援处理
 	// 加载页面
-	public static final Point P_LOADING = new Point(516, 722);
-	public static final Color C_LOADING = new Color(247, 255, 255);// 加载页面
+	public static final Point P_LOADING = new Point(477,720);
+	public static final Color C_LOADING = new Color(111, 188, 217);// 加载页面
 
 	public static final Point P_TRANSFER = new Point(911, 670);
 	public static final Color C_TRANSFER = new Color(0, 60, 165);
@@ -216,6 +217,9 @@ public class PointInfo {
 	public static final Point NP_CHECK = new Point(250,723);
 	// NP
 	public static final Point NP_NP = new Point(452,247);
+	// 技能对象窗口关闭按钮
+	public static final Point P_CLOTH_To_Skill = new Point(1127,194);
+	public static final Color C_CLOTH_To_Skill = new Color(114, 121, 144);
 	//怪物
 	public static final Point P_MOSTER01 = new Point(167,94);
 	public static final Point P_MOSTER02 = new Point(407,94);
@@ -284,5 +288,9 @@ public class PointInfo {
 			throw new Exception("No Such RoomCode");
 		}
 		}
+	}
+
+	public static void main(String[] args) {
+		GameUtil.mouseMoveByPoint(PointInfo.P_GUDA);
 	}
 }

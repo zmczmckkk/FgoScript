@@ -315,24 +315,9 @@ public class Gudazi extends TimerTask {
 	private void getRewords() throws Exception {
 		// 任务按钮
 		Point p1 = new Point(572, 711);
-		// 明咕哒子颜色
-		Point pGuda = PointInfo.P_GUDA;
-		Color cGuda = PointInfo.C_GUDA;
-		// 暗咕哒子颜色
-		Point pGudaDark = PointInfo.P_GUDA_DARK;
-		Color cGudaDark = PointInfo.C_GUDA_DARK;
-		
+		GameUtil.mouseMoveByPoint(p1);
+		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 		List<PointColor> pcList = new ArrayList<>();
-		pcList.add(new PointColor(pGuda, cGuda, p1, true));
-		pcList.add(new PointColor(pGudaDark, cGudaDark, null, true));
-		List<PointColor> finishPCList = new ArrayList<>();
-		finishPCList.add(new PointColor(pGudaDark, cGudaDark, null, true));
-		AutoAct ac = new AutoAct(pcList, finishPCList) {
-			@Override
-			public void doSomeThing() {
-			}
-		};
-		ac.autoAct();
 		// 点击周常按钮
 		Point p4 = new Point(702, 194);// 周常按钮坐标
 //		Point p5 = new Point(1060, 195);// 限定按钮坐标
@@ -344,9 +329,21 @@ public class Gudazi extends TimerTask {
 		// 循环7次尝试获取
 		Color temp;
 		boolean flag;
-		int missonNum = 10;
+		int missionNum = 10;
 		int statusMum = 5;
-		for (int i = 0; i < missonNum; i++) {
+
+		Point p3 = new Point(757, 323);// 可获取奖励状态坐标
+		Color c3 = new Color(198, 154, 57);
+		Point p6 = new Point(923, 392);// 领取任务坐标
+
+		Point p7 = new Point(650, 580);// 颜色：30;30;30 也是关闭按钮
+		Color c7 = new Color(30, 30, 30);
+		Point p8 = new Point(722, 579);// 颜色：45;45;45
+		Color c8 = new Color(45, 45, 45);
+
+		PointColor pc7 = new PointColor(p7, c7, true);
+		PointColor pc8 = new PointColor(p8, c8, true);
+		for (int i = 0; i < missionNum; i++) {
 			// 循环4次点击获取按钮，直到可获取状态，判断是否可以获取奖励
 			for (int j = 0; j < statusMum; j++) {
 				GameUtil.mouseMoveByPoint(pRewardGet);
@@ -358,19 +355,8 @@ public class Gudazi extends TimerTask {
 					break;
 				}
 			}
-			Point p3 = new Point(757, 323);// 可获取奖励状态坐标
-			Color c3 = new Color(198, 154, 57);
-			Point p6 = new Point(923, 392);// 领取任务坐标
 			temp = GameUtil.getScreenPixel(p3);
-			
 			if (GameUtil.isEqualColor(c3, temp)) {
-				Point p7 = new Point(650, 580);// 颜色：30;30;30 也是关闭按钮
-				Color c7 = new Color(30, 30, 30);
-				Point p8 = new Point(722, 579);// 颜色：45;45;45
-				Color c8 = new Color(45, 45, 45);
-
-				PointColor pc7 = new PointColor(p7, c7, true);
-				PointColor pc8 = new PointColor(p8, c8, true);
 				GameUtil.mouseMoveByPoint(p6);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pc7);
 				pcList = new ArrayList<>();
@@ -380,25 +366,15 @@ public class Gudazi extends TimerTask {
 				// 关闭领取弹窗
 				GameUtil.mouseMoveByPoint(p7);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-
 			}else {
 				break;
 			}
 		}
 		GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_奖励领取情况页面.");
 		// 返回按钮
-		Point p8 = new Point(138, 97);// 颜色：109;122;150 Color c = new Color(109, 122, 150);
-		pcList = new ArrayList<>();
-		pcList.add(new PointColor(pGuda, cGuda, null, true));
-		pcList.add(new PointColor(pGudaDark, cGudaDark, p8, true));
-		finishPCList = new ArrayList<>();
-		finishPCList.add(new PointColor(pGuda, cGuda, null, true));
-		ac = new AutoAct(pcList, finishPCList) {
-			@Override
-			public void doSomeThing() {
-			}
-		};
-		ac.autoAct();
+		Point pReturn = new Point(138, 97);// 颜色：109;122;150 Color c = new Color(109, 122, 150);
+		GameUtil.mouseMoveByPoint(pReturn);
+		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 	}
 
 	/**
@@ -480,11 +456,11 @@ public class Gudazi extends TimerTask {
 		GameUtil.moveToLeftTop();
 
 		// 检测loading是否完毕
-		Point pLoading = new Point(516, 722);// 颜色：247;255;255
-		Color cLoading = new Color(247, 255, 255);
+		Point pLoading = PointInfo.P_LOADING;
+		Color cLoading = PointInfo.C_LOADING;
 
-		Point pTransfer = new Point(911, 670);// 颜色：0;60;165
-		Color cTransfer = new Color(0, 60, 165);
+		Point pTransfer = PointInfo.P_TRANSFER;
+		Color cTransfer = PointInfo.C_TRANSFER;
 
 		List<PointColor> pcList = new ArrayList<>();
 		pcList.add(new PointColor(pLoading, cLoading, PointInfo.DEAD_POINT, true));

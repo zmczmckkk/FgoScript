@@ -71,7 +71,11 @@ public abstract class AutoAct {
 				clickPoint = pcWait.getClickPoint();
 				if (clickPoint!=null) {
 					GameUtil.mouseMoveByPoint(pcWait.getClickPoint());
-					GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+					if ( pcWait.isConfirm()){
+						GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+					}else{
+						GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+					}
 				}
 				PointColor pcTemp;
 				for (int j = 0; j < finishPCList.size(); j++) {

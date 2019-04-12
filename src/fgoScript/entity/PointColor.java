@@ -9,6 +9,7 @@ public class PointColor {
 	private Color color;
 	private boolean equal;
 	private Point clickPoint;
+	private boolean isConfirm;
 	
 	
 	public PointColor(Point point, Color color, Point clickPoint, boolean equal) {
@@ -24,7 +25,16 @@ public class PointColor {
 		this.color = color;
 		this.equal = equal;
 	}
-	public PointColor(Point point, Color color, boolean equal,String name) {
+
+	public boolean isConfirm() {
+		return isConfirm;
+	}
+
+	public void setConfirm(boolean confirm) {
+		isConfirm = confirm;
+	}
+
+	public PointColor(Point point, Color color, boolean equal, String name) {
 		super();
 		this.point = point;
 		this.color = color;

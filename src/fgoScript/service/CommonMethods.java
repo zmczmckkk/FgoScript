@@ -35,7 +35,9 @@ public class CommonMethods {
 		pcList.add(new PointColor(p_button_restart_yes, c_button_restart_yes, p_button_restart_yes, true));
 		List<PointColor> finishPCList = new ArrayList<>();
 		finishPCList.add(new PointColor(p_guda, c_guda, dead_point, true));
-		finishPCList.add(new PointColor(p_button_restart_yes, c_button_restart_yes, p_button_restart_yes, true));
+		PointColor pcRestart = new PointColor(p_button_restart_yes, c_button_restart_yes, p_button_restart_yes, true);
+		pcRestart.setConfirm(true);
+		finishPCList.add(pcRestart);
 
 		AutoAct ac = new AutoAct(pcList, finishPCList) {
 			@Override
