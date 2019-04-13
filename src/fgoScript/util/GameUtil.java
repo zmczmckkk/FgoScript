@@ -61,6 +61,7 @@ public class GameUtil {
 	private static int WAIT_COUNT = 0;
 	private static Object lock = new Object();
 	private static Map<String, Robot> rbMap = new HashMap<>();
+	private static List<ColorMonitor> colorMonitorList;
 
 
 	public static Point getMousePosition() {
@@ -441,6 +442,7 @@ public class GameUtil {
 		boolean equal;
 		boolean confirm;
 		boolean throwException;
+		boolean extendOutTime;
 		String name;
 		JSONObject tempJsonObject;
 		PointColor tempPointColor;
@@ -479,19 +481,24 @@ public class GameUtil {
 				tempPoint = new Point(Integer.parseInt(xyCoordinate[0].trim()), Integer.parseInt(xyCoordinate[1].trim()));
 				clickPointList.add(tempPoint);
 			}
-			//是否抛异常
-			throwException = Boolean.parseBoolean(monitorJSONObject.getString("throwException"));//是否抛异常
+			// 是否抛异常
+			throwException = Boolean.parseBoolean(monitorJSONObject.getString("throwException"));
+			// 是否延长超时
+			extendOutTime = Boolean.parseBoolean(monitorJSONObject.getString("extendOutTime"));
 			name = monitorJSONObject.getString("name");
 			colorMonitor.setCheckPointList(checkPcList);
 			colorMonitor.setClickPointList(clickPointList);
 			colorMonitor.setThrowException(throwException);
+			colorMonitor.setExtendOutTime(extendOutTime);
 			colorMonitor.setName(name);
 			colorMonitorList.add(colorMonitor);
 		}
 		return colorMonitorList;
 	}
 	private static String waitInteruptSolution() throws FgoNeedRestartException {
-		List<ColorMonitor> colorMonitorList = getColorMonitorList();
+		if (colorMonitorList == null) {
+			colorMonitorList = getColorMonitorList();
+		}
 		int size = colorMonitorList.size();
 		ColorMonitor cm;
 		List<PointColor> checkPcList;
@@ -513,12 +520,12 @@ public class GameUtil {
 					mouseMoveByPoint(tempPoint);
 					mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					LOGGER.info(cm.getName());
-					if (cm.isExtendOutTime()){
-						OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
-					}
-					if (cm.isThrowException()){
-						throw new FgoNeedRestartException();
-					}
+				}
+				if (cm.isExtendOutTime()){
+					OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
+				}
+				if (cm.isThrowException()){
+					throw new FgoNeedRestartException();
 				}
 			}
 		}
@@ -851,10 +858,21 @@ public class GameUtil {
 		return intArray;
 	}
 	public static void main(String[] args) {
-		delay(3000);
+
 		try {
-			GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(PointInfo.P_DOWN_PANEL_CLOSE, PointInfo.C_DOWN_PANEL_CLOSE, false));
-		} catch (FgoNeedRestartException e) {
+			// 蓝盾攻击点
+			Point p_blue_attack = PointInfo.P_BLUE_ATTACK;
+			Color c_blue_attack = PointInfo.C_BLUE_ATTACK;
+			// 羁绊结算三角
+			Point p_fetter01 = PointInfo.P_FETTER01;
+			Color c_fetter01 = PointInfo.C_FETTER01;
+
+			List<PointColor> pocoList = new ArrayList<PointColor>();
+			pocoList.add(new PointColor(p_blue_attack, c_blue_attack, true, "attack"));
+			pocoList.add(new PointColor(p_fetter01, c_fetter01, true, "balance"));
+			PointColor pc = GameUtil.waitUntilOneColor(pocoList);
+			System.out.println("结束");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
