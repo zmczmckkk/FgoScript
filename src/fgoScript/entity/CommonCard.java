@@ -5,7 +5,7 @@ import java.awt.Point;
 public class CommonCard { 
 	//角色名
 	private String roleName;
-	private String cardColor;
+	private int cardColor;
 	private boolean isWeak;
 	//点击点
 	private Point pLoc;
@@ -19,12 +19,15 @@ public class CommonCard {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public String getCardColor() {
+
+	public int getCardColor() {
 		return cardColor;
 	}
-	public void setCardColor(String cardColor) {
+
+	public void setCardColor(int cardColor) {
 		this.cardColor = cardColor;
 	}
+
 	public boolean isWeak() {
 		return isWeak;
 	}

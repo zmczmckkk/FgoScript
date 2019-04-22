@@ -1,0 +1,220 @@
+﻿[
+  {
+    "name": "更新进度",
+    "checkPointArray": [
+      {
+        "point": "882,612",
+        "color": "33, 33, 33"
+      },
+      {
+        "point": "438,612",
+        "color": "154, 152, 154"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "882,612"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "true"
+  },
+  {
+    "name": "通信直连",
+    "checkPointArray": [
+      {
+        "point": "906,620",
+        "color": "192, 190, 193"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "906,620"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "通信终了",
+    "checkPointArray": [
+      {
+        "point": "902,612",
+        "color": "84, 84, 84"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "902,612"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "通信再连",
+    "checkPointArray": [
+      {
+        "point": "907,612",
+        "color": "159, 157, 159"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "907,612"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "异常点重启",
+    "checkPointArray": [
+      {
+        "point": "467, 604",
+        "color": "225, 224, 225"
+      },
+      {
+        "point": "512, 613",
+        "color": "217, 216, 217"
+      },
+      {
+        "point": "516, 621",
+        "color": "0, 0, 0"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "516, 621"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "异常重启点异常",
+    "checkPointArray": [
+      {
+        "point": "651, 603",
+        "color": "28, 28, 28"
+      },
+      {
+        "point": "701, 612",
+        "color": "155, 156, 155"
+      },
+      {
+        "point": "666, 628",
+        "color": "201, 199, 202"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "651, 603"
+      }
+    ],
+    "throwException": "true",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "战败处理异常",
+    "checkPointArray": [
+      {
+        "point": "326, 366",
+        "color": "141, 139, 141"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "326, 366"
+      },
+      {
+        "point": "909, 410"
+      },
+      {
+        "point": "649, 606"
+      }
+    ],
+    "throwException": "true",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "奖励处理",
+    "checkPointArray": [
+      {
+        "point": "1168, 201",
+        "color": "138, 157, 172"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "1168, 201"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "技能关闭",
+    "checkPointArray": [
+      {
+        "point": "649, 606",
+        "color": "79, 78, 79"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "649, 606"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "宝具详情关闭",
+    "checkPointArray": [
+      {
+        "point": "1123,94",
+        "color": "8, 20, 41"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "1123,94"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "怪物详情关闭",
+    "checkPointArray": [
+      {
+        "point": "1090,159",
+        "color": "103, 110, 131"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "1090,159"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "羁绊升级",
+    "checkPointArray": [
+      {
+        "point": "725,394",
+        "color": "243, 192, 36"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "725,394"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  }
+]

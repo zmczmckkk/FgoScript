@@ -268,7 +268,7 @@ public class EventGudazi extends AbstractApGudazi {
             // 开始点击卡片
 			Map<String, List<CommonCard>> scMap;
 			if (hasNp01 && goMainNP) {
-				scMap = getWeakCommondCards(CardComparator.getRbgComparotor());
+				scMap = getWeakCommondCards(CardComparator.getRgbComparotor());
 			}else {
 				scMap = getWeakCommondCards(CardComparator.getBgrComparotor());
 			}
@@ -296,7 +296,9 @@ public class EventGudazi extends AbstractApGudazi {
 			List<CommonCard> trueList = scMap.get("trueList");
 			List<CommonCard> falseList = scMap.get("falseList");
 			int size = trueList.size();
-			for (CommonCard commonCard : trueList) {
+			CommonCard commonCard;
+			for (int i = 0; i < size; i++) {
+				commonCard = trueList.get(i);
 				GameUtil.mouseMoveByPoint(commonCard.getpLoc());
 				GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 			}
@@ -316,20 +318,20 @@ public class EventGudazi extends AbstractApGudazi {
 		// 战斗服选择
 		Point p5 = new Point(1229, 359);// 颜色：24;60;107 Color c = new Color(24, 60, 107);
 		GameUtil.mouseMoveByPoint(p5);
-		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
+		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 选择技能2
 		Point p8 = new Point(1029, 357);// 颜色：252;249;107 Color c = new Color(252, 249, 107);
 		GameUtil.mouseMoveByPoint(p8);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		// 选择人物
 		GameUtil.mouseMoveByPoint(PointInfo.SKILL_PERSON_01);
-		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
+		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 
 		// 等待
 		waitToAttack(null);
 		// 战斗服选择
 		GameUtil.mouseMoveByPoint(p5);
-		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
+		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 选择技能3
 		Point p9 = new Point(1115, 360);// 颜色：69;71;111 Color c = new Color(69, 71, 111);
 		GameUtil.mouseMoveByPoint(p9);

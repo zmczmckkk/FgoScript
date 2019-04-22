@@ -224,7 +224,7 @@ public class ExpApGudazi extends AbstractApGudazi {
             // 开始点击卡片
 			Map<String, List<CommonCard>> scMap;
 			if (hasNp01 && goMainNP) {
-				scMap = getWeakCommondCards(CardComparator.getRbgComparotor());
+				scMap = getWeakCommondCards(CardComparator.getRgbComparotor());
 			}else {
 				scMap = getWeakCommondCards(CardComparator.getBgrComparotor());
 			}

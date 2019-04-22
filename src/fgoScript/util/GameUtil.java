@@ -422,7 +422,7 @@ public class GameUtil {
 		return jsonArray;
 	}
 	private static List<ColorMonitor> getColorMonitorList(){
-		String filepath = System.getProperty("user.dir") + "/config/monitor.properties";
+		String filepath = System.getProperty("user.dir") + "/config/monitor.json";
 		JSONArray monitorJsonArray = ConvertToJsonArray(filepath);
 		int size = monitorJsonArray.size();
 		JSONArray monitorJSONArray; 			//monitorJSONArray数组

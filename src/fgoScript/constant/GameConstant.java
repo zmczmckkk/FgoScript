@@ -13,9 +13,9 @@ public class GameConstant {
 	public static final int ACTIVE_STYLE = 1;// 
 	public static final int EXCUTE_STYLE = 2;// 
 	public static final String IMG_EXTEND = "jpg";
-	public static final String RED="RED";
-	public static final String GREEN="GREEN";
-	public static final String BLUE="BLUE";
+	public static final int RED= 2;
+	public static final int GREEN= 1;
+	public static final int BLUE= 0;
 	public static final boolean IF_SET_PRE = Boolean.parseBoolean(PropertiesUtil.getValueFromConfig("IF_SET_PRE"));
 	public static final int APPLE_COUNT = Integer.parseInt(PropertiesUtil.getValueFromConfig("APPLE_COUNT"));
 	public static final String NO_SKILL="0";

@@ -5,14 +5,9 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.sun.org.apache.bcel.internal.generic.IFNULL;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -686,57 +681,94 @@ public abstract class AbstractApGudazi {
             }
         }
     }
-    protected final  Map<String, List<CommonCard>> getWeakCommondCards(Comparator<CommonCard> comp){
-        Point p_card_click = PointInfo.P_CARD_CLICK;
-        Point p_card_color = PointInfo.P_CARD_COLOR;
-        Point p_card_weak = PointInfo.P_CARD_WEAK;
-        Point pLoc = null;
-        Point pColor = null;
-        Point pWeak = null;
-        Color cColor = null;
-        CommonCard cc = null;
-        List<CommonCard> ccList = new ArrayList<CommonCard>();
-        for (int i = 0; i < 5; i++) {
-            pLoc = new Point((int) p_card_click.getX() + i * 260, (int) p_card_click.getY());
-            pColor = new Point((int) p_card_color.getX() + i * 260, (int) p_card_color.getY());
-            pWeak = new Point((int) p_card_weak.getX() + i * 260, (int) p_card_weak.getY());
+    private final List<CommonCard> getColorCommondCards(){
+        String  zeroPosition =  PropertiesUtil.getValueFromCommandCardFile("zeroPosition");
+        String  clickPosition =  PropertiesUtil.getValueFromCommandCardFile("clickPosition");
+        String  distribution =  PropertiesUtil.getValueFromCommandCardFile("distribution");
+        Point[] zeroPoints = getPointsBySymBol(zeroPosition);// 每张卡的 原点 数组
+        Point[] clickPoints = getPointsBySymBol(clickPosition);// 每张卡的 点击点 数组
+        Point[] distributionPoints = getPointsBySymBol(distribution);// 一张卡的 颜色分布取点 数组
 
-            cc = new CommonCard();
-            cc.setpLoc(pLoc);
-            //判断颜色
-            cColor = GameUtil.getScreenPixel(pColor);
-//			LOGGER.info(cColor.toString());
-            ColorVo[] voArray = {new ColorVo(GameConstant.RED, cColor.getRed())
-                    , new ColorVo(GameConstant.GREEN, cColor.getGreen())
-                    , new ColorVo(GameConstant.BLUE, cColor.getBlue())
-            };
-            ColorVo tempVo = null;
-            //冒泡排序从小到大
-            int num = voArray.length;
-            for (int j = 0; j < num; j++) {
-                for (int k = 0; k < voArray.length - j - 1; k++) {
-                    if (voArray[k].getValue() > voArray[k+1].getValue()) {
-                        tempVo=voArray[k+1];
-                        voArray[k+1] = voArray[k];
-                        voArray[k] = tempVo;
-                    }
+        int zpLen = zeroPoints.length;
+        int cpLen = clickPoints.length;
+        int dtLen = distributionPoints.length;
+
+        Point tempPoint;
+        Color tempColor;
+
+        int rPulus = 0;
+        int gPulus = 0;
+        int bPulus = 0;
+        int[] rgb;
+        int rgblen;
+        List<CommonCard> ccList= new ArrayList<>();
+        CommonCard tempCommonCard;
+
+        int Maxindex;
+        int value;
+        for (int i = 0; i < zpLen; i++) {
+            rgb = new int[3];
+            for (int j = 0; j < dtLen; j++) {
+                tempPoint = new Point(
+                        (int) (zeroPoints[i].getX() + distributionPoints[j].getX()),
+                        (int) (zeroPoints[i].getY() + distributionPoints[j].getY())
+                );
+                tempColor = GameUtil.getScreenPixel(tempPoint);
+                rgb[0] += tempColor.getRed();
+                rgb[1] += tempColor.getGreen();
+                rgb[2] += tempColor.getBlue();
+            }
+            rgblen = rgb.length;
+            Maxindex = 0;
+            value = rgb[0];
+            for (int j = 1; j < rgblen; j++) {
+                if (value < rgb[j]) {
+                    Maxindex = j;
+                    value = rgb[j];
                 }
             }
-            //设置排序最大的为颜色
-//			LOGGER.info(voArray[voArray.length-1].getColor());
-            cc.setCardColor(voArray[voArray.length-1].getColor());
-            //判断克制
-            cColor = GameUtil.getScreenPixel(pWeak);
-//			LOGGER.info(cColor.toString());
-            if (cColor.getGreen() <50 && cColor.getBlue()<50) {
-                cc.setWeak(true);
-            }else {
-                cc.setWeak(false);
+            tempCommonCard = new CommonCard();
+            tempCommonCard.setpLoc(clickPoints[i]);
+            tempCommonCard.setWeak(true);
+            switch(Maxindex){
+                case 0 : {
+                    tempCommonCard.setCardColor(GameConstant.RED);
+                    break;
+                }
+                case 1 : {
+                    tempCommonCard.setCardColor(GameConstant.GREEN);
+                    break;
+                }
+                case 2 : {
+                    tempCommonCard.setCardColor(GameConstant.BLUE);
+                    break;
+                }
+                default : {
+                    break;
+                }
             }
-//			LOGGER.info(cc.isWeak());
-            ccList.add(cc);
+            ccList.add(tempCommonCard);
         }
-//		LOGGER.info("======================");
+        return ccList;
+    }
+    private Point[] getPointsBySymBol(String string){
+        String[] pointStringArray = string.split("_");
+        int len = pointStringArray.length;
+
+        String[] tempStringArray;
+        Point[] points = new Point[len];
+
+        for (int i = 0; i < len; i++) {
+            tempStringArray = pointStringArray[i].split(",");
+            points[i] = new Point(
+                    Integer.parseInt(tempStringArray[0]),
+                    Integer.parseInt(tempStringArray[1])
+            );
+        }
+        return points;
+    }
+    protected final  Map<String, List<CommonCard>> getWeakCommondCards(Comparator<CommonCard> comp){
+        List<CommonCard> ccList = getColorCommondCards();
         Collections.sort(ccList, comp);
         Map<String, List<CommonCard>> scMap = new HashMap<>();
         List<CommonCard> trueList = new ArrayList<CommonCard>();
@@ -744,8 +776,8 @@ public abstract class AbstractApGudazi {
         int num = ccList.size();
         for (int i = 0; i < num; i++) {
             CommonCard commonCard = ccList.get(i);
-//			LOGGER.info(commonCard.getCardColor() + "_");
-//			LOGGER.info(commonCard.isWeak());
+			LOGGER.info(commonCard.getCardColor() + "_");
+			LOGGER.info(commonCard.isWeak());
             if (commonCard.isWeak()==true) {
                 trueList.add(commonCard);
             }else {
@@ -768,34 +800,13 @@ public abstract class AbstractApGudazi {
         GameUtil.delay(GameConstant.DELAY * 4);
         Map<String, List<CommonCard>> scMap = getWeakCommondCards(comp);
         List<CommonCard> trueList = scMap.get("trueList");
-        List<CommonCard> falseList = scMap.get("falseList");
+
         int size = trueList.size();
-        int len = falseList.size();
-        if (size >= 2) {
-        	  GameUtil.mouseMoveByPoint(trueList.get(0).getpLoc());
-              GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-              if (len > 0) {
-            	  GameUtil.mouseMoveByPoint(falseList.get(0).getpLoc());
-            	  GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-              }else {
-            	  GameUtil.mouseMoveByPoint(trueList.get(2).getpLoc());
-                  GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-              }
-              GameUtil.mouseMoveByPoint(trueList.get(1).getpLoc());
-              GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-		}else {
-			for (int i = 0; i < size; i++) {
-				GameUtil.mouseMoveByPoint(trueList.get(i).getpLoc());
-				GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-			}
-			if (size < 3) {
-				int num = 3 - size;
-				for (int i = 0; i < num; i++) {
-					GameUtil.mouseMoveByPoint(falseList.get(i).getpLoc());
-					GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
-				}
-			}
-		}
+        for (int i = 0; i < 3; i++) {
+            GameUtil.mouseMoveByPoint(trueList.get(i).getpLoc());
+            GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
+
+        }
         checkExitCardSelect();
     }
     private boolean isTopage() {
@@ -830,17 +841,22 @@ public abstract class AbstractApGudazi {
     }
 
     public static void main(String[] args) {
-        Point p_card_exit = PointInfo.P_CARD_EXIT;
-        Color c_card_exit = PointInfo.C_CARD_EXIT;
-        PointColor pc = new PointColor(p_card_exit, c_card_exit, true);
-        Point p5 = new Point(1171, 697);
-        GameUtil.mouseMoveByPoint(p5);
-        try {
-            GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, pc);
-        } catch (FgoNeedRestartException e) {
-            e.printStackTrace();
-        }
-        // 宝具动画延时
-        GameUtil.delay(GameConstant.DELAY * 4);
+        AbstractApGudazi ap = new AbstractApGudazi() {
+            @Override
+            public void intoAndSelect(int apNum) throws Exception {
+
+            }
+
+            @Override
+            public void fightAndStop(boolean rebootFlag, int apNum) throws Exception {
+
+            }
+
+            @Override
+            public Point getSuppotServant() {
+                return null;
+            }
+        };
+        ap.getWeakCommondCards(CardComparator.getRgbComparotor());
     }
 }
