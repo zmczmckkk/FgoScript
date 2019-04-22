@@ -27,8 +27,6 @@ public class TrainApGudazi extends AbstractApGudazi {
 	@Override
 	public void fightAndStop(boolean rebootFlag, int apNum) throws Exception {
 		fightAndBack(apNum);
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
