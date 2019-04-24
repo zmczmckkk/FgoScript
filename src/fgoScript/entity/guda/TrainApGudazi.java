@@ -44,7 +44,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 进入训练场
-		// 周回进去
+		// 周回进
 		Point p4 = PointInfo.getP_WEEK_ENTRANCE();
 		GameUtil.mouseMoveByPoint(p4);
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
