@@ -31,10 +31,10 @@ import java.util.concurrent.TimeoutException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.*;
+import com.alibaba.fastjson.parser.ParserConfig;
 import fgoScript.entity.ColorMonitor;
+import fgoScript.entity.GatesInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +46,7 @@ import fgoScript.entity.ZButton;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
 import fgoScript.service.EventFactors;
+import org.apache.logging.log4j.core.config.json.JsonConfiguration;
 
 public class GameUtil {
 	private static final Logger LOGGER = LogManager.getLogger(GameUtil.class);
@@ -375,17 +376,14 @@ public class GameUtil {
 		} while (!toCheck);
 		LOGGER.debug("所有颜色组匹配成功");
 	}
-	public static JSONArray ConvertToJsonArray(String path){
-
-		JSONArray jsonArray =null;
+	public static String getJsonString(String path){
 		BufferedReader reader = null;
-		StringBuilder jsonStrs = new StringBuilder();
 		InputStream inputStream=null;
+		StringBuilder jsonStrs = new StringBuilder();
 		try {
 			inputStream = new FileInputStream(path);
 			if(inputStream==null){
 				LOGGER.info(path+" is not exist or the json file is wrong");
-				return jsonArray;
 			}
 			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
 			reader = new BufferedReader(inputStreamReader);
@@ -412,14 +410,37 @@ public class GameUtil {
 				}
 			}
 		}
+		return jsonStrs.toString().trim();
+	}
+	public static JSONArray ConvertToJsonArray(String path){
+
+		JSONArray jsonArray =null;
+		BufferedReader reader = null;
+		StringBuilder jsonStrs = new StringBuilder();
+
 		try{
-			jsonArray=JSONArray.parseArray(jsonStrs.toString().trim());
+			jsonArray=JSONArray.parseArray(getJsonString(path));
 		}catch(IllegalStateException ex){
 			LOGGER.error(path+"JSON  File is wrong");
 		}catch(JSONException ex){
 			LOGGER.error(path+"JSON  File is wrong");
 		}
 		return jsonArray;
+	}
+	public static JSONObject ConvertToJSONObject(String path){
+
+		JSONObject jSONObject =null;
+		BufferedReader reader = null;
+		StringBuilder jsonStrs = new StringBuilder();
+
+		try{
+			jSONObject=JSONObject.parseObject(getJsonString(path));
+		}catch(IllegalStateException ex){
+			LOGGER.error(path+"JSON  File is wrong");
+		}catch(JSONException ex){
+			LOGGER.error(path+"JSON  File is wrong");
+		}
+		return jSONObject;
 	}
 	private static List<ColorMonitor> getColorMonitorList(){
 		String filepath = System.getProperty("user.dir") + "/config/monitor.json";
@@ -858,23 +879,9 @@ public class GameUtil {
 		return intArray;
 	}
 	public static void main(String[] args) {
-
-		try {
-			// 蓝盾攻击点
-			Point p_blue_attack = PointInfo.P_BLUE_ATTACK;
-			Color c_blue_attack = PointInfo.C_BLUE_ATTACK;
-			// 羁绊结算三角
-			Point p_fetter01 = PointInfo.P_FETTER01;
-			Color c_fetter01 = PointInfo.C_FETTER01;
-
-			List<PointColor> pocoList = new ArrayList<PointColor>();
-			pocoList.add(new PointColor(p_blue_attack, c_blue_attack, true, "attack"));
-			pocoList.add(new PointColor(p_fetter01, c_fetter01, true, "balance"));
-			PointColor pc = GameUtil.waitUntilOneColor(pocoList);
-			System.out.println("结束");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
+		String jsonString = getJsonString(filepath);
+		GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
 	}
 	public static String getValueFromConfig(String key) {
 		String fgoArrayStr =  PropertiesUtil.getValueFromTempConfig(key);

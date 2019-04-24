@@ -19,7 +19,7 @@ import fgoScript.util.GameUtil;
 public class TrainApGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(TrainApGudazi.class);
 	@Override
-	public void intoAndSelect(int apNum) throws Exception {
+	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoTrainingRoom(apNum);
 
 	}

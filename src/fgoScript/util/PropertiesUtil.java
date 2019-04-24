@@ -88,6 +88,10 @@ public class PropertiesUtil {
 		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
 		return getValue(filepath, key);
 	}
+	public static String getValueFromspecialHasDo(String key) {
+		String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";
+		return getValue(filepath, key);
+	}
 	public static String getValueFromFileNameAndKey(String key, String fileName){
 		String filepath = System.getProperty("user.dir") + "/config/" + fileName + ".properties";
 		return getValue(filepath, key);
@@ -152,6 +156,10 @@ public class PropertiesUtil {
 	 */
 	public static void setValueForAutoClick( Map<String, String> map) {
 		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
+		setValueForUpdateAndAdd(map, filepath);
+	}
+	public static void setValueForspecialHasDo( Map<String, String> map) {
+		String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void setValueByFileName( Map<String, String> map, String saveFileString) {

@@ -22,7 +22,7 @@ import fgoScript.util.GameUtil;
 public class EventGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(EventGudazi.class);
 	@Override
-	public void intoAndSelect(int apNum) throws Exception {
+	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoEventRoom();
 	}
 	@Override

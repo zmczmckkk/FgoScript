@@ -18,7 +18,7 @@ import java.util.List;
 public class QpApGudazi extends AbstractApGudazi{
     private static final Logger LOGGER = LogManager.getLogger(QpApGudazi.class);
     @Override
-    public void intoAndSelect(int apNum) throws Exception{
+    public void intoAndSelect(int apNum, int acountNum) throws Exception{
         insertIntoQpRoom(apNum);
     }
 

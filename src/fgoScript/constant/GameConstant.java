@@ -35,6 +35,6 @@ public class GameConstant {
 	public static final int CLASSIFY_RIDER = 4;
 	public static final int CLASSIFY_CASTER = 5;
 	public static final int CLASSIFY_ASSASIN = 6;
-	public static int CLASSIFY_BASAKER = 7;
+	public static final int CLASSIFY_BASAKER = 7;
 	public static int CLASSIFY_FOUR = 8;
 }

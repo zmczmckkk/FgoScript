@@ -19,7 +19,7 @@ import java.util.Map;
 public class ExpApGudazi extends AbstractApGudazi {
     private static final Logger LOGGER = LogManager.getLogger(ExpApGudazi.class);
 	@Override
-	public void intoAndSelect(int apNum) throws Exception {
+	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoExpRoom(apNum);
 
 	}

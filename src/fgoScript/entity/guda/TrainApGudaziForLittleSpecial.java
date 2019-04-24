@@ -1,0 +1,138 @@
+package fgoScript.entity.guda;
+
+import com.alibaba.fastjson.JSON;
+import fgoScript.constant.GameConstant;
+import fgoScript.constant.PointInfo;
+import fgoScript.entity.Gates;
+import fgoScript.entity.GatesInfo;
+import fgoScript.util.GameUtil;
+import fgoScript.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
+    private Map<String, String> hasMap = new HashMap<>();
+    private Point suppPoint;
+    public Map<String, String> getHasMap() {
+        return hasMap;
+    }
+
+    public void setHasMap(Map<String, String> hasMap) {
+        this.hasMap = hasMap;
+    }
+
+    public Point getSuppPoint() {
+        return suppPoint;
+    }
+
+    public void setSuppPoint(Point suppPoint) {
+        this.suppPoint = suppPoint;
+    }
+
+    @Override
+    public void intoAndSelect(int apNum, int acountNum) throws Exception {
+        insertIntoTrainingRoomForSpecial(apNum,acountNum);
+    }
+
+    @Override
+    public Point getSuppotServant() {
+        return getSuppPoint();
+    }
+    public void insertIntoTrainingRoomForSpecial(int apNum, int acountNum) throws Exception {
+        // 拉滚动条至最下上
+        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        // 进入训练场
+        // 周回进去
+        Point p4 = PointInfo.getP_WEEK_ENTRANCE();
+        GameUtil.mouseMoveByPoint(p4);
+        GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+
+        GameUtil.delay(GameConstant.DELAY*5);
+
+        // 拉滚动条至最下
+        Point p16 = PointInfo.P_SCROLL_REST_DOWN;
+        GameUtil.mouseMoveByPoint(p16);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        // 拖拽画面
+        Point start = PointInfo.P_DAILY_SLICE_STRAT;
+        Point end = PointInfo.P_DAILY_SLICE_END;
+        moveBySteps(start, end);
+
+        // 点击日常
+        Point p6 = PointInfo.P_DAILY_ENTRANCE;
+        GameUtil.mouseMoveByPoint(p6);
+        GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+        //获取入口信息
+        GatesInfo gi = getSpecialGatesInfo();
+        // 拉滚动条至最下
+        GameUtil.mouseMoveByPoint(gi.getSliceDownPoint());
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+
+        List<Gates> gatesList = gi.getGatesArray();
+        int size = gatesList.size();
+        Gates gatesTemp;
+        int tempId;
+        Point locPoint;
+        Point gatePoint;
+        String idString;
+        int classify;
+        for (int i = 0; i < size; i++) {
+            gatesTemp = gatesList.get(i);
+            tempId = gatesTemp.getId();
+            setSuppPoint(gatesTemp.getSuppPoint());
+
+            //如果已经刷了允许次数跳过
+            idString = acountNum + "_" + tempId + "_" + apNum;
+            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum);
+            if(StringUtils.isNotBlank(hasDoString) ||
+                    hasDoString.contains(idString))     {
+                continue;
+            }
+            locPoint = gatesTemp.getpSetLoc();
+            gatePoint = gatesTemp.getGateByApNum(apNum);
+            // 拉滚动条目标位置
+            GameUtil.mouseMoveByPoint(locPoint);
+            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+            // 点击ap本
+            GameUtil.mouseMoveByPoint(gatePoint);
+            GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+            //添加hasdo属性
+            Map<String, String> hasMap = new HashMap<>();
+            if (i == size - 1) {
+                hasMap.put("hasDo" + acountNum, "");
+            } else {
+                hasMap.put("hasDo" + acountNum,
+                        hasDoString + acountNum + "_" + tempId + "_" + apNum);
+            }
+            setHasMap(hasMap);
+            break;
+        }
+    }
+    private GatesInfo getSpecialGatesInfo(){
+        String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
+        String jsonString = GameUtil.getJsonString(filepath);
+        GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
+        return gi;
+    }
+
+    @Override
+    protected void fightOverMethod() {
+        PropertiesUtil.setValueForspecialHasDo(getHasMap());
+    }
+
+    public static void main(String[] args) {
+        try {
+            new TrainApGudaziForLittleSpecial().insertIntoTrainingRoomForSpecial(10, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

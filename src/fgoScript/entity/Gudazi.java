@@ -142,6 +142,10 @@ public class Gudazi extends TimerTask {
 			new TrainApGudazi().startAllFgo(getFgoArray(), getApArray());
 			break;
 		}
+		case "SPtrain" : {
+			new TrainApGudaziForLittleSpecial().startAllFgo(getFgoArray(), getApArray());
+			break;
+		}
 		case "qp" : {
 			new QpApGudazi().startAllFgo(getFgoArray(), getQpArray());
 			break;
@@ -166,6 +170,10 @@ public class Gudazi extends TimerTask {
 		}
 		case "exp" : {
 			new ExpApGudazi().startAllFgo(getMainArray(), getExpArray());
+			break;
+		}
+		case "SPexp" : {
+			new ExpApGudaziForMainSpecial().startAllFgo(getMainArray(), getExpArray());
 			break;
 		}
 		case "event" : {

@@ -39,7 +39,7 @@ public abstract class AbstractApGudazi {
      * 进入选择副本
      * @param apNum ap数字
      */
-    public abstract void intoAndSelect(int apNum)throws Exception;
+    public abstract void intoAndSelect(int apNum, int account)throws Exception;
 
     /**
      * 战斗并结束
@@ -111,6 +111,8 @@ public abstract class AbstractApGudazi {
                 	map.put(key, StringUtils.isBlank(hasDo)?value:hasDo+value);
                 	PropertiesUtil.setValueForHasDo(map);
 				}
+                // 结束以后需要执行的方法
+                fightOverMethod();
                 count++;
 			}else {
 				continue;
@@ -118,6 +120,8 @@ public abstract class AbstractApGudazi {
         	
         }
         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "账号" + accountNum + "_结束战斗首页.");
+    }
+    protected void fightOverMethod(){
     }
     private void startFight(int accountNum, int apNum, boolean reStart, int count, int apLen, int appleCost) throws Exception {
         boolean continueGo = true;
@@ -143,7 +147,7 @@ public abstract class AbstractApGudazi {
                 waitForHomePage();
                 // 选本选人
                 LOGGER.info("选本选人");
-                intoAndSelect(apNum);
+                intoAndSelect(apNum, accountNum);
                 EventFactors.supportServant = getSuppotServant();
                 selectRoomPressFightForQp(accountNum, appleCost, apNum);
                 waitToAttack(null);
@@ -248,7 +252,7 @@ public abstract class AbstractApGudazi {
 			}
   			returnTopPage();
   			waitForHomePage();
-  			intoAndSelect(apNum);
+  			intoAndSelect(apNum, acountNum);
   			selectRoomPressFightForQp(acountNum, appleCost, apNum);
   		}else {
   			// 等待进入选人界面
@@ -841,22 +845,5 @@ public abstract class AbstractApGudazi {
     }
 
     public static void main(String[] args) {
-        AbstractApGudazi ap = new AbstractApGudazi() {
-            @Override
-            public void intoAndSelect(int apNum) throws Exception {
-
-            }
-
-            @Override
-            public void fightAndStop(boolean rebootFlag, int apNum) throws Exception {
-
-            }
-
-            @Override
-            public Point getSuppotServant() {
-                return null;
-            }
-        };
-        ap.getWeakCommondCards(CardComparator.getRgbComparotor());
     }
 }
