@@ -224,7 +224,13 @@ public class Gudazi extends TimerTask {
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40};
-		new ExpApGudazi().startAllFgo(getMainArray(), expArray);
+		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
+		if ("SPtrain".equals(qts[1])) {
+			new ExpApGudaziForMainSpecial().startAllFgo(getMainArray(), expArray);
+		} else {
+			new ExpApGudazi().startAllFgo(getMainArray(), expArray);
+		}
+
 	}
 	public void eventingFgo() throws Exception {
 		new EventGudazi().startAllFgo(getEventArray(), getApArray());
