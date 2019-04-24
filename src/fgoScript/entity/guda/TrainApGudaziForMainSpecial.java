@@ -1,6 +1,6 @@
 package fgoScript.entity.guda;
 
-public class TrainApGudaziForMainForMain extends ExpApGudaziForMainSpecial{
+public class TrainApGudaziForMainSpecial extends TrainApGudaziForLittleSpecial{
     @Override
     public void fightAndStop(boolean rebootFlag, int apNum) throws Exception {
         new EventGudazi().fightAndStop(rebootFlag, apNum);
