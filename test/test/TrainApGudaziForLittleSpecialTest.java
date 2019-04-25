@@ -74,8 +74,6 @@ public class TrainApGudaziForLittleSpecialTest {
                 if (hasDoString.contains(idString)){
                     hasMap.put("hasDo_" + acountNum,
                             hasDoString);
-                    hasMap.put("hasDo_" + acountNum,
-                            hasDoString + acountNum + "_" + tempId + "_" + apNum);
                 } else {
                     hasMap.put("hasDo_" + acountNum,
                             hasDoString + acountNum + "_" + tempId + "_" + apNum);
