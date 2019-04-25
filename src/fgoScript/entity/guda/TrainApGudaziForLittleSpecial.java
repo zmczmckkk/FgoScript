@@ -92,8 +92,8 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             //如果已经刷了允许次数跳过
             idString = acountNum + "_" + tempId + "_" + apNum;
             String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum);
-            if(StringUtils.isNotBlank(hasDoString) ||
-                    hasDoString.contains(idString))     {
+            if(StringUtils.isNotBlank(hasDoString) &&
+                    hasDoString.contains(idString) && !hasDoString.contains("(" +idString+")"))     {
                 continue;
             }
             locPoint = gatesTemp.getpSetLoc();
@@ -107,10 +107,15 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             //添加hasdo属性
             Map<String, String> hasMap = new HashMap<>();
             if (i == size - 1) {
-                hasMap.put("hasDo" + acountNum, "");
+                hasMap.put("hasDo_" + acountNum, "");
             } else {
-                hasMap.put("hasDo" + acountNum,
-                        hasDoString + acountNum + "_" + tempId + "_" + apNum);
+                if (hasDoString.contains(idString)){
+                    hasMap.put("hasDo_" + acountNum,
+                            hasDoString);
+                } else {
+                    hasMap.put("hasDo_" + acountNum,
+                            hasDoString + acountNum + "_" + tempId + "_" + apNum);
+                }
             }
             setHasMap(hasMap);
             break;
@@ -126,13 +131,5 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
     @Override
     protected void fightOverMethod() {
         PropertiesUtil.setValueForspecialHasDo(getHasMap());
-    }
-
-    public static void main(String[] args) {
-        try {
-            new TrainApGudaziForLittleSpecial().insertIntoTrainingRoomForSpecial(10, 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
