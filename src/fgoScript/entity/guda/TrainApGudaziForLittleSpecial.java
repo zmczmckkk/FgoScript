@@ -121,15 +121,14 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             break;
         }
     }
-    private GatesInfo getSpecialGatesInfo(){
-        String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
-        String jsonString = GameUtil.getJsonString(filepath);
-        GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
-        return gi;
-    }
 
     @Override
     protected void fightOverMethod() {
         PropertiesUtil.setValueForspecialHasDo(getHasMap());
+    }
+
+    @Override
+    public String getSpecialGatesFilePath() {
+        return System.getProperty("user.dir") + "/config/special_all_train.json";
     }
 }

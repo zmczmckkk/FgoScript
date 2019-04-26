@@ -50,8 +50,8 @@ import org.apache.logging.log4j.core.config.json.JsonConfiguration;
 
 public class GameUtil {
 	private static final Logger LOGGER = LogManager.getLogger(GameUtil.class);
-	private static final int OUT_TIME = Integer.parseInt(PropertiesUtil.getValueFromConfig("OUT_TIME"));// 超时时间(分)
-	private static final int CHECK_TIMES = Integer.parseInt(PropertiesUtil.getValueFromConfig("CHECK_TIMES"));
+	private static final int OUT_TIME = Integer.parseInt(GameUtil.getValueFromConfig("OUT_TIME"));// 超时时间(分)
+	private static final int CHECK_TIMES = Integer.parseInt(GameUtil.getValueFromConfig("CHECK_TIMES"));
 	private static final int EROOR_ROUND = 8;// 循环检查系数(DELAY*X*Y)
 	private static boolean GO_FLAG = true;
 	private static int CHECK_COUNT = 0;// 检测基数
@@ -786,7 +786,7 @@ public class GameUtil {
 		return strs;
 	}
 	public static String getPreFix() {
-		String ROOT_PATH = PropertiesUtil.getValueFromConfig("ROOT_PATH");
+		String ROOT_PATH = GameUtil.getValueFromConfig("ROOT_PATH");
 
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss\\");

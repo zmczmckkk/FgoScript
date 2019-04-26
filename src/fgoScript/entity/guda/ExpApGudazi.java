@@ -34,12 +34,8 @@ public class ExpApGudazi extends AbstractApGudazi {
 	public Point getSuppotServant() {
 		return PointInfo.P_SERVANT_CASTER;
 	}
-	
-	
-	
-	
-	
-	
+
+
 	public void insertIntoExpRoom(int apNum) throws Exception {
     	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);

@@ -100,7 +100,7 @@ public class TimerManager {
 	private static void deletePics() {
 		try {
 			String USERPROFILE = System.getenv("USERPROFILE");
-			String ROOT_PATH = PropertiesUtil.getValueFromConfig("ROOT_PATH");
+			String ROOT_PATH = GameUtil.getValueFromConfig("ROOT_PATH");
 			String path = USERPROFILE + ROOT_PATH;
 			File file = new File(path);
 			File[] files;

@@ -16,6 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ExpApGudaziForMainSpecial extends ExpApGudazi{
+    private String gatesDirPath;
+
+    public String getGatesDirPath() {
+        return gatesDirPath;
+    }
+
+    public void setGatesDirPath(String gatesDirPath) {
+        this.gatesDirPath = gatesDirPath;
+    }
+
     @Override
     public void intoAndSelect(int apNum, int acountNum) throws Exception {
         insertIntoExpRoom(apNum);
@@ -56,7 +66,6 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
         Point p6 = PointInfo.P_DAILY_ENTRANCE;
         GameUtil.mouseMoveByPoint(p6);
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-
         //获取入口信息
         GatesInfo gi = getSpecialGatesInfo();
         // 拉滚动条至最上
@@ -87,11 +96,12 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
             GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         }
     }
-    private GatesInfo getSpecialGatesInfo(){
-        String filepath = System.getProperty("user.dir") + "/config/special_all_exp.json";
-        String jsonString = GameUtil.getJsonString(filepath);
-        GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
-        return gi;
-    }
 
+    @Override
+    public String getSpecialGatesFilePath() {
+        if (gatesDirPath == null) {
+            setGatesDirPath(System.getProperty("user.dir") + "/config/special_all_exp.json");
+        }
+        return getGatesDirPath();
+    }
 }

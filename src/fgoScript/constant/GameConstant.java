@@ -1,9 +1,10 @@
 package fgoScript.constant;
 
+import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
 
 public class GameConstant {
-	public static final int DELAY = Integer.parseInt(PropertiesUtil.getValueFromConfig("DELAY"));// 延时
+	public static final int DELAY = Integer.parseInt(GameUtil.getValueFromConfig("DELAY"));// 延时
 	public static final int THRESHOLD = 220;// 阈值
 	public static final int MOVE_STEP = 100;// 阈值
 	public static final int MOVE_TIME = DELAY / 3;// 滑动延时
@@ -16,8 +17,8 @@ public class GameConstant {
 	public static final int RED= 2;
 	public static final int GREEN= 1;
 	public static final int BLUE= 0;
-	public static final boolean IF_SET_PRE = Boolean.parseBoolean(PropertiesUtil.getValueFromConfig("IF_SET_PRE"));
-	public static final int APPLE_COUNT = Integer.parseInt(PropertiesUtil.getValueFromConfig("APPLE_COUNT"));
+	public static final boolean IF_SET_PRE = Boolean.parseBoolean(GameUtil.getValueFromConfig("IF_SET_PRE"));
+	public static final int APPLE_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("APPLE_COUNT"));
 	public static final String NO_SKILL="0";
 	public static final String GO_SECOD_SKILL_FOR_FIRST="1";
 	public static final String GO_ALL_SKILL_FOR_FIRST="2";

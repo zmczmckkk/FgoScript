@@ -172,6 +172,10 @@ public class Gudazi extends TimerTask {
 			new QpApGudazi().startAllFgo(getMainArray(), getQpArray());
 			break;
 		}
+		case "SPqp" : {
+			new QpApGudaziForSpecial().startAllFgo(getMainArray(), getQpArray());
+			break;
+		}
 		case "exp" : {
 			new ExpApGudazi().startAllFgo(getMainArray(), getExpArray());
 			break;
@@ -209,7 +213,12 @@ public class Gudazi extends TimerTask {
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40};
-		new QpApGudazi().startAllFgo(getMainArray(), apArray);
+		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
+		if ("SPqp".equals(qts[1])) {
+			new QpApGudaziForSpecial().startAllFgo(getMainArray(), apArray);
+		} else {
+			new QpApGudazi().startAllFgo(getMainArray(), apArray);
+		}
 	}
 	public void mainAccountEXP40() throws Exception {
 		int[] expArray = {40,40,40,40,40,40,40,40,40,40,40,40

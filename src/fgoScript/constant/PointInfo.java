@@ -15,7 +15,7 @@ public class PointInfo {
 	public static final Point P_WEEK_ENTRANCE_02 = new Point(955, 598);
 
 	public static Point getP_WEEK_ENTRANCE() {
-		String code = PropertiesUtil.getValueFromConfig("WEEK_ENTRANCE");
+		String code = GameUtil.getValueFromConfig("WEEK_ENTRANCE");
 		if ("01".equals(code)) {
 			return P_WEEK_ENTRANCE_01;
 		} else if ("02".equals(code)) {

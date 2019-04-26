@@ -99,7 +99,7 @@ public class ProcessDeal {
 
 	public static void startTianTian(int account) {
 
-		String url = PropertiesUtil.getValueFromConfig("EXE_PATH");
+		String url = GameUtil.getValueFromConfig("EXE_PATH");
 		String line = url + "/TianTian.exe  -n " + account + " -t 天天二次元" + account + " -i " + url
 				+ "/apps/com.aniplex.fategrandorder.apk";
 		killAllTianTian();

@@ -7,7 +7,9 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import com.sun.org.apache.bcel.internal.generic.IFNULL;
+import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,11 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
-import fgoScript.entity.AbstractWaitForOutTime;
-import fgoScript.entity.CardComparator;
-import fgoScript.entity.ColorVo;
-import fgoScript.entity.CommonCard;
-import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedNextException;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
@@ -51,6 +48,12 @@ public abstract class AbstractApGudazi {
      * 选职介
      */
     public abstract Point getSuppotServant();
+    /**
+     * 入口json文件路径
+     */
+    public String getSpecialGatesFilePath(){
+        return null;
+    }
 
     /**
      * @param accountArray
@@ -843,7 +846,12 @@ public abstract class AbstractApGudazi {
          // 宝具动画延时
          GameUtil.delay(GameConstant.DELAY * 4);
     }
-
+    protected GatesInfo getSpecialGatesInfo(){
+        String filepath = getSpecialGatesFilePath();
+        String jsonString = GameUtil.getJsonString(filepath);
+        GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
+        return gi;
+    }
     public static void main(String[] args) {
     }
 }

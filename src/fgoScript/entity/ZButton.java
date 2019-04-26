@@ -363,7 +363,7 @@ public abstract class ZButton extends JButton implements Runnable{
     	PropertiesUtil.setValueForSkills(map);
     }
 	public void selectAccount() {
-		int[] FgoRewardArray = GameUtil.strToIntArray(PropertiesUtil.getValueFromConfig("FgoRewardArray"),true);
+		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
 		String text = this.getText();
 		text = text.substring(text.indexOf("账号")+2);
 		int account = Integer.valueOf(text);
