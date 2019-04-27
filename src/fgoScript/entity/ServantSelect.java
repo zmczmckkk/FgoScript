@@ -27,34 +27,35 @@ public class ServantSelect {
 		int dayOfWeek = getDayOfWeek();
 		int type = 0;
 		switch (dayOfWeek) {
-		case 1: {
-			type = GameConstant.CLASSIFY_LANCER;
-			break;
-		}
-		case 2: {
-			type = GameConstant.CLASSIFY_SABER;
-			break;
-		}
-		case 3: {
-			type = GameConstant.CLASSIFY_ALL;
-			break;
-		}
-		case 4: {
-			type = GameConstant.CLASSIFY_ASSASIN;
-			break;
-		}
-		case 5: {
-			type = GameConstant.CLASSIFY_RIDER;
-			break;
-		}
-		case 6: {
-			type = GameConstant.CLASSIFY_CASTER;
-			break;
-		}
-		case 7: {
-			type = GameConstant.CLASSIFY_ARCHER;
-			break;
-		}
+			case 1: {
+				type = GameConstant.CLASSIFY_LANCER;
+				break;
+			}
+			case 2: {
+				type = GameConstant.CLASSIFY_SABER;
+				break;
+			}
+			case 3: {
+				type = GameConstant.CLASSIFY_ALL;
+				break;
+			}
+			case 4: {
+				type = GameConstant.CLASSIFY_ASSASIN;
+				break;
+			}
+			case 5: {
+				type = GameConstant.CLASSIFY_RIDER;
+				break;
+			}
+			case 6: {
+				type = GameConstant.CLASSIFY_CASTER;
+				break;
+			}
+			case 7: {
+				type = GameConstant.CLASSIFY_ARCHER;
+				break;
+			}default: {
+			}
 		}
 		roomClassify = type;
 		return roomClassify;
@@ -105,6 +106,8 @@ public class ServantSelect {
 				case 7: {
 					point = p2;
 					break;
+				}
+				default: {
 				}
 			}
 		}

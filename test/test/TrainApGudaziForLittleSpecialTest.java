@@ -13,6 +13,9 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,8 @@ public class TrainApGudaziForLittleSpecialTest {
 
     @Before
     public void setUp() throws Exception {
+        String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";
+        new FileWriter(filepath).write("");
     }
 
     @After
@@ -31,6 +36,17 @@ public class TrainApGudaziForLittleSpecialTest {
 
     @Test
     public void insertIntoTrainingRoomForSpecial() {
+        insertIntoTrainingRoomForSpecialInner(10,10);
+        insertIntoTrainingRoomForSpecialInner(10,20);
+        insertIntoTrainingRoomForSpecialInner(10,30);
+        insertIntoTrainingRoomForSpecialInner(10,40);
+        insertIntoTrainingRoomForSpecialInner(10,10);
+        insertIntoTrainingRoomForSpecialInner(10,10);
+        insertIntoTrainingRoomForSpecialInner(10,10);
+        insertIntoTrainingRoomForSpecialInner(10,10);
+        insertIntoTrainingRoomForSpecialInner(10,10);
+    }
+    private void insertIntoTrainingRoomForSpecialInner(int acountNum, int apNum){
         //获取入口信息
         String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
         String jsonString = GameUtil.getJsonString(filepath);
@@ -44,16 +60,14 @@ public class TrainApGudaziForLittleSpecialTest {
         Point gatePoint;
         String idString;
         int classify;
-        int acountNum = 10;
-        int apNum = 10;
+        //测试账号10，ap10
         for (int i = 0; i < size; i++) {
             gatesTemp = gatesList.get(i);
             tempId = gatesTemp.getId();
 
             //如果已经刷了允许次数跳过
             idString = acountNum + "_" + tempId + "_" + apNum;
-            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum);
-
+            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum + "_" + apNum);
             if(StringUtils.isNotBlank(hasDoString) &&
                     hasDoString.contains(idString) && !hasDoString.contains("(" +idString+")"))     {
                 continue;
@@ -68,18 +82,30 @@ public class TrainApGudaziForLittleSpecialTest {
 //            GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
             //添加hasdo属性
             Map<String, String> hasMap = new HashMap<>();
-            if (i == size - 1) {
-                hasMap.put("hasDo_" + acountNum, "");
+            if (i == size - 1 ) {
+                hasMap.put("hasDo_" + acountNum + "_" + apNum, "");
             } else {
                 if (hasDoString.contains(idString)){
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString);
                 } else {
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString + acountNum + "_" + tempId + "_" + apNum);
                 }
             }
+            //测试输出文件内容
+            PropertiesUtil.setValueForspecialHasDo(hasMap);
+            if (i == size - 1 ) {
+                assertTrue("".equals(
+                        PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum + "_" + apNum)
+                        )
+                );
+            }else {
+                assertTrue(PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum + "_" + apNum).contains(idString)
+                );
+            }
             break;
+
         }
     }
 }

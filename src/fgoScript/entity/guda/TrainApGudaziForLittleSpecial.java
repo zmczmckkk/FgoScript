@@ -91,7 +91,7 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
 
             //如果已经刷了允许次数跳过
             idString = acountNum + "_" + tempId + "_" + apNum;
-            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum);
+            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum + "_" + apNum);
             if(StringUtils.isNotBlank(hasDoString) &&
                     hasDoString.contains(idString) && !hasDoString.contains("(" +idString+")"))     {
                 continue;
@@ -106,14 +106,14 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
             //添加hasdo属性
             Map<String, String> hasMap = new HashMap<>();
-            if (i == size - 1) {
-                hasMap.put("hasDo_" + acountNum, "");
+            if (i == size - 1 ) {
+                hasMap.put("hasDo_" + acountNum + "_" + apNum, "");
             } else {
                 if (hasDoString.contains(idString)){
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString);
                 } else {
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString + acountNum + "_" + tempId + "_" + apNum);
                 }
             }
