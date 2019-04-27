@@ -1,5 +1,7 @@
 package fgoScript.entity;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fgoScript.FgoPanel;
 import fgoScript.constant.GameConstant;
@@ -10,6 +12,7 @@ import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
 import fgoScript.service.ProcessDeal;
+import fgoScript.util.ClipBoardUtil;
 import fgoScript.util.GameUtil;
 import fgoScript.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -661,16 +664,53 @@ public class Gudazi extends TimerTask {
 	public void showPositionAndColor() {
 		Point p = GameUtil.getMousePosition();
 		Color color = GameUtil.getScreenPixel(p);
-		String rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
-		String showText = "坐标: " + p.getX() + ":" + p.getY() + " 颜色: " + rgbStr;
+		Map<String,String> ShowAndJsonMap =  getShowAndJsonContentByPointAndColor(p, color);
+		String jsonText =ShowAndJsonMap.get("jsonText");
+		String showText =ShowAndJsonMap.get("showText");
+		setSysClipboardText(jsonText);
 		JOptionPane.showMessageDialog(null, showText, "坐标颜色", JOptionPane.WARNING_MESSAGE);
-		String pointCode = "public static Point p = new Point(" + (int) p.getX() + "," + (int) p.getY() + ");";
-		String rgbCode = "public static Color c = new Color(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue()
-				+ ");	";
-		String clipText = pointCode + rgbCode;
-		setSysClipboardText(clipText);
+
+	}
+	public void moveToPositionByClipBoard() throws Exception {
+		String text = ClipBoardUtil.getSysClipboardText();
+		if (StringUtils.isNotBlank(text)) {
+			PointColor pc = JSONObject.parseObject(text, PointColor.class);
+			// 获取新颜色
+			pc.setColor(GameUtil.getScreenPixel(pc.getPoint()));
+			// 移动
+			GameUtil.mouseMoveByPoint(pc.getPoint());
+			// 将json存入text中
+			Map<String,String> ShowAndJsonMap =  getShowAndJsonContentByPointAndColor(pc.getPoint(), pc.getColor());
+			setSysClipboardText(ShowAndJsonMap.get("jsonText"));
+		} else {
+			throw new Exception("the json String in clipBord is empty !");
+		}
+
 	}
 
+	/**
+	 * 根据类型获取字符串
+	 * @return Map<String,String> (jsonText/showText)
+	 */
+	private Map<String,String> getShowAndJsonContentByPointAndColor(Point p, Color color){
+		Map<String,String> map = new HashMap<>();
+		String jsonText;
+		String showText;
+		String rgbStr;
+		String pointCode;
+		String rgbCode;
+		rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
+		pointCode = "{\n" +
+				"\t\t\"point\" : {\"x\" : " + (int) p.getX() + ", \"y\" : " + (int) p.getY() + "},\n";
+		rgbCode =        "\t\t\"color\" : {\"r\" : " + color.getRed() + ", \"g\" : " + color.getGreen() + ", \"b\" : " + color.getBlue()+"}\n"
+				+"}";
+		jsonText = pointCode + rgbCode;
+		rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
+		showText = "坐标: " + p.getX() + ":" + p.getY() + " 颜色: " + rgbStr;
+		map.put("jsonText",jsonText);
+		map.put("showText",showText);
+		return map;
+	}
 	public void moveToZero() {
 		r.mouseMove(0, 0);
 	}

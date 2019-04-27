@@ -255,6 +255,16 @@ public class FgoPanel extends JFrame implements ActionListener {
 				public void runMethod() {
 					deActiveAll();
 				}
+			},new ZButton("移动(S+W)",JIntellitype.MOD_SHIFT, (int) 'W',false, false, ZButton.pink) {
+				private static final long serialVersionUID = -7389326247723792445L;
+				@Override
+				public void runMethod() {
+					try {
+						new Gudazi().moveToPositionByClipBoard();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 	};
 	private final Zpanel backPanel = new Zpanel();
@@ -340,12 +350,19 @@ public class FgoPanel extends JFrame implements ActionListener {
 				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
+			else if (jbTemp.getText().contains("S+W")) {
+				jbTemp.addActionListener(this);
+				jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+				centerPanel.add(jbTemp);
+			}
 			else {
 				if ("开启账号".equals(jbTemp.getText())) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("获取鼠标")) {
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
+				} else if (jbTemp.getText().contains("刷EXP")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动按键")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
@@ -465,7 +482,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			}
 		};
 		exportCatalog.addActionListener(this);
-		exportCatalog.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+		exportCatalog.setBounds(220, 5 + (6 * (30+len)), 105, 25+len);
 		centerPanel.add(exportCatalog);
 		// 添加热键监听器
 		HotkeyListener listener = markCode -> {
