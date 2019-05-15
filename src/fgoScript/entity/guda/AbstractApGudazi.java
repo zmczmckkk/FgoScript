@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.bcel.internal.generic.IFNULL;
 import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +21,9 @@ import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.EventFactors;
-import fgoScript.service.ProcessDeal;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.ProcessDealUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 
 @SuppressWarnings("ALL")
 public abstract class AbstractApGudazi {
@@ -70,7 +69,7 @@ public abstract class AbstractApGudazi {
             try {
                 startOneFgo(accountNum, apArray);
                 // 关闭所有相关应用
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
             } catch (FgoNeedNextException e) {
                 LOGGER.info(e.getMessage());
                 GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_体力不足页面.");
@@ -80,7 +79,7 @@ public abstract class AbstractApGudazi {
             	throw e;
 			}finally {
 				if (ifClose) {
-					ProcessDeal.killAllTianTian();
+					ProcessDealUtil.killAllTianTian();
 				}
 			}
 
@@ -135,7 +134,7 @@ public abstract class AbstractApGudazi {
 			}else {
 				if (count == 0 || reStart == true) {
 					// 打开账号
-					ProcessDeal.startTianTian(accountNum);
+					ProcessDealUtil.startFgo(accountNum);
 					// 检测loading
 					move2WinAndTransferPage(accountNum);
 				}
@@ -158,7 +157,7 @@ public abstract class AbstractApGudazi {
         } catch (FgoNeedRestartException e) {
             LOGGER.info("进入房间异常！");
             LOGGER.info(e.getMessage());
-            ProcessDeal.killAllTianTian();
+            ProcessDealUtil.killAllTianTian();
             startFight(accountNum, apNum, true, count, apLen, appleCost);
             continueGo = false;
         }
@@ -173,7 +172,7 @@ public abstract class AbstractApGudazi {
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("战斗异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
                 continueGo = false;
             }
@@ -192,7 +191,7 @@ public abstract class AbstractApGudazi {
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("结算，返回异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
             }
         }

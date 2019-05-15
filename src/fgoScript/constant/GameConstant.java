@@ -1,7 +1,6 @@
 package fgoScript.constant;
 
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
 
 public class GameConstant {
 	public static final int DELAY = Integer.parseInt(GameUtil.getValueFromConfig("DELAY"));// 延时

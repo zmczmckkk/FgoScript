@@ -1,12 +1,11 @@
 package fgoScript.entity.guda;
 
-import com.alibaba.fastjson.JSON;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.Gates;
 import fgoScript.entity.GatesInfo;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;

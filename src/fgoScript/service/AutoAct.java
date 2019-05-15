@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import fgoScript.entity.PointColor;
-import fgoScript.util.GameUtil;
+import commons.util.GameUtil;
 
 public abstract class AutoAct {
 	// 点色判断集合

@@ -22,10 +22,10 @@ import javax.swing.border.MatteBorder;
 
 import com.sun.awt.AWTUtilities;
 
-import fgoScript.util.FileUtils;
-import fgoScript.util.GameUtil;
-import fgoScript.util.MyLineBorder;
-import fgoScript.util.VerifyCodeUtils;
+import commons.util.FileUtils;
+import commons.util.GameUtil;
+import commons.util.MyLineBorder;
+import commons.util.VerifyCodeUtils;
 public class Login1 {
 	private JFrame frame;//窗体
     private JTextField userNameField;//用户名输入框

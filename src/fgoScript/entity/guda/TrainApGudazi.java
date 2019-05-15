@@ -14,7 +14,7 @@ import fgoScript.constant.PointInfo;
 import fgoScript.entity.PointColor;
 import fgoScript.entity.ServantSelect;
 import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.util.GameUtil;
+import commons.util.GameUtil;
 
 public class TrainApGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(TrainApGudazi.class);

@@ -12,8 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 
 public class EventFactors {
 	public static final Point P_INSIDE = new Point(1218,564);

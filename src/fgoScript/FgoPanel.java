@@ -9,8 +9,8 @@ import fgoScript.entity.Gudazi;
 import fgoScript.entity.ZButton;
 import fgoScript.entity.Zpanel;
 import fgoScript.service.TimerManager;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -40,8 +40,8 @@ public class FgoPanel extends JFrame implements ActionListener {
 	private final ZButton[] bts = {
 			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
-				@Override
-				public void runMethod() throws Exception {
+				@Override				public void runMethod() throws Exception {
+
 					new Gudazi().openAllFGO();
 				}
 			},
@@ -237,7 +237,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				public void runMethod() {
 					this.selectIfRestart();
 				}
-			},new ZButton("坐标",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
+			},new ZButton("点击设置",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() {
@@ -329,7 +329,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
-			else if ("坐标".equals(jbTemp.getText())) {
+			else if ("点击设置".equals(jbTemp.getText())) {
 				jbTemp.setText("点击设置");
 				jbTemp.addActionListener(this);
 				eastPanel01.add(jbTemp);

@@ -3,11 +3,8 @@ package test;
 import com.alibaba.fastjson.JSONObject;
 import fgoScript.entity.Gudazi;
 import fgoScript.entity.PointColor;
-import fgoScript.util.ClipBoardUtil;
-import org.apache.logging.log4j.core.util.JsonUtils;
+import commons.util.ClipBoardUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class GudaziTest {
 

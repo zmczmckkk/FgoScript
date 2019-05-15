@@ -3,8 +3,7 @@ package fgoScript.constant;
 import java.awt.Color;
 import java.awt.Point;
 
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
 
 public class PointInfo {
 	// 滚动条重置点

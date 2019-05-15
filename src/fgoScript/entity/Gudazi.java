@@ -1,6 +1,5 @@
 package fgoScript.entity;
 
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fgoScript.FgoPanel;
@@ -11,10 +10,10 @@ import fgoScript.exception.FgoNeedNextException;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
-import fgoScript.service.ProcessDeal;
-import fgoScript.util.ClipBoardUtil;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.ProcessDealUtil;
+import commons.util.ClipBoardUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -572,7 +571,7 @@ public class Gudazi extends TimerTask {
 	 * 打开窗口方法
 	 */
 	private void openWindow(int location) {
-		ProcessDeal.startTianTian(location);
+		ProcessDealUtil.startFgo(location);
 	}
 
 	/**
@@ -719,10 +718,10 @@ public class Gudazi extends TimerTask {
 	 * 强制关闭fgo
 	 */
 	private void closeFgoByForce() {
-		ProcessDeal.killAllTianTian();
+		ProcessDealUtil.killAllTianTian();
 	}
 	private void closeComputer() {
-		ProcessDeal.closeComputer();
+		ProcessDealUtil.closeComputer();
 	}
 	public Gudazi() {
 		r = GameUtil.getRb();

@@ -2,8 +2,7 @@ package fgoScript.service;
 
 import fgoScript.FgoPanel;
 import fgoScript.entity.Gudazi;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

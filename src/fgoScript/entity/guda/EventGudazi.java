@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fgoScript.util.PropertiesUtil;
+import commons.util.PropertiesUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +17,7 @@ import fgoScript.entity.CardComparator;
 import fgoScript.entity.CommonCard;
 import fgoScript.entity.PointColor;
 import fgoScript.service.EventFactors;
-import fgoScript.util.GameUtil;
+import commons.util.GameUtil;
 
 public class EventGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(EventGudazi.class);
