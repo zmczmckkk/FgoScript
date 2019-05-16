@@ -54,10 +54,11 @@ public class ClipBoardUtil {
     public static Image getImageFromClipboard() throws Exception {
         Clipboard sysc = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable cc = sysc.getContents(null);
-        if (cc == null)
+        if (cc == null) {
             return null;
-        else if (cc.isDataFlavorSupported(DataFlavor.imageFlavor))
+        } else if (cc.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             return (Image) cc.getTransferData(DataFlavor.imageFlavor);
+        }
         return null;
         
     }
@@ -67,18 +68,22 @@ public class ClipBoardUtil {
      */
     public static void setClipboardImage(final Image image) {
         Transferable trans = new Transferable() {
+            @Override
             public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] { DataFlavor.imageFlavor };
             }
 
+            @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
                 return DataFlavor.imageFlavor.equals(flavor);
             }
 
+            @Override
             public Object getTransferData(DataFlavor flavor)
                     throws UnsupportedFlavorException {
-                if (isDataFlavorSupported(flavor))
+                if (isDataFlavorSupported(flavor)) {
                     return image;
+                }
                 throw new UnsupportedFlavorException(flavor);
             }
 

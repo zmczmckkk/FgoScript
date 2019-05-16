@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.generic.IFNULL;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -157,7 +156,7 @@ public class WuNa {
 							c0 = pointColor.getColor();
 							isEqual = pointColor.isEqual();
 							c1 = GameUtil.getScreenPixel(p,className);
-							flag = GameUtil.isEqualColor(c0, c1);
+							flag = GameUtil.likeEqualColor(c0, c1);
 							if (!isEqual) {
 								flag = !flag;
 							}

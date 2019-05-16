@@ -198,7 +198,7 @@ public class GameUtil {
 				c0 = pointColor.getColor();
 				isEqual = pointColor.isEqual();
 				c1 = GameUtil.getScreenPixel(p);
-				flag = isEqualColor(c1, c0);
+				flag = likeEqualColor(c1, c0);
 				if (!isEqual) {
 					flag = !flag;
 				}
@@ -340,7 +340,7 @@ public class GameUtil {
 				c0 = pointColor.getColor();
 				isEqual = pointColor.isEqual();
 				c1 = GameUtil.getScreenPixel(p);
-				flag = isEqualColor(c1, c0);
+				flag = likeEqualColor(c1, c0);
 				if (!isEqual) {
 					flag = !flag;
 				}
@@ -591,7 +591,7 @@ public class GameUtil {
 			p = pc.getPoint();
 			c = pc.getColor();
 			temp = GameUtil.getScreenPixel(p);
-			result = isEqualColor(c, temp);
+			result = likeEqualColor(c, temp);
 			if (!pc.isEqual()) {
 				result = !result;
 			}
@@ -708,8 +708,8 @@ public class GameUtil {
 			rb.mouseRelease(key);
 			rb.delay(GameConstant.DELAY*3);
 			temp = GameUtil.getScreenPixel(p);
-			flag = GameUtil.isEqualColor(c, temp);
-			flag2 = GameUtil.isEqualColor(temp2, temp);
+			flag = GameUtil.likeEqualColor(c, temp);
+			flag2 = GameUtil.likeEqualColor(temp2, temp);
 			if (pc == null) {
 				flag = flag || flag2;
 			}else {
@@ -731,6 +731,14 @@ public class GameUtil {
 			rb.mouseRelease(key);
 			rb.delay(GameConstant.DELAY / 8);
 	}
+	public static void mousePressAndReleaseForLongTime(int key,int milliSeconds) {
+		rb = getRb();
+		rb.delay(GameConstant.DELAY / 8);
+		rb.mousePress(key);
+		rb.delay(milliSeconds);
+		rb.mouseRelease(key);
+		rb.delay(GameConstant.DELAY / 8);
+	}
 	public static void keyPressAndRelease(int key) {
 			rb = getRb();
 			rb.keyPress(key);
@@ -740,10 +748,13 @@ public class GameUtil {
 			rb.delay(GameConstant.DELAY);
 	}
 	
-	public static boolean isEqualColor(Color c1, Color c2) {
+	public static boolean likeEqualColor(Color c1, Color c2) {
+		return likeEqualColor(c1, c2, 10);
+	}
+	public static boolean likeEqualColor(Color c1, Color c2, int minusValue) {
 		return (Math.abs(c1.getGreen() - c2.getGreen())
 				+ Math.abs(c1.getBlue() - c2.getBlue())
-		+ Math.abs(c1.getRed() - c2.getRed())) < 10;
+		+ Math.abs(c1.getRed() - c2.getRed())) < minusValue;
 	}
 	public static boolean isLargerColor(Color c1, Color c2) {
 		return (c1.getRed()+c1.getGreen()+c1.getBlue()
@@ -835,6 +846,13 @@ public class GameUtil {
 		rb.mouseMove(50, 30);
 		rb.delay(GameConstant.DELAY);
 		rb.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);
+	}
+	public static void ctrlV() {
+		rb.keyPress(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_Z);
+		rb.delay(GameConstant.DELAY/4);
+		rb.keyRelease(KeyEvent.VK_Z);
+		rb.keyRelease(KeyEvent.VK_CONTROL);
 	}
 	public static void delay(int delay) {
 		GameUtil.getRb().delay(delay);

@@ -80,7 +80,7 @@ public abstract class AutoAct {
 				PointColor pcTemp;
 				for (int j = 0; j < finishPCList.size(); j++) {
 					pcTemp = finishPCList.get(j);
-					match = GameUtil.isEqualColor(pcWait.getColor(), pcTemp.getColor());
+					match = GameUtil.likeEqualColor(pcWait.getColor(), pcTemp.getColor());
 					if (match) {
 						break;
 					}

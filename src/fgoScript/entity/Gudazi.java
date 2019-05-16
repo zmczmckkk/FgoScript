@@ -379,13 +379,13 @@ public class Gudazi extends TimerTask {
 				GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 				GameUtil.mouseMoveByPoint(p4);
 				temp = GameUtil.getScreenPixel(pRewardGet);
-				flag = GameUtil.isEqualColor(cRewardGet, temp);
+				flag = GameUtil.likeEqualColor(cRewardGet, temp);
 				if (flag) {
 					break;
 				}
 			}
 			temp = GameUtil.getScreenPixel(p3);
-			if (GameUtil.isEqualColor(c3, temp)) {
+			if (GameUtil.likeEqualColor(c3, temp)) {
 				GameUtil.mouseMoveByPoint(p6);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pc7);
 				pcList = new ArrayList<>();
@@ -438,7 +438,7 @@ public class Gudazi extends TimerTask {
 		Color c5 = new Color(31, 167, 202);
 		Color c5temp = GameUtil.getScreenPixel(p5);
 		for (int i = 0; i < 5; i++) {
-			if (GameUtil.isEqualColor(c5, c5temp)) {
+			if (GameUtil.likeEqualColor(c5, c5temp)) {
 				GameUtil.mouseMoveByPoint(p5);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 				Point p6 = new Point(886, 609);
@@ -500,7 +500,7 @@ public class Gudazi extends TimerTask {
 			@Override
 			public void doSomeThing() {
 				Color cWait = this.getPcWait().getColor();
-				if (GameUtil.isEqualColor(cTransfer, cWait)) {
+				if (GameUtil.likeEqualColor(cTransfer, cWait)) {
 					GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_引继页面.");
 				}
 			}
@@ -558,7 +558,7 @@ public class Gudazi extends TimerTask {
 			@Override
 			public void doSomeThing() {
 				Color cWait = this.getPcWait().getColor();
-				if (GameUtil.isEqualColor(cConfirmRd, cWait)) {
+				if (GameUtil.likeEqualColor(cConfirmRd, cWait)) {
 					GameUtil.img2file(IMG_EXTEND, PREFIX + "账号" + countNum + "_第" +  count + "战斗奖励页面.");
 				}
 			}

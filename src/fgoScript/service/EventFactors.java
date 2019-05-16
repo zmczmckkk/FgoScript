@@ -227,7 +227,7 @@ public class EventFactors {
 			for (int i = 0; i < num; i++) {
 				defaultTemp = DEFAULT_SKILL_COLORS[(int) map.get("from")][a[i]];
 				newTemp = NEW_SKILL_COLORS[(int) map.get("from")][a[i]];
-				if (GameUtil.isEqualColor(defaultTemp, newTemp)
+				if (GameUtil.likeEqualColor(defaultTemp, newTemp)
 						||GameUtil.isLargerColor(newTemp, defaultTemp)) {
 					newSkillsList.add(a[i]);
 				}

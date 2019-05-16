@@ -183,7 +183,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 			Color temp = GameUtil.getScreenPixel(p5);
 			LOGGER.info("三角位颜色：" + temp.toString());
 			// 如果是羁绊结算就停止循环
-			if (GameUtil.isEqualColor(c5, temp)) {
+			if (GameUtil.likeEqualColor(c5, temp)) {
 				LOGGER.info("羁绊了，跳出来");
 				break;
 			}
