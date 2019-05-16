@@ -1,12 +1,11 @@
 package fgoScript.entity.guda;
 
-import com.alibaba.fastjson.JSON;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.Gates;
 import fgoScript.entity.GatesInfo;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
@@ -91,7 +90,7 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
 
             //如果已经刷了允许次数跳过
             idString = acountNum + "_" + tempId + "_" + apNum;
-            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum);
+            String hasDoString = PropertiesUtil.getValueFromspecialHasDo("hasDo_" + acountNum + "_" + apNum);
             if(StringUtils.isNotBlank(hasDoString) &&
                     hasDoString.contains(idString) && !hasDoString.contains("(" +idString+")"))     {
                 continue;
@@ -106,14 +105,14 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
             //添加hasdo属性
             Map<String, String> hasMap = new HashMap<>();
-            if (i == size - 1) {
-                hasMap.put("hasDo_" + acountNum, "");
+            if (i == size - 1 ) {
+                hasMap.put("hasDo_" + acountNum + "_" + apNum, "");
             } else {
                 if (hasDoString.contains(idString)){
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString);
                 } else {
-                    hasMap.put("hasDo_" + acountNum,
+                    hasMap.put("hasDo_" + acountNum + "_" + apNum,
                             hasDoString + acountNum + "_" + tempId + "_" + apNum);
                 }
             }

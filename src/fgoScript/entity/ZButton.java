@@ -12,12 +12,10 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.Name;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
@@ -32,8 +30,8 @@ import com.melloware.jintellitype.JIntellitype;
 import aoshiScript.entity.WuNa;
 import fgoScript.constant.GameConstant;
 import fgoScript.exception.FgoNeedStopException;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import sun.swing.SwingUtilities2;
 
 public abstract class ZButton extends JButton implements Runnable{

@@ -9,8 +9,8 @@ import fgoScript.entity.Gudazi;
 import fgoScript.entity.ZButton;
 import fgoScript.entity.Zpanel;
 import fgoScript.service.TimerManager;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -40,8 +40,8 @@ public class FgoPanel extends JFrame implements ActionListener {
 	private final ZButton[] bts = {
 			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
-				@Override
-				public void runMethod() throws Exception {
+				@Override				public void runMethod() throws Exception {
+
 					new Gudazi().openAllFGO();
 				}
 			},
@@ -237,7 +237,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				public void runMethod() {
 					this.selectIfRestart();
 				}
-			},new ZButton("坐标",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
+			},new ZButton("点击设置",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() {
@@ -254,6 +254,16 @@ public class FgoPanel extends JFrame implements ActionListener {
 				@Override
 				public void runMethod() {
 					deActiveAll();
+				}
+			},new ZButton("移动(S+W)",JIntellitype.MOD_SHIFT, (int) 'W',false, false, ZButton.pink) {
+				private static final long serialVersionUID = -7389326247723792445L;
+				@Override
+				public void runMethod() {
+					try {
+						new Gudazi().moveToPositionByClipBoard();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 	};
@@ -319,7 +329,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
-			else if ("坐标".equals(jbTemp.getText())) {
+			else if ("点击设置".equals(jbTemp.getText())) {
 				jbTemp.setText("点击设置");
 				jbTemp.addActionListener(this);
 				eastPanel01.add(jbTemp);
@@ -340,12 +350,19 @@ public class FgoPanel extends JFrame implements ActionListener {
 				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
+			else if (jbTemp.getText().contains("S+W")) {
+				jbTemp.addActionListener(this);
+				jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+				centerPanel.add(jbTemp);
+			}
 			else {
 				if ("开启账号".equals(jbTemp.getText())) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("获取鼠标")) {
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
+				} else if (jbTemp.getText().contains("刷EXP")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动按键")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
@@ -465,7 +482,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 			}
 		};
 		exportCatalog.addActionListener(this);
-		exportCatalog.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+		exportCatalog.setBounds(220, 5 + (6 * (30+len)), 105, 25+len);
 		centerPanel.add(exportCatalog);
 		// 添加热键监听器
 		HotkeyListener listener = markCode -> {

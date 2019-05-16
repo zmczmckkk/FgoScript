@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.bcel.internal.generic.IFNULL;
 import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +21,9 @@ import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.EventFactors;
-import fgoScript.service.ProcessDeal;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.ProcessDealUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 
 @SuppressWarnings("ALL")
 public abstract class AbstractApGudazi {
@@ -70,7 +69,7 @@ public abstract class AbstractApGudazi {
             try {
                 startOneFgo(accountNum, apArray);
                 // 关闭所有相关应用
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
             } catch (FgoNeedNextException e) {
                 LOGGER.info(e.getMessage());
                 GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_体力不足页面.");
@@ -80,7 +79,7 @@ public abstract class AbstractApGudazi {
             	throw e;
 			}finally {
 				if (ifClose) {
-					ProcessDeal.killAllTianTian();
+					ProcessDealUtil.killAllTianTian();
 				}
 			}
 
@@ -135,7 +134,7 @@ public abstract class AbstractApGudazi {
 			}else {
 				if (count == 0 || reStart == true) {
 					// 打开账号
-					ProcessDeal.startTianTian(accountNum);
+					ProcessDealUtil.startFgo(accountNum);
 					// 检测loading
 					move2WinAndTransferPage(accountNum);
 				}
@@ -158,7 +157,7 @@ public abstract class AbstractApGudazi {
         } catch (FgoNeedRestartException e) {
             LOGGER.info("进入房间异常！");
             LOGGER.info(e.getMessage());
-            ProcessDeal.killAllTianTian();
+            ProcessDealUtil.killAllTianTian();
             startFight(accountNum, apNum, true, count, apLen, appleCost);
             continueGo = false;
         }
@@ -173,7 +172,7 @@ public abstract class AbstractApGudazi {
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("战斗异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
                 continueGo = false;
             }
@@ -192,7 +191,7 @@ public abstract class AbstractApGudazi {
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("结算，返回异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDeal.killAllTianTian();
+                ProcessDealUtil.killAllTianTian();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
             }
         }
@@ -219,8 +218,8 @@ public abstract class AbstractApGudazi {
             @Override
             public void doSomeThing() throws Exception {
                 Color cWait = this.getPcWait().getColor();
-                if (GameUtil.isEqualColor(c_apple_need01, cWait) ||
-						GameUtil.isEqualColor(c_apple_need02, cWait)) {
+                if (GameUtil.likeEqualColor(c_apple_need01, cWait) ||
+						GameUtil.likeEqualColor(c_apple_need02, cWait)) {
                     if (appleCost == GameConstant.APPLE_COUNT) {
                         LOGGER.info("已达到苹果消耗量，停止更新苹果。");
                         throw new FgoNeedNextException();
@@ -315,7 +314,7 @@ public abstract class AbstractApGudazi {
             @Override
             public void doSomeThing() {
                 Color cWait = this.getPcWait().getColor();
-                if (GameUtil.isEqualColor(PointInfo.C_TRANSFER, cWait)) {
+                if (GameUtil.likeEqualColor(PointInfo.C_TRANSFER, cWait)) {
                     GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_引继页面.");
                 }
             }
@@ -393,15 +392,15 @@ public abstract class AbstractApGudazi {
         Point ph3 = new Point(897, 396);// 颜色：156;150;140 灰色 等于
         Color ch3 = new Color(156, 150, 140);
         Color ch33 = GameUtil.getScreenPixel(ph3);
-        if (!GameUtil.isEqualColor(ch1, ch11)) {
+        if (!GameUtil.likeEqualColor(ch1, ch11)) {
             GameUtil.mouseMoveByPoint(ph1);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         }
-        if (!GameUtil.isEqualColor(ch2, ch22)) {
+        if (!GameUtil.likeEqualColor(ch2, ch22)) {
             GameUtil.mouseMoveByPoint(ph2);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         }
-        if (GameUtil.isEqualColor(ch3, ch33)) {
+        if (GameUtil.likeEqualColor(ch3, ch33)) {
             GameUtil.mouseMoveByPoint(ph3);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         }
@@ -472,7 +471,7 @@ public abstract class AbstractApGudazi {
             @Override
             public void doSomeThing() {
                 Color cWait = this.getPcWait().getColor();
-                if (GameUtil.isEqualColor(c_confirm_rd, cWait)) {
+                if (GameUtil.likeEqualColor(c_confirm_rd, cWait)) {
                     GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "账号" + accountNum + "_" + apNum + "ap第" +count+ "次奖励页面.");
                 }
             }
@@ -486,7 +485,7 @@ public abstract class AbstractApGudazi {
         Point pBack = null;
         LOGGER.info("开始返回首页");
         for (int i = 0; i < 20; i++) {
-            if (GameUtil.isEqualColor(cNotice, temp)) {
+            if (GameUtil.likeEqualColor(cNotice, temp)) {
                 break;
             }
             pBack = PointInfo.P_BACK;
@@ -820,7 +819,7 @@ public abstract class AbstractApGudazi {
 		Point p_guda = PointInfo.P_GUDA;
 		Color c_guda = PointInfo.C_GUDA;
 		Color Temp = GameUtil.getScreenPixel(p_guda);
-		if (GameUtil.isEqualColor(Temp, c_guda)) {
+		if (GameUtil.likeEqualColor(Temp, c_guda)) {
 			return true;
 		}
 		return false;
@@ -830,7 +829,7 @@ public abstract class AbstractApGudazi {
         Point p = PointInfo.P_CARD_EXIT;
         Color c = PointInfo.C_CARD_EXIT;
         Color temp = GameUtil.getScreenPixel(p);
-        boolean isColor = GameUtil.isEqualColor(c, temp);
+        boolean isColor = GameUtil.likeEqualColor(c, temp);
         if (isColor) {
             GameUtil.mouseMoveByPoint(p);
             GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);

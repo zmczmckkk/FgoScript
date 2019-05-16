@@ -12,8 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 
 public class EventFactors {
 	public static final Point P_INSIDE = new Point(1218,564);
@@ -227,7 +227,7 @@ public class EventFactors {
 			for (int i = 0; i < num; i++) {
 				defaultTemp = DEFAULT_SKILL_COLORS[(int) map.get("from")][a[i]];
 				newTemp = NEW_SKILL_COLORS[(int) map.get("from")][a[i]];
-				if (GameUtil.isEqualColor(defaultTemp, newTemp)
+				if (GameUtil.likeEqualColor(defaultTemp, newTemp)
 						||GameUtil.isLargerColor(newTemp, defaultTemp)) {
 					newSkillsList.add(a[i]);
 				}

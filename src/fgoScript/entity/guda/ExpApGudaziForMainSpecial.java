@@ -1,19 +1,14 @@
 package fgoScript.entity.guda;
 
-import com.alibaba.fastjson.JSON;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.Gates;
 import fgoScript.entity.GatesInfo;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
+import commons.util.GameUtil;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ExpApGudaziForMainSpecial extends ExpApGudazi{
     private String gatesDirPath;
@@ -41,6 +36,7 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
         super.fightOverMethod();
     }
 
+    @Override
     public void insertIntoExpRoom(int apNum) throws Exception {
         GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);

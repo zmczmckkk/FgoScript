@@ -6,7 +6,7 @@ import fgoScript.entity.CardComparator;
 import fgoScript.entity.CommonCard;
 import fgoScript.entity.PointColor;
 import fgoScript.service.EventFactors;
-import fgoScript.util.GameUtil;
+import commons.util.GameUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

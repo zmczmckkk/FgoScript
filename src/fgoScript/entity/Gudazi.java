@@ -1,5 +1,6 @@
 package fgoScript.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fgoScript.FgoPanel;
 import fgoScript.constant.GameConstant;
@@ -9,9 +10,10 @@ import fgoScript.exception.FgoNeedNextException;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
-import fgoScript.service.ProcessDeal;
-import fgoScript.util.GameUtil;
-import fgoScript.util.PropertiesUtil;
+import commons.util.ProcessDealUtil;
+import commons.util.ClipBoardUtil;
+import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -377,13 +379,13 @@ public class Gudazi extends TimerTask {
 				GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 				GameUtil.mouseMoveByPoint(p4);
 				temp = GameUtil.getScreenPixel(pRewardGet);
-				flag = GameUtil.isEqualColor(cRewardGet, temp);
+				flag = GameUtil.likeEqualColor(cRewardGet, temp);
 				if (flag) {
 					break;
 				}
 			}
 			temp = GameUtil.getScreenPixel(p3);
-			if (GameUtil.isEqualColor(c3, temp)) {
+			if (GameUtil.likeEqualColor(c3, temp)) {
 				GameUtil.mouseMoveByPoint(p6);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pc7);
 				pcList = new ArrayList<>();
@@ -436,7 +438,7 @@ public class Gudazi extends TimerTask {
 		Color c5 = new Color(31, 167, 202);
 		Color c5temp = GameUtil.getScreenPixel(p5);
 		for (int i = 0; i < 5; i++) {
-			if (GameUtil.isEqualColor(c5, c5temp)) {
+			if (GameUtil.likeEqualColor(c5, c5temp)) {
 				GameUtil.mouseMoveByPoint(p5);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 				Point p6 = new Point(886, 609);
@@ -498,7 +500,7 @@ public class Gudazi extends TimerTask {
 			@Override
 			public void doSomeThing() {
 				Color cWait = this.getPcWait().getColor();
-				if (GameUtil.isEqualColor(cTransfer, cWait)) {
+				if (GameUtil.likeEqualColor(cTransfer, cWait)) {
 					GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_引继页面.");
 				}
 			}
@@ -556,7 +558,7 @@ public class Gudazi extends TimerTask {
 			@Override
 			public void doSomeThing() {
 				Color cWait = this.getPcWait().getColor();
-				if (GameUtil.isEqualColor(cConfirmRd, cWait)) {
+				if (GameUtil.likeEqualColor(cConfirmRd, cWait)) {
 					GameUtil.img2file(IMG_EXTEND, PREFIX + "账号" + countNum + "_第" +  count + "战斗奖励页面.");
 				}
 			}
@@ -569,7 +571,7 @@ public class Gudazi extends TimerTask {
 	 * 打开窗口方法
 	 */
 	private void openWindow(int location) {
-		ProcessDeal.startTianTian(location);
+		ProcessDealUtil.startFgo(location);
 	}
 
 	/**
@@ -661,16 +663,53 @@ public class Gudazi extends TimerTask {
 	public void showPositionAndColor() {
 		Point p = GameUtil.getMousePosition();
 		Color color = GameUtil.getScreenPixel(p);
-		String rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
-		String showText = "坐标: " + p.getX() + ":" + p.getY() + " 颜色: " + rgbStr;
+		Map<String,String> ShowAndJsonMap =  getShowAndJsonContentByPointAndColor(p, color);
+		String jsonText =ShowAndJsonMap.get("jsonText");
+		String showText =ShowAndJsonMap.get("showText");
+		setSysClipboardText(jsonText);
 		JOptionPane.showMessageDialog(null, showText, "坐标颜色", JOptionPane.WARNING_MESSAGE);
-		String pointCode = "public static Point p = new Point(" + (int) p.getX() + "," + (int) p.getY() + ");";
-		String rgbCode = "public static Color c = new Color(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue()
-				+ ");	";
-		String clipText = pointCode + rgbCode;
-		setSysClipboardText(clipText);
+
+	}
+	public void moveToPositionByClipBoard() throws Exception {
+		String text = ClipBoardUtil.getSysClipboardText();
+		if (StringUtils.isNotBlank(text)) {
+			PointColor pc = JSONObject.parseObject(text, PointColor.class);
+			// 获取新颜色
+			pc.setColor(GameUtil.getScreenPixel(pc.getPoint()));
+			// 移动
+			GameUtil.mouseMoveByPoint(pc.getPoint());
+			// 将json存入text中
+			Map<String,String> ShowAndJsonMap =  getShowAndJsonContentByPointAndColor(pc.getPoint(), pc.getColor());
+			setSysClipboardText(ShowAndJsonMap.get("jsonText"));
+		} else {
+			throw new Exception("the json String in clipBord is empty !");
+		}
+
 	}
 
+	/**
+	 * 根据类型获取字符串
+	 * @return Map<String,String> (jsonText/showText)
+	 */
+	private Map<String,String> getShowAndJsonContentByPointAndColor(Point p, Color color){
+		Map<String,String> map = new HashMap<>();
+		String jsonText;
+		String showText;
+		String rgbStr;
+		String pointCode;
+		String rgbCode;
+		rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
+		pointCode = "{\n" +
+				"\t\t\"point\" : {\"x\" : " + (int) p.getX() + ", \"y\" : " + (int) p.getY() + "},\n";
+		rgbCode =        "\t\t\"color\" : {\"r\" : " + color.getRed() + ", \"g\" : " + color.getGreen() + ", \"b\" : " + color.getBlue()+"}\n"
+				+"}";
+		jsonText = pointCode + rgbCode;
+		rgbStr = color.getRed() + ";" + color.getGreen() + ";" + color.getBlue();
+		showText = "坐标: " + p.getX() + ":" + p.getY() + " 颜色: " + rgbStr;
+		map.put("jsonText",jsonText);
+		map.put("showText",showText);
+		return map;
+	}
 	public void moveToZero() {
 		r.mouseMove(0, 0);
 	}
@@ -679,10 +718,10 @@ public class Gudazi extends TimerTask {
 	 * 强制关闭fgo
 	 */
 	private void closeFgoByForce() {
-		ProcessDeal.killAllTianTian();
+		ProcessDealUtil.killAllTianTian();
 	}
 	private void closeComputer() {
-		ProcessDeal.closeComputer();
+		ProcessDealUtil.closeComputer();
 	}
 	public Gudazi() {
 		r = GameUtil.getRb();

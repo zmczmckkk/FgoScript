@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import fgoScript.entity.PointColor;
-import fgoScript.util.GameUtil;
+import commons.util.GameUtil;
 
 public abstract class AutoAct {
 	// 点色判断集合
@@ -80,7 +80,7 @@ public abstract class AutoAct {
 				PointColor pcTemp;
 				for (int j = 0; j < finishPCList.size(); j++) {
 					pcTemp = finishPCList.get(j);
-					match = GameUtil.isEqualColor(pcWait.getColor(), pcTemp.getColor());
+					match = GameUtil.likeEqualColor(pcWait.getColor(), pcTemp.getColor());
 					if (match) {
 						break;
 					}
