@@ -6,12 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import commons.entity.NativeCp;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,7 +72,13 @@ public class PropertiesUtil {
 		return getValue(filepath, key);
 	}
 	public static String getValueFromOpenFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/open.properties";
+		String filepath = System.getProperty("user.dir") + "/config/open_"+ NativeCp.getUserName() +".properties";
+		String value = getValue(filepath, key);
+		if (StringUtils.isBlank(value)) {
+			Map<String,String> tempMap = new HashMap<>();
+			tempMap.put("openAccount", "0");
+			setValueForOpen(tempMap);
+		}
 		return getValue(filepath, key);
 	}
 	public static String getValueFromSkillsFile(String key) {
@@ -148,7 +152,7 @@ public class PropertiesUtil {
 	 * @param map
 	 */
 	public static void setValueForOpen( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/open.properties";
+		String filepath = System.getProperty("user.dir") + "/config/open_"+ NativeCp.getUserName() +".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**

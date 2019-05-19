@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,7 +80,7 @@ public class WuNa {
 		}
         if (isGO()){
             Robot rb = GameUtil.getRb(this.getClass().getName());
-            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton");
+            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
             int factor = 0;
             switch(multiFactor){
                 case "0倍" : {
@@ -102,7 +103,7 @@ public class WuNa {
                     break;
                 }
             }
-            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton");
+            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
             if (startegy.equals("判断")) {
 				String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
 				String action = PropertiesUtil.getValueFromAutoClickFile("action");
@@ -229,46 +230,6 @@ public class WuNa {
 
 	}
 	public static void main(String[] args) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if (Cts.isFlag()) {
-					System.out.println("我进去了~啊，啊~~");
-					synchronized (Cts.ob) {
-						try {
-							Cts.ob.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					System.out.println("我出来了，你好棒，射的好满足啊");
-				}
-			}
-		}).start();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					String str;
-					for (int i = 0; i < 3; i++) {
-						str = "我";
-						for (int j = 0; j < i; j++) {
-							str+=" "; 
-						}
-						str+="插~";
-						System.out.println(str);
-						Thread.sleep(1000);
-					}
-					synchronized (Cts.ob) {
-						Cts.ob.notify();
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}).start();
 	}
 }
 class Cts {

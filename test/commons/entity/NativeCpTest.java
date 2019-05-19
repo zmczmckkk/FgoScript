@@ -27,4 +27,9 @@ public class NativeCpTest extends NativeCp {
         String username = super.getUserName();
         assertTrue(getUserDir().contains(username));
     }
+
+    @Test
+    public void openByssociatedExeTest() {
+        super.openByssociatedExe(getUserDir() + "/config/init.properties");
+    }
 }

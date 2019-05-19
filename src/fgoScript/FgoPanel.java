@@ -5,6 +5,7 @@ import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import commons.entity.NativeCp;
 import fgoScript.entity.Gudazi;
 import fgoScript.entity.ZButton;
 import fgoScript.entity.Zpanel;
@@ -403,7 +404,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		List<String> changeList = new ArrayList<>();
 		changeList.add("左键");
 		changeList.add("判断");
-		jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "clickStrategy", true, true, ZButton.pink);
+		jbTemp = ZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "clickStrategy", true, true, ZButton.pink);
 		jbTemp.setBounds(220, 5 + (10 * (30+len)), 50, 25+len);
 		jbTemp.addActionListener(this);
         centerPanel.add(jbTemp);
@@ -413,7 +414,7 @@ public class FgoPanel extends JFrame implements ActionListener {
         changeList.add("1倍");
         changeList.add("2倍");
         changeList.add("3倍");
-        jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "multiFactor", true, true, ZButton.pink);
+        jbTemp = ZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "multiFactor", true, true, ZButton.pink);
 		jbTemp.setBounds(275, 5 + (10 * (30+len)), 50, 25+len);
 		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);

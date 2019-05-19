@@ -16,12 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import commons.entity.NativeCp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -372,10 +370,17 @@ public abstract class ZButton extends JButton implements Runnable{
 				next = (++i == size) ? 0 : i;
 			}
 		}
-		this.setText("账号" + FgoRewardArray[next]);
-		Map<String, String> map = new HashMap<>();
-		map.put("openAccount", "" + FgoRewardArray[next]);
-    	PropertiesUtil.setValueForOpen(map);
+		if (size == 0) {
+			JOptionPane.showMessageDialog(null, "账号列表未设置！", "错误", JOptionPane.ERROR_MESSAGE);
+			NativeCp.openByssociatedExe(NativeCp.getUserDir() + "/config/init.properties");
+		}else{
+			this.setText("账号" + FgoRewardArray[next]);
+			Map<String, String> map = new HashMap<>();
+			map.put("openAccount", "" + FgoRewardArray[next]);
+			PropertiesUtil.setValueForOpen(map);
+		}
+
+
     }
     public void selectBattleStrategy() {
     	String strategy;
