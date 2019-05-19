@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import commons.entity.NativeCp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -85,7 +86,7 @@ public class PropertiesUtil {
 		return getValue(filepath, key);
 	}
 	public static String getValueFromAutoClickFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
+		String filepath = System.getProperty("user.dir") + "/config/clicks_"+ NativeCp.getUserName() +".properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromspecialHasDo(String key) {
@@ -155,7 +156,7 @@ public class PropertiesUtil {
 	 * @param map
 	 */
 	public static void setValueForAutoClick( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
+		String filepath = System.getProperty("user.dir") + "/config/clicks_"+ NativeCp.getUserName() +".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void setValueForspecialHasDo( Map<String, String> map) {
@@ -167,7 +168,7 @@ public class PropertiesUtil {
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void deleteAutoClickFile() {
-		String filepath = System.getProperty("user.dir") + "/config/clicks.properties";
+		String filepath = System.getProperty("user.dir") + "/config/clicks_"+ NativeCp.getUserName() +".properties";
 		File file = new File(filepath);
 		if (file.exists()) {
 			file.delete();
