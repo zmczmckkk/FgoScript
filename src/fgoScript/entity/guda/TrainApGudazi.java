@@ -414,13 +414,5 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		checkExitCardSelect();
 	}
-	public static void main(String[] args) {
-		try {
-			new TrainApGudazi().startAllFgo(new int[]{1,2,3,4,5,6,7,8,9}, new int[]{40,30,20,10,40,40,40,40,40,40,40,40,40});
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 }

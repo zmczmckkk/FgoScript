@@ -41,9 +41,9 @@ public class FgoPanel extends JFrame implements ActionListener {
 	private final ZButton[] bts = {
 			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
-				@Override				public void runMethod() throws Exception {
-
-					new Gudazi().openAllFGO();
+				@Override
+				public void runMethod() throws Exception {
+					new Gudazi().trainSamllFgo();
 				}
 			},
 			new ZButton("(小号+主号)领取奖励抽免费池",JIntellitype.MOD_SHIFT, (int) 'L',true, false, ZButton.pink) {

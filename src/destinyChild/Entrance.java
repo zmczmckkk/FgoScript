@@ -69,7 +69,13 @@ public class Entrance {
             }
         } while(isFlag());
     }
+    public void getPicsAndSavesForSummon(){
+        //自动按键脚本1开启，开一个线程
+        //等待邮箱红色提醒
+        //自动按键脚本2开启，
+        //等待
 
+    }
     private void waitForDoSomething() throws InterruptedException {
         Thread.sleep(3000);
     }
