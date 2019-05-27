@@ -26,27 +26,24 @@ import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 
 @SuppressWarnings("ALL")
-public abstract class AbstractApGudazi {
+public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private static final Logger LOGGER = LogManager.getLogger(AbstractApGudazi.class);
     private String PREFIX = GameUtil.getPreFix();
     private int retunTimes = 0;
     protected Color[][] DEFAULT_SKILL_COLORS;
-    /**
-     * 进入选择副本
-     * @param apNum ap数字
-     */
-    public abstract void intoAndSelect(int apNum, int account)throws Exception;
 
-    /**
-     * 战斗并结束
-     * @param rebootFlag
-     */
-    public abstract void fightAndStop(boolean rebootFlag, int apNum) throws Exception;
+    private int[] accountArray;
+    private int[] apArray;
+    @Override
+    public void setAccountArray(int[] accountArray) {
+        this.accountArray = accountArray;
+    }
 
-    /**
-     * 选职介
-     */
-    public abstract Point getSuppotServant();
+    @Override
+    public void setApArray(int[] apArray) {
+        this.apArray = apArray;
+    }
+
     /**
      * 入口json文件路径
      */
@@ -59,7 +56,8 @@ public abstract class AbstractApGudazi {
      * @param apArray
      * @throws Exception 
      */
-    public void startAllFgo(int[] accountArray, int[] apArray) throws Exception {
+    @Override
+    public void startAllFgo() throws Exception {
         int accountNum;
         int size = accountArray.length;
         boolean ifClose = true;
@@ -122,8 +120,6 @@ public abstract class AbstractApGudazi {
         	
         }
         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "账号" + accountNum + "_结束战斗首页.");
-    }
-    protected void fightOverMethod(){
     }
     private void startFight(int accountNum, int apNum, boolean reStart, int count, int apLen, int appleCost) throws Exception {
         boolean continueGo = true;

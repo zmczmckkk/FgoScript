@@ -1,261 +1,288 @@
-package fgoScript;
+package fgoScript.entity.panel;
 
 import aoshiScript.entity.WuNa;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import commons.entity.NativeCp;
+import commons.util.MySpringUtil;
 import fgoScript.entity.Gudazi;
-import fgoScript.entity.ZButton;
+import fgoScript.entity.BaseZButton;
 import fgoScript.entity.Zpanel;
-import fgoScript.service.TimerManager;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-
-//创建全局快捷键
-public class FgoPanel extends JFrame implements ActionListener {
+/**
+ * @description: Fgo界面框架
+ * @author: RENZHEHAO
+ * @create: 2019-05-22 03:45
+ **/
+public class FgoFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private static FgoPanel p;
-	public static FgoPanel instance() {
-		if (p == null) {
-			p = new FgoPanel();
-			return p;
+	private static FgoFrame f;
+	public static FgoFrame instance() {
+		if (f == null) {
+			f = (FgoFrame) MySpringUtil.getApplicationContext().getBean("fgoFrame");
+			return f;
 		}else {
-			return p;
+			return f;
 		}
 	}
 
-	private final ZButton[] bts = {
-			new ZButton("(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
-				private static final long serialVersionUID = 3981539681889014623L;
-				@Override				public void runMethod() throws Exception {
+	private WuNa wuna;
 
-					new Gudazi().openAllFGO();
+	public void setWuna(WuNa wuna) {
+		this.wuna = wuna;
+	}
+
+	@Override
+	public void setVisible(boolean b) {
+		super.setVisible(b);
+	}
+
+	/**
+	 * @Description: 初始化init() 构造函数
+	 * @Author: RENZHEHAO
+	 * @Date: 2019/5/22
+	 */
+	public FgoFrame() {
+		init();
+	}
+	private List<BaseZButton> getListFromJsonFile(){
+		return null;
+	}
+	private final BaseZButton[] bts = {
+			new BaseZButton(null, 0,"(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, BaseZButton.pink) {
+				private static final long serialVersionUID = 3981539681889014623L;
+				@Override
+				public void runMethod() throws Exception {
+
+					new Gudazi().trainSamllFgo();
 				}
 			},
-			new ZButton("(小号+主号)领取奖励抽免费池",JIntellitype.MOD_SHIFT, (int) 'L',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(小号+主号)领取奖励抽免费池",JIntellitype.MOD_SHIFT, (int) 'L',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 8200576435327725059L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().allRewardAndRoll();
 				}
 			},
-			new ZButton("(小号+主号)签到所有号",JIntellitype.MOD_SHIFT, (int) 'S',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(小号+主号)签到所有号",JIntellitype.MOD_SHIFT, (int) 'S',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 53933841194261802L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().signAllFGO();
 				}
 			},
-			new ZButton("(小号+主号)执行所有",JIntellitype.MOD_SHIFT, (int) 'T',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(小号+主号)执行所有",JIntellitype.MOD_SHIFT, (int) 'T',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 2069565531679104865L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().goAll();
 				}
 			},
-			new ZButton("(账号10)开始刷活动(Shift+K)",JIntellitype.MOD_SHIFT, (int) 'K',false, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(账号10)开始刷活动(Shift+K)",JIntellitype.MOD_SHIFT, (int) 'K',false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 1369499050729104861L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().eventingFgo();
 				}
 			},
-			new ZButton("(账号10)无限刷qp",JIntellitype.MOD_SHIFT, (int) 'Q',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(账号10)无限刷qp",JIntellitype.MOD_SHIFT, (int) 'Q',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = -7555639858773795825L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().mainAccountQP40();
 				}
 			},
-			new ZButton("(账号10)无限刷EXP",JIntellitype.MOD_SHIFT, (int) 'P',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"(账号10)无限刷EXP",JIntellitype.MOD_SHIFT, (int) 'P',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().mainAccountEXP40();
 				}
 			},
-			new ZButton("获取鼠标位置颜色(Shift+E)",JIntellitype.MOD_SHIFT, (int) 'E',false, false, ZButton.pink) {
+			new BaseZButton(null, 0,"获取鼠标位置颜色(Shift+E)",JIntellitype.MOD_SHIFT, (int) 'E',false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = -7389326247723796445L;
 				@Override
 				public void runMethod() {
 					new Gudazi().showPositionAndColor();
 				}
 			},
-			new ZButton("开启账号",JIntellitype.MOD_SHIFT, (int) 'O',true, false, ZButton.pink) {
+			new BaseZButton(null, 0,"开启账号",JIntellitype.MOD_SHIFT, (int) 'O',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 432750026975346042L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().openEvent();
 				}
 			},
-			new ZButton("自动战斗(Alt+Z)",JIntellitype.MOD_ALT, (int) 'Z',false, false, ZButton.pink) {
+			new BaseZButton(null, 0,"自动战斗(Alt+Z)",JIntellitype.MOD_ALT, (int) 'Z',false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = -7389326247723796445L;
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().onlyFight();
 				}
 			},
-			new ZButton("自动按键(Alt+X/1)",JIntellitype.MOD_ALT, (int) 'X', false, false, ZButton.pink) {
+			new BaseZButton(null, 0,"自动按键(Alt+X/1)",JIntellitype.MOD_ALT, (int) 'X', false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = -1900866258318497377L;
 				@Override
 				public void runMethod() {
-					WuNa.instance().alwaysClick();
+					wuna.alwaysClick();
 				}
 			},
-			new ZButton("skills01",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			new BaseZButton("skills01",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 7839671713774463047L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills01",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills01",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7414070501363863901L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills01",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills01",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 4355835973077552249L;
 
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills02",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills02",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 4947072762437664728L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills02",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills02",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 7846182532074063143L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills02",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills02",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 9020476815603182132L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills03",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills03",0," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 1575767177788722669L;
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills03",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills03",1," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 638308570629886471L;
 
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("skills03",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton("skills03",2," ", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 8648030433776394191L;
 
 				@Override
 				public void runMethod() {
 					this.activeButton();
 				}
-			},new ZButton("monster01", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"monster01", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -2891221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectMonster(0);
 				}
 			}
-			,new ZButton("monster02", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			,new BaseZButton(null, 0, "monster02", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -3891221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectMonster(1);
 				}
 			}
-			,new ZButton("monster03", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			,new BaseZButton(null, 0,"monster03", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7491221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectMonster(2);
 				}
 			}
-			,new ZButton("person01", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			,new BaseZButton(null, 0,"person01", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 8554261580079318513L;
 
 				@Override
 				public void runMethod() {
 					this.selectPerson(0);
 				}
-			},new ZButton("person02", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"person02", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7891221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectPerson(1);
 				}
-			},new ZButton("person03", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"person03", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -1891221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectPerson(2);
 				}
 			}
-			,new ZButton("终止", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, ZButton.pink) {
+			,new BaseZButton(null, 0,"终止", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7491221341872701498L;
 				@Override
 				public void runMethod() {
 					GameUtil.shutDownALl();
 				}
-			},new ZButton("暂停", JIntellitype.MOD_ALT, KeyEvent.VK_9, true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"暂停", JIntellitype.MOD_ALT, KeyEvent.VK_9, true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7491221341872701498L;
 				@Override
 				public void runMethod() {
 					GameUtil.waitOrContinue(this);
 				}
-			},new ZButton("超时", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"超时", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7491221341872701498L;
 				@Override
 				public void runMethod() {
 					GameUtil.setFORCE_OUTTIME(true);
 				}
-			},new ZButton("新开", JIntellitype.MOD_SHIFT, (int) 'i', true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"新开", JIntellitype.MOD_SHIFT, (int) 'i', true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = -7491221341872701498L;
 				@Override
 				public void runMethod() {
 					this.selectIfRestart();
 				}
-			},new ZButton("点击设置",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, ZButton.pink) {
+			},new BaseZButton(null, 0,"点击设置",JIntellitype.MOD_ALT, KeyEvent.VK_1,false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() {
-					WuNa.instance().configClick(this);
+					wuna.configClick(this);
 				}
-			},new ZButton("清空",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"清空",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() {
-					WuNa.instance().falshClick(this);
+					wuna.falshClick(this);
 				}
-			},new ZButton("解除激活",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+			},new BaseZButton(null, 0,"解除激活",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 				private static final long serialVersionUID = 6504858991507730448L;
 				@Override
 				public void runMethod() {
 					deActiveAll();
 				}
-			},new ZButton("移动(S+W)",JIntellitype.MOD_SHIFT, (int) 'W',false, false, ZButton.pink) {
+			},new BaseZButton(null, 0,"移动(S+W)",JIntellitype.MOD_SHIFT, (int) 'W',false, false, BaseZButton.pink) {
 				private static final long serialVersionUID = -7389326247723792445L;
 				@Override
 				public void runMethod() {
@@ -276,10 +303,6 @@ public class FgoPanel extends JFrame implements ActionListener {
 	private final Zpanel southPanel04 = new Zpanel();
 	private final Zpanel eastPanel01 = new Zpanel();
 	// 初始化
-	private FgoPanel() {
-		init();
-	}
-	// 初始化
 	private void init() {
 		// 面板对象s
 		backPanel.setLayout(new BorderLayout());
@@ -291,7 +314,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 		southPanel04.setLayout(new GridLayout(1, 1));
 		eastPanel01.setLayout(new GridLayout(1, 3));
 		// 添加按钮
-		ZButton jbTemp;
+		BaseZButton jbTemp;
 		int size = bts.length;
 		int skillcount = 0;
 		int len = 2;
@@ -300,7 +323,6 @@ public class FgoPanel extends JFrame implements ActionListener {
 			jbTemp.setMarkCode(i);
 			if (" ".equals(jbTemp.getText())) {
 				jbTemp.setText(jbTemp.getSkilStateText());
-				jbTemp.addActionListener(this);
 				southPanel01.add(jbTemp);
 				if (2 < skillcount && skillcount < 6) {
 					jbTemp.setSkillsStatus(1);
@@ -310,11 +332,9 @@ public class FgoPanel extends JFrame implements ActionListener {
 				skillcount++;
 			}else if (jbTemp.getText().contains("monster")) {
 				jbTemp.setText(jbTemp.getToMonsterText());
-				jbTemp.addActionListener(this);
 				southPanel03.add(jbTemp);
 			}else if (jbTemp.getText().contains("person")) {
 				jbTemp.setText(jbTemp.getToPersonText());
-				jbTemp.addActionListener(this);
 				southPanel02.add(jbTemp);
 			}else if ("终止".equals(jbTemp.getText())) {
 				jbTemp.setText("终止");
@@ -326,32 +346,26 @@ public class FgoPanel extends JFrame implements ActionListener {
 
 			}else if ("超时".equals(jbTemp.getText())) {
 				jbTemp.setText("超时");
-				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
 			else if ("点击设置".equals(jbTemp.getText())) {
 				jbTemp.setText("点击设置");
-				jbTemp.addActionListener(this);
 				eastPanel01.add(jbTemp);
 			}
 			else if ("清空".equals(jbTemp.getText())) {
 				jbTemp.setText("重置");
-				jbTemp.addActionListener(this);
 				eastPanel01.add(jbTemp);
 			}
 			else if ("解除激活".equals(jbTemp.getText())) {
 				jbTemp.setText("解除激活");
-				jbTemp.addActionListener(this);
 				jbTemp.setVerticalTextPosition(SwingConstants.CENTER);
 				eastPanel01.add(jbTemp);
 			}
 			else if ("新开".equals(jbTemp.getText())) {
 				jbTemp.setText(jbTemp.getReStartFlag());
-				jbTemp.addActionListener(this);
 				southPanel04.add(jbTemp);
 			}
 			else if (jbTemp.getText().contains("S+W")) {
-				jbTemp.addActionListener(this);
 				jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
 				centerPanel.add(jbTemp);
 			}
@@ -370,12 +384,11 @@ public class FgoPanel extends JFrame implements ActionListener {
 				} else {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 320, 25+len);
 				}
-				jbTemp.addActionListener(this);
 				centerPanel.add(jbTemp);
 			}
 		}
 		//选择账号按钮
-		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 8438279990543323489L;
 			@Override
 			public void runMethod() {
@@ -385,10 +398,9 @@ public class FgoPanel extends JFrame implements ActionListener {
 		int account = getAccount();
 		jbTemp.setText("账号" + account);
 		jbTemp.setBounds(220, 5 + (8 * (30+len)), 105, 25+len);
-		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
 		//选择战斗策略按钮
-		jbTemp = new ZButton("",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 8438279990546323489L;
 			@Override
 			public void runMethod() {
@@ -397,15 +409,13 @@ public class FgoPanel extends JFrame implements ActionListener {
 		};
 		jbTemp.setText(jbTemp.getskillStrategy());
 		jbTemp.setBounds(220, 5 + (9 * (30+len)), 105, 25+len);
-		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
 		//按键类型按钮
 		List<String> changeList = new ArrayList<>();
 		changeList.add("左键");
 		changeList.add("判断");
-		jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "clickStrategy", true, true, ZButton.pink);
+		jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "clickStrategy", true, true, BaseZButton.pink);
 		jbTemp.setBounds(220, 5 + (10 * (30+len)), 50, 25+len);
-		jbTemp.addActionListener(this);
         centerPanel.add(jbTemp);
 		//按键倍率按钮
         changeList = new ArrayList<>();
@@ -413,22 +423,20 @@ public class FgoPanel extends JFrame implements ActionListener {
         changeList.add("1倍");
         changeList.add("2倍");
         changeList.add("3倍");
-        jbTemp = ZButton.getChangeListButton(changeList,"changeButton", "multiFactor", true, true, ZButton.pink);
+        jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "multiFactor", true, true, BaseZButton.pink);
 		jbTemp.setBounds(275, 5 + (10 * (30+len)), 50, 25+len);
-		jbTemp.addActionListener(this);
 		centerPanel.add(jbTemp);
 		//显示背景按钮
-		ZButton showPicBt = new ZButton("显示背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+		BaseZButton showPicBt = new BaseZButton(null, 0,"显示背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
 				showBackGround();
 			}
 		};
-		showPicBt.addActionListener(this);
 		eastPanel01.add(showPicBt);
 		//切换背景按钮
-		ZButton changePicBt = new ZButton("切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+		BaseZButton changePicBt = new BaseZButton(null, 0,"切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
@@ -452,10 +460,9 @@ public class FgoPanel extends JFrame implements ActionListener {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
-		changePicBt.addActionListener(this);
 		eastPanel01.add(changePicBt);
 		//MD文件生成目录按钮
-		ZButton exportCatalog = new ZButton("md目录",JIntellitype.MOD_SHIFT, (int) 'P',true, true, ZButton.pink) {
+		BaseZButton exportCatalog = new BaseZButton(null, 0,"md目录",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730848L;
 			@Override
 			public void runMethod() {
@@ -481,14 +488,8 @@ public class FgoPanel extends JFrame implements ActionListener {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
-		exportCatalog.addActionListener(this);
 		exportCatalog.setBounds(220, 5 + (6 * (30+len)), 105, 25+len);
 		centerPanel.add(exportCatalog);
-		// 添加热键监听器
-		HotkeyListener listener = markCode -> {
-			ZButton zbt = bts[markCode];
-			new Thread(zbt).start();
-		};
 		centerPanel.setOpaque(false);
 		buttonPanel.setOpaque(false);
 		southPanel01.setOpaque(false);
@@ -507,17 +508,21 @@ public class FgoPanel extends JFrame implements ActionListener {
 		centerPanel.add(eastPanel01);
 		backPanel.add(centerPanel);
 		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
-		JIntellitype.getInstance().addHotKeyListener(listener);
+
 		this.add(backPanel);
 		this.setTitle("FGO-JAI");
 		this.setSize(335, 500);
 		this.setLocation(1537, 516);
-		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setAlwaysOnTop(true);
-		// 启动定时任务
-		new TimerManager();
+
+		// 添加热键监听器
+		HotkeyListener hotkeyListener = markCode -> {
+			BaseZButton zbt = bts[markCode];
+			new Thread(zbt).start();
+		};
+		JIntellitype.getInstance().addHotKeyListener(hotkeyListener);
 	}
 
 	public static int getAccount() {
@@ -528,8 +533,7 @@ public class FgoPanel extends JFrame implements ActionListener {
 					Integer.valueOf(openAccountStr);
 	}
 
-	private void addSouthPanle04(ZButton jbTemp) {
-		jbTemp.addActionListener(this);
+	private void addSouthPanle04(BaseZButton jbTemp) {
 		jbTemp.setAllowRepeat(true);
 		JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
 		southPanel04.add(jbTemp);
@@ -545,7 +549,7 @@ public class FgoPanel extends JFrame implements ActionListener {
             Component[] comps = centerPanel.getComponents();
             int size = comps.length;
             Component com;
-            ZButton zt;
+            BaseZButton zt;
             Component[] temps;
             int len;
             for (int i = 0; i < size; i++) {
@@ -555,8 +559,8 @@ public class FgoPanel extends JFrame implements ActionListener {
                         temps = ((Zpanel) com).getComponents();
                         len = temps.length;
                         for (int j = 0; j < len; j++) {
-                            if (temps[j] instanceof ZButton){
-                                ZButton ztTemp = (ZButton) temps[j];
+                            if (temps[j] instanceof BaseZButton){
+                                BaseZButton ztTemp = (BaseZButton) temps[j];
                                 if (!(ztTemp.getText().contains("显示")||ztTemp.getText().contains("切换"))){
                                     ztTemp.setVisible(!ztTemp.isVisible());
                                 }else{
@@ -589,48 +593,17 @@ public class FgoPanel extends JFrame implements ActionListener {
             backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
         }
 	}
-	// 事件监听
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		ZButton btTemp = (ZButton) e.getSource();
-		if (e.getActionCommand().contains(btTemp.getText())) {
-			btTemp.setEnabled(btTemp.isEnableStatus());
-			if (btTemp.isExcuteble()) {
-				btTemp.setExcuteColor();
-				new Thread(btTemp).start();
-				setExcutebleText(btTemp);
-			}else {
-				if ("点击设置".equals(btTemp.getText())) {
-					btTemp.setText("选择条件");
-				}else {
-					btTemp.setText(btTemp.getText()+" (已激活)");
-				}
-				btTemp.setActiveColor();
-				JIntellitype.getInstance().registerHotKey(btTemp.getMarkCode(), btTemp.getShortcunt01(), btTemp.getShortcunt02());
-			}
-		}
-	}
 
-	public static void setExcutebleText(ZButton btTemp) {
-		if (!btTemp.isEnableStatus()) {
-			String text = btTemp.getText();
-			if (text.lastIndexOf("(") != -1 && text.lastIndexOf("(") != 0) {
-				btTemp.setText(text.substring(0, text.lastIndexOf("(")) + "(执行中)");
-			}else {
-				btTemp.setText(text + " (执行中)");
-			}
-		}
-	}
 
-	public ZButton[] getBts() {
+	public BaseZButton[] getBts() {
 		return bts;
 	}
 
 	private void deActiveAll() {
-		ZButton[] zts = this.getBts();
-		ZButton btTemp;
+		BaseZButton[] zts = this.getBts();
+		BaseZButton btTemp;
 		String textTemp;
-		for (ZButton zt : zts) {
+		for (BaseZButton zt : zts) {
 			btTemp = zt;
 			if (!btTemp.isExcuteble()) {
 				JIntellitype.getInstance().unregisterHotKey(btTemp.getMarkCode());
@@ -639,9 +612,5 @@ public class FgoPanel extends JFrame implements ActionListener {
 				btTemp.setText(textTemp.replace(" (已激活)", ""));
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> p = new FgoPanel());
 	}
 }

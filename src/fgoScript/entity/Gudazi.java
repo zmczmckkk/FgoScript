@@ -2,7 +2,7 @@ package fgoScript.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import fgoScript.FgoPanel;
+import fgoScript.entity.panel.FgoFrame;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.guda.*;
@@ -30,7 +30,7 @@ import java.util.concurrent.*;
 
 /**
  * 咕哒子类
- * 
+ *
  * @author zmczm
  *
  */
@@ -40,31 +40,7 @@ public class Gudazi extends TimerTask {
 	private final int DELAY = GameConstant.DELAY;
 	private static boolean ifRestart;
 	private final Point DEAD_POINT = PointInfo.DEAD_POINT;
-	private int[] getFgoArray() {
-		return  GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoArray"),false);
-	}
 
-	private int[] getEventArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("EventArray"),false);
-	}
-
-	private int[] getApArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("apArray"),false);
-	}
-	private int[] getQpArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("qpArray"),false);
-	}
-	private int[] getExpArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("expArray"),false);
-	}
-
-	private int[] getFgoRewardArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),false);
-	}
-	private int[] getMainArray() {
-		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("mainArray"),false);
-	}
-	
 	public static boolean isIfRestart() {
 		return ifRestart;
 	}
@@ -77,7 +53,9 @@ public class Gudazi extends TimerTask {
 	private final String PREFIX = GameUtil.getPreFix();
 	private Robot r;
 	private int countNum;
-
+	private int[] getFgoRewardArray() {
+		return GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),false);
+	}
 	public Robot getR() {
 		return r;
 	}
@@ -124,8 +102,8 @@ public class Gudazi extends TimerTask {
 		});
 		singleThreadPool.shutdown();
 	}
-	public void openAllFGO() throws Exception {
-		new TrainApGudazi().startAllFgo(getFgoArray(), getApArray());
+	public void trainSamllFgo() throws Exception {
+		ApGudaziFactory.getInstance("train", "small", null).startAllFgo();
 	}
 	public void goAll() throws Exception{
 		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
@@ -139,68 +117,18 @@ public class Gudazi extends TimerTask {
 			}
 		}
 		//小号刷资源
-		switch(qts[0]){
-		case "train" : {
-			new TrainApGudazi().startAllFgo(getFgoArray(), getApArray());
-			break;
-		}
-		case "SPtrain" : {
-			new TrainApGudaziForLittleSpecial().startAllFgo(getFgoArray(), getApArray());
-			break;
-		}
-		case "qp" : {
-			new QpApGudazi().startAllFgo(getFgoArray(), getQpArray());
-			break;
-		}
-		case "exp" : {
-			new ExpApGudaziForMission().startAllFgo(getFgoArray(), getExpArray());
-			break;
-		}
-		default : {
-			break;
-		}
-		}
+		ApGudaziFactory.getInstance(qts[0],"small", null).startAllFgo();
 		//主账号刷qp
-		switch(qts[1]){
-		case "train" : {
-			new TrainApGudaziForMain().startAllFgo(getMainArray(), getApArray());
-			break;
-		}
-		case "SPtrain" : {
-			new TrainApGudaziForMainSpecial().startAllFgo(getMainArray(), getApArray());
-			break;
-		}
-		case "qp" : {
-			new QpApGudazi().startAllFgo(getMainArray(), getQpArray());
-			break;
-		}
-		case "SPqp" : {
-			new QpApGudaziForSpecial().startAllFgo(getMainArray(), getQpArray());
-			break;
-		}
-		case "exp" : {
-			new ExpApGudazi().startAllFgo(getMainArray(), getExpArray());
-			break;
-		}
-		case "SPexp" : {
-			new ExpApGudaziForMainSpecial().startAllFgo(getMainArray(), getExpArray());
-			break;
-		}
-		case "event" : {
-			new EventGudazi().startAllFgo(getEventArray(), getExpArray());
-			break;
-		}
-		default : {
-			break;
-		}
-		}
+		ApGudaziFactory.getInstance(qts[0],"big", null).startAllFgo();
+		//抽奖
 		allRewardAndRoll();
+		//是否关机
 		if (IF_CLOSE) {
 			closeComputer();
 		}
 	}
 	public void startMainAccount() throws Exception{
-		new QpApGudazi().startAllFgo(getMainArray(), getQpArray());
+		ApGudaziFactory.getInstance("qp", "big", null).startAllFgo();
 	}
 	public void mainAccountQP40() throws Exception {
 		int[] apArray = {40,40,40,40,40,40,40,40,40,40,40,40
@@ -216,11 +144,7 @@ public class Gudazi extends TimerTask {
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40};
 		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
-		if ("SPqp".equals(qts[1])) {
-			new QpApGudaziForSpecial().startAllFgo(getMainArray(), apArray);
-		} else {
-			new QpApGudazi().startAllFgo(getMainArray(), apArray);
-		}
+		ApGudaziFactory.getInstance(qts[1], "big", apArray).startAllFgo();
 	}
 	public void mainAccountEXP40() throws Exception {
 		int[] expArray = {40,40,40,40,40,40,40,40,40,40,40,40
@@ -236,20 +160,16 @@ public class Gudazi extends TimerTask {
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40};
 		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
-		if ("SPtrain".equals(qts[1])) {
-			new ExpApGudaziForMainSpecial().startAllFgo(getMainArray(), expArray);
-		} else {
-			new ExpApGudazi().startAllFgo(getMainArray(), expArray);
-		}
+		ApGudaziFactory.getInstance(qts[1], "big", expArray).startAllFgo();
 
 	}
 	public void eventingFgo() throws Exception {
-		new EventGudazi().startAllFgo(getEventArray(), getApArray());
+		ApGudaziFactory.getInstance("event", "event", null).startAllFgo();
 	}
 
 	public void openEvent() throws Exception {
-		int account = FgoPanel.getAccount();
-		countNum = FgoPanel.getAccount();
+		int account = FgoFrame.getAccount();
+		countNum = FgoFrame.getAccount();
 		try {
 			reNewRobot();
 			// 打开窗口
@@ -282,7 +202,7 @@ public class Gudazi extends TimerTask {
 	}
 	/**
 	 * 所有号领奖抽池
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void allRewardAndRoll() throws Exception {
 		int[] array = getFgoRewardArray();
@@ -301,7 +221,7 @@ public class Gudazi extends TimerTask {
 
 	/**
 	 * 一个号领奖抽池
-	 * 
+	 *
 	 * @param tip 账号
 	 * @throws Exception 异常
 	 */
@@ -338,7 +258,7 @@ public class Gudazi extends TimerTask {
 
 	/**
 	 * 获取任务奖励
-	 * 
+	 *
 	 * @throws Exception //
 	 */
 	private void getRewords() throws Exception {
@@ -408,7 +328,7 @@ public class Gudazi extends TimerTask {
 
 	/**
 	 * 抽取免费池子
-	 * 
+	 *
 	 * @throws Exception 异常
 	 */
 	private void pickFreeSummon() throws Exception {
@@ -449,11 +369,11 @@ public class Gudazi extends TimerTask {
 				break;
 			}
 		}
-		
+
 	}
 	/***
 	 * 签到一个FGO
-	 * 
+	 *
 	 * @throws Exception 异常
 	 */
 	private void signOneFGO(int tip) throws Exception {
@@ -726,7 +646,7 @@ public class Gudazi extends TimerTask {
 	public Gudazi() {
 		r = GameUtil.getRb();
 	}
-	
+
 	private void waitForHomePage() throws Exception {
 		r.delay(DELAY*5);
 		// 公告×点
@@ -747,7 +667,7 @@ public class Gudazi extends TimerTask {
 		pcList.add(new PointColor(p_notice_exit_dark, c_notice_exit_dark, p_notice_exit_dark, true));
 		List<PointColor> finishPCList = new ArrayList<>();
 		finishPCList.add(new PointColor(p_guda, c_guda, dead_point, true));
- 
+
 		AutoAct ac = new AutoAct(pcList, finishPCList) {
 			@Override
 			public void doSomeThing() {
@@ -770,15 +690,15 @@ public class Gudazi extends TimerTask {
 			pLoc = new Point((int) p_card_click.getX() + i * 260, (int) p_card_click.getY());
 			pColor = new Point((int) p_card_color.getX() + i * 260, (int) p_card_color.getY());
 			pWeak = new Point((int) p_card_weak.getX() + i * 260, (int) p_card_weak.getY());
-			
+
 			cc = new CommonCard();
 			cc.setpLoc(pLoc);
 			//判断颜色
 			cColor = GameUtil.getScreenPixel(pColor);
 //			LOGGER.info(cColor.toString());
 			ColorVo[] voArray = {new ColorVo(GameConstant.RED, cColor.getRed())
-					, new ColorVo(GameConstant.GREEN, cColor.getGreen()) 
-					, new ColorVo(GameConstant.BLUE, cColor.getBlue()) 
+					, new ColorVo(GameConstant.GREEN, cColor.getGreen())
+					, new ColorVo(GameConstant.BLUE, cColor.getBlue())
 					};
 			ColorVo tempVo;
 			//冒泡排序从小到大
@@ -799,9 +719,9 @@ public class Gudazi extends TimerTask {
 			cColor = GameUtil.getScreenPixel(pWeak);
 //			LOGGER.info(cColor.toString());
 			if (cColor.getGreen() <50 && cColor.getBlue()<50) {
-				cc.setWeak(true);	
+				cc.setWeak(true);
 			}else {
-				cc.setWeak(false);	
+				cc.setWeak(false);
 			}
 //			LOGGER.info(cc.isWeak());
 			ccList.add(cc);
@@ -832,11 +752,11 @@ public class Gudazi extends TimerTask {
 			this.cancel();
 			LOGGER.info("9点以后执行刷本计划！");
 			LOGGER.info("此次计划结束后将结束计划并关机！");
-		} 
-		ZButton btTemp = FgoPanel.instance().getBts()[3];
+		}
+		BaseZButton btTemp = FgoFrame.instance().getBts()[3];
 		btTemp.setEnabled(btTemp.isEnableStatus());
 		btTemp.setExcuteColor();
-		FgoPanel.setExcutebleText(btTemp);
+		btTemp.setExcutebleText();
 		btTemp.run();
 		if (GameUtil.isSTOP_SCRIPT()) {
 			LOGGER.info(">>>>>>>>>>  当前计划已经终止！     <<<<<<<<<<<");

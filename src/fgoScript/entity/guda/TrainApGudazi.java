@@ -33,10 +33,12 @@ public class TrainApGudazi extends AbstractApGudazi {
 	public Point getSuppotServant() {
 		return ServantSelect.getPoint();
 	}
-	
-	
-	
-	
+
+	@Override
+	public void fightOverMethod() {
+	}
+
+
 	private void insertIntoTrainingRoom(int apNum) throws Exception {
 		// 拉滚动条至最下上
 		GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
@@ -413,14 +415,6 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(pTemp);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		checkExitCardSelect();
-	}
-	public static void main(String[] args) {
-		try {
-			new TrainApGudazi().startAllFgo(new int[]{1,2,3,4,5,6,7,8,9}, new int[]{40,30,20,10,40,40,40,40,40,40,40,40,40});
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

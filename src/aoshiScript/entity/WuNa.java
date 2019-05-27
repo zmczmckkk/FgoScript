@@ -9,16 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ddxoft.DDTest;
+import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.melloware.jintellitype.JIntellitype;
 
-import fgoScript.FgoPanel;
+import fgoScript.entity.panel.FgoFrame;
 import fgoScript.constant.GameConstant;
 import fgoScript.entity.PointColor;
-import fgoScript.entity.ZButton;
+import fgoScript.entity.BaseZButton;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 
@@ -30,15 +32,6 @@ public class WuNa {
 	private String name;
 	private int count ;
 	private int clickCount ;
-	private static WuNa wuna;
-	public static WuNa instance() {
-		if (wuna == null) {
-			wuna = new WuNa("wuna");
-			return wuna;
-		}else {
-			return wuna;
-		}
-	}
 	public WuNa(String name) {
 		super();
 		this.name = name;
@@ -79,7 +72,7 @@ public class WuNa {
 		}
         if (isGO()){
             Robot rb = GameUtil.getRb(this.getClass().getName());
-            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton");
+            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
             int factor = 0;
             switch(multiFactor){
                 case "0倍" : {
@@ -102,7 +95,7 @@ public class WuNa {
                     break;
                 }
             }
-            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton");
+            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
             if (startegy.equals("判断")) {
 				String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
 				String action = PropertiesUtil.getValueFromAutoClickFile("action");
@@ -162,7 +155,8 @@ public class WuNa {
 							}
 							if (flag) {
 								rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
-								mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+//								mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+								mousePressAndReleaseByNum5();
 							}
 							rb.delay(200 * factor);
 						}
@@ -178,7 +172,7 @@ public class WuNa {
 
 		
 	}
-	public void configClick(ZButton bt) {
+	public void configClick(BaseZButton bt) {
 		String text = bt.getText();
 		if ("点击设置".equals(text)) {
 			bt.setText("选择条件");
@@ -190,9 +184,9 @@ public class WuNa {
 			bt.setText("选择条件");
 		}
 	}
-	public void falshClick(ZButton bt) {
-		ZButton[] bts = FgoPanel.instance().getBts();
-		ZButton setbt =bts[bts.length-4];
+	public void falshClick(BaseZButton bt) {
+		BaseZButton[] bts = FgoFrame.instance().getBts();
+		BaseZButton setbt =bts[bts.length-4];
 		setbt.setEnabled(true);
 		setbt.setText("点击设置");
 		JIntellitype.getInstance().unregisterHotKey(setbt.getMarkCode());
@@ -228,47 +222,13 @@ public class WuNa {
 		rb.mouseRelease(key);
 
 	}
+	private  void mousePressAndReleaseByNum5() {
+		Robot rb = GameUtil.getRb(this.getClass().getName());
+		DDTest.DD.INSTANCE.DD_btn(1);
+		rb.delay(GameConstant.DELAY/10);
+		DDTest.DD.INSTANCE.DD_btn(2);
+	}
 	public static void main(String[] args) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if (Cts.isFlag()) {
-					System.out.println("我进去了~啊，啊~~");
-					synchronized (Cts.ob) {
-						try {
-							Cts.ob.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					System.out.println("我出来了，你好棒，射的好满足啊");
-				}
-			}
-		}).start();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					String str;
-					for (int i = 0; i < 3; i++) {
-						str = "我";
-						for (int j = 0; j < i; j++) {
-							str+=" "; 
-						}
-						str+="插~";
-						System.out.println(str);
-						Thread.sleep(1000);
-					}
-					synchronized (Cts.ob) {
-						Cts.ob.notify();
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}).start();
 	}
 }
 class Cts {

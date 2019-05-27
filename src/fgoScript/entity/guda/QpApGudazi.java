@@ -32,23 +32,9 @@ public class QpApGudazi extends AbstractApGudazi{
 		return PointInfo.P_SERVANT_FOUR;
 	}
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void fightOverMethod() {
+    }
 
 
     private void fightAndBackForQp(boolean rebootFlag) throws Exception {

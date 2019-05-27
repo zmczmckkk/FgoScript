@@ -32,11 +32,6 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
     }
 
     @Override
-    protected void fightOverMethod() {
-        super.fightOverMethod();
-    }
-
-    @Override
     public void insertIntoExpRoom(int apNum) throws Exception {
         GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
