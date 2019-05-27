@@ -5,7 +5,7 @@ import com.sun.jna.Native;
 public class DDTest {
 	 public static void main(String[] args) {
 		 System.out.println("���Կ�ʼ");
-		 
+
 		 //DD.INSTANCE.DD_mov(500, 500);   //�����ƶ�
 		 //DD.INSTANCE.DD_movR(100, 100); //����ƶ�
 		 //DD.INSTANCE.DD_btn(4);DD.INSTANCE.DD_btn(8); //����Ҽ�
@@ -21,6 +21,6 @@ public class DDTest {
 		   public int DD_btn(int btn);
 		   public int DD_whl(int whl);
 		   public int DD_key(int ddcode, int flag);
-		   public int DD_str(String s);  
+		   public int DD_str(String s);
 	 }
 }
