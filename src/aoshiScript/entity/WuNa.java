@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ddxoft.DDTest;
 import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +17,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.melloware.jintellitype.JIntellitype;
 
-import fgoScript.FgoPanel;
+import fgoScript.entity.panel.FgoFrame;
 import fgoScript.constant.GameConstant;
 import fgoScript.entity.PointColor;
-import fgoScript.entity.ZButton;
+import fgoScript.entity.BaseZButton;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 
@@ -31,15 +32,6 @@ public class WuNa {
 	private String name;
 	private int count ;
 	private int clickCount ;
-	private static WuNa wuna;
-	public static WuNa instance() {
-		if (wuna == null) {
-			wuna = new WuNa("wuna");
-			return wuna;
-		}else {
-			return wuna;
-		}
-	}
 	public WuNa(String name) {
 		super();
 		this.name = name;
@@ -163,7 +155,8 @@ public class WuNa {
 							}
 							if (flag) {
 								rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
-								mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+//								mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+								mousePressAndReleaseByNum5();
 							}
 							rb.delay(200 * factor);
 						}
@@ -179,7 +172,7 @@ public class WuNa {
 
 		
 	}
-	public void configClick(ZButton bt) {
+	public void configClick(BaseZButton bt) {
 		String text = bt.getText();
 		if ("点击设置".equals(text)) {
 			bt.setText("选择条件");
@@ -191,9 +184,9 @@ public class WuNa {
 			bt.setText("选择条件");
 		}
 	}
-	public void falshClick(ZButton bt) {
-		ZButton[] bts = FgoPanel.instance().getBts();
-		ZButton setbt =bts[bts.length-4];
+	public void falshClick(BaseZButton bt) {
+		BaseZButton[] bts = FgoFrame.instance().getBts();
+		BaseZButton setbt =bts[bts.length-4];
 		setbt.setEnabled(true);
 		setbt.setText("点击设置");
 		JIntellitype.getInstance().unregisterHotKey(setbt.getMarkCode());
@@ -228,6 +221,12 @@ public class WuNa {
 		rb.delay(GameConstant.DELAY/10);
 		rb.mouseRelease(key);
 
+	}
+	private  void mousePressAndReleaseByNum5() {
+		Robot rb = GameUtil.getRb(this.getClass().getName());
+		DDTest.DD.INSTANCE.DD_btn(1);
+		rb.delay(GameConstant.DELAY/10);
+		DDTest.DD.INSTANCE.DD_btn(2);
 	}
 	public static void main(String[] args) {
 	}

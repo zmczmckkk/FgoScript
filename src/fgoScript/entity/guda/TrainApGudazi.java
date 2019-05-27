@@ -33,10 +33,12 @@ public class TrainApGudazi extends AbstractApGudazi {
 	public Point getSuppotServant() {
 		return ServantSelect.getPoint();
 	}
-	
-	
-	
-	
+
+	@Override
+	public void fightOverMethod() {
+	}
+
+
 	private void insertIntoTrainingRoom(int apNum) throws Exception {
 		// 拉滚动条至最下上
 		GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);

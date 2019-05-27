@@ -35,4 +35,9 @@ public interface InterfaceApGudazi {
      * @param apArray
      */
     public abstract void setApArray(int[] apArray);
+
+    /**
+     * 一场战斗结束后的处理方法
+     */
+    public abstract void fightOverMethod();
 }

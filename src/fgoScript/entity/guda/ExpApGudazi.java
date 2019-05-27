@@ -35,6 +35,10 @@ public class ExpApGudazi extends AbstractApGudazi {
 		return PointInfo.P_SERVANT_CASTER;
 	}
 
+	@Override
+	public void fightOverMethod() {
+	}
+
 
 	public void insertIntoExpRoom(int apNum) throws Exception {
     	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);

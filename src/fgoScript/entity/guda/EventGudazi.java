@@ -33,6 +33,11 @@ public class EventGudazi extends AbstractApGudazi {
 	public Point getSuppotServant() {
 		return PointInfo.P_SERVANT_MIX;
 	}
+
+	@Override
+	public void fightOverMethod() {
+	}
+
 	private void insertIntoEventRoom() throws Exception {
     	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);

@@ -121,8 +121,6 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         }
         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "账号" + accountNum + "_结束战斗首页.");
     }
-    protected void fightOverMethod(){
-    }
     private void startFight(int accountNum, int apNum, boolean reStart, int count, int apLen, int appleCost) throws Exception {
         boolean continueGo = true;
         boolean rebootFlag = false;

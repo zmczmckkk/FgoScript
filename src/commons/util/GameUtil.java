@@ -41,7 +41,7 @@ import org.apache.logging.log4j.Logger;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.PointColor;
-import fgoScript.entity.ZButton;
+import fgoScript.entity.BaseZButton;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
 import fgoScript.service.EventFactors;
@@ -114,7 +114,7 @@ public class GameUtil {
 		return WAIT_FLAG;
 	}
 	
-	public static void waitOrContinue(ZButton zt) {
+	public static void waitOrContinue(BaseZButton zt) {
 		if (WAIT_COUNT++%2 ==0) {
 			WAIT_FLAG = true;
 			zt.setText("继续");

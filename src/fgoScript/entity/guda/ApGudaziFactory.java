@@ -1,5 +1,6 @@
 package fgoScript.entity.guda;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import commons.util.GameUtil;
 
 public class ApGudaziFactory {
@@ -37,11 +38,35 @@ public class ApGudaziFactory {
         //设置工作类型
         switch(workType){
             case "train" : {
-                apGudazi = new TrainApGudazi();
+                switch(accountType){
+                    case "big" : {
+                        apGudazi = new TrainApGudaziForMain();
+                        break;
+                    }
+                    case "small" : {
+                        apGudazi = new TrainApGudazi();
+                        break;
+                    }
+                    default : {
+                        apGudazi = null;
+                    }
+                }
                 break;
             }
             case "SPtrain" : {
-                apGudazi = new TrainApGudaziForLittleSpecial();
+                switch(accountType){
+                    case "big" : {
+                        apGudazi = new TrainApGudaziForMainSpecial();
+                        break;
+                    }
+                    case "small" : {
+                        apGudazi = new TrainApGudaziForLittleSpecial();
+                        break;
+                    }
+                    default : {
+                        apGudazi = null;
+                    }
+                }
                 break;
             }
             case "qp" : {
@@ -53,11 +78,24 @@ public class ApGudaziFactory {
                 break;
             }
             case "exp" : {
-                apGudazi = new ExpApGudaziForMission();
+                switch(accountType){
+                    case "big" : {
+                        apGudazi = new ExpApGudazi();
+                        break;
+                    }
+                    case "small" : {
+                        apGudazi = new ExpApGudaziForMission();
+                        break;
+                    }
+                    default : {
+                        apGudazi = null;
+                    }
+                }
+
                 break;
             }
             case "event" : {
-                apGudazi = new ExpApGudaziForMission();
+                apGudazi = new EventGudazi();
                 break;
             }
             default : {

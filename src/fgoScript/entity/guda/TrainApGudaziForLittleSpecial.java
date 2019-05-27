@@ -122,7 +122,7 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
     }
 
     @Override
-    protected void fightOverMethod() {
+    public void fightOverMethod() {
         PropertiesUtil.setValueForspecialHasDo(getHasMap());
     }
 

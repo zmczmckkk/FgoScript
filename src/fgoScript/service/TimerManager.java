@@ -1,6 +1,6 @@
 package fgoScript.service;
 
-import fgoScript.FgoPanel;
+import fgoScript.entity.panel.FgoFrame;
 import fgoScript.entity.Gudazi;
 import commons.util.GameUtil;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -17,10 +17,18 @@ import java.util.concurrent.TimeUnit;
 
 public class TimerManager {
 	private static final Logger LOGGER = LogManager.getLogger(TimerManager.class);
-	// 时间间隔
+	// 定时任务执行间隔 时，分，秒，毫秒
 	private static final long PERIOD_TIME = 12 * 60 * 60 * 1000;
-
 	public TimerManager() {
+	}
+	/**
+	 * @Description: 启动定时任务
+	 * @return: void
+	 * @throw: 
+	 * @Author: RENZHEHAO
+	 * @Date: 2019/5/22
+	 */
+	public void startTasks(){
 		String path = GameUtil.getValueFromConfig("EXE_PATH");
 		path = path.replace("^", "");
 		String time = "";
@@ -62,15 +70,14 @@ public class TimerManager {
 					} catch (InterruptedException e) {
 						LOGGER.error(GameUtil.getStackMsg(e));
 					}
-					FgoPanel.instance().changeBackGround();
+					FgoFrame.instance().changeBackGround();
 				} while (true);
 			}
 		}, 3000, TimeUnit.MILLISECONDS);
 		LOGGER.info("壁纸切换已启动！" + time);
 	}
-
 	// 增加或减少天数
-	public Date modifyTime(Date date, Date nowDate, long period) {
+	private Date modifyTime(Date date, Date nowDate, long period) {
 		if (date.before(nowDate)) {
 			date = new Date(date.getTime()+period);
 			if (date.before(nowDate)) {
@@ -79,7 +86,7 @@ public class TimerManager {
 		}
 		return date;
 	}
-	public static void deleteDirs(File f){
+	private static void deleteDirs(File f){
 		if (f.isDirectory()) {
 			File [] b = f.listFiles();//获取包含file对象对应的子目录或者文件
 			File temp;
@@ -150,8 +157,5 @@ public class TimerManager {
 		} catch (Exception e) {
 			LOGGER.error(GameUtil.getStackMsg(e));
 		}
-	}
-	public static void main(String[] args) {
-		new TimerManager();
 	}
 }
