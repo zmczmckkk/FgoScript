@@ -1,35 +1,36 @@
 ﻿{
   "fileManagePoint": {
-    "x": 0,
-    "y": 0
+    "x": 598,
+    "y": 147
   },
   "fileManageColor": {
-    "r": 0,
-    "g": 0,
-    "b": 0
+    "r": 241,
+    "g": 94,
+    "b": 145
   },
   "filesPoint": {
-    "x": 0,
-    "y": 0
+    "x": 1014,
+    "y": 266
   },
   "saveFilePoint": {
-    "x": 0,
-    "y": 0
+    "x": 931,
+    "y": 359
+
   },
   "renamePoint": {
-    "x": 0,
-    "y": 0
+    "x": 1035,
+    "y": 578
   },
   "saveYesPoint": {
-    "x": 0,
-    "y": 0
+    "x": 1144,
+    "y": 714
   },
   "closeDestinyPoint": {
-    "x": 0,
-    "y": 0
+    "x": 833,
+    "y": 159
   },
   "homePagePoint": {
-    "x": 0,
-    "y": 0
+    "x": 494,
+    "y": 157
   }
 }

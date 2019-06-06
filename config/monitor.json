@@ -77,15 +77,11 @@
       {
         "point": "512, 613",
         "color": "217, 216, 217"
-      },
-      {
-        "point": "516, 621",
-        "color": "0, 0, 0"
       }
     ],
     "clickPointArray": [
       {
-        "point": "516, 621"
+        "point": "512, 613"
       }
     ],
     "throwException": "false",
