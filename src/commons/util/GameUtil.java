@@ -32,6 +32,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.alibaba.fastjson.*;
+import com.ddxoft.DDTest;
 import fgoScript.entity.ColorMonitor;
 import fgoScript.entity.GatesInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -235,7 +236,13 @@ public class GameUtil {
 		CHECK_COUNT++;
 		return returnPC;
 	}
-
+	/**
+	 * @Description: 等待颜色
+	 * @param pocoList PointColor对象集合
+	 * @return: fgoScript.entity.PointColor
+	 * @Author: RENZHEHAO
+	 * @Date: 2019/6/5
+	 */
 	public static PointColor waitUntilOneColor(List<PointColor> pocoList) throws FgoNeedRestartException, FgoNeedStopException  {
 		PointColor returnPC = null;
 		Callable<PointColor> task = () -> waitUntilOneColorInner(pocoList);
@@ -723,6 +730,12 @@ public class GameUtil {
 		} while (flag);
 		
 	}
+	public static void mousePressAndReleaseByDD() {
+		rb = getRb();
+		DDTest.DD.INSTANCE.DD_btn(1);
+		rb.delay(GameConstant.DELAY/10);
+		DDTest.DD.INSTANCE.DD_btn(2);
+	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();
 			rb.delay(GameConstant.DELAY / 8);
@@ -754,7 +767,7 @@ public class GameUtil {
 	public static boolean likeEqualColor(Color c1, Color c2, int minusValue) {
 		return (Math.abs(c1.getGreen() - c2.getGreen())
 				+ Math.abs(c1.getBlue() - c2.getBlue())
-		+ Math.abs(c1.getRed() - c2.getRed())) < minusValue;
+		+ Math.abs(c1.getRed() - c2.getRed())) <= minusValue;
 	}
 	public static boolean isLargerColor(Color c1, Color c2) {
 		return (c1.getRed()+c1.getGreen()+c1.getBlue()
@@ -910,5 +923,19 @@ public class GameUtil {
 			PropertiesUtil.setValueForInitTemp(map);
 		}
 		return fgoArrayStr;
+	}
+
+	public static void main2(String[] args) {
+		Robot r = null;
+		try {
+			r = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		Color temp = r.getPixelColor(100,100);
+		Color oColor = new Color(100,100,100);
+		if (temp.equals(oColor)) {
+			//做你要的操作
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package fgoScript.entity.panel;
 
+import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -41,7 +42,7 @@ public class FgoFrame extends JFrame {
 		}
 	}
 
-	private WuNa wuna;
+	private IWuNa wuna;
 
 	public void setWuna(WuNa wuna) {
 		this.wuna = wuna;
@@ -423,6 +424,11 @@ public class FgoFrame extends JFrame {
         changeList.add("1倍");
         changeList.add("2倍");
         changeList.add("3倍");
+		changeList.add("4倍");
+		changeList.add("5倍");
+		changeList.add("6倍");
+		changeList.add("7倍");
+		changeList.add("8倍");
         jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "multiFactor", true, true, BaseZButton.pink);
 		jbTemp.setBounds(275, 5 + (10 * (30+len)), 50, 25+len);
 		centerPanel.add(jbTemp);

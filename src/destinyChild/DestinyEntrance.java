@@ -7,11 +7,9 @@ import destinyChild.entity.GuestSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.Date;
 
-public class Entrance {
+public class DestinyEntrance {
     private boolean flag = true;
-
     public boolean isFlag() {
         return flag;
     }
@@ -19,7 +17,6 @@ public class Entrance {
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-
     public void getAllGuestSaves(){
         //线程1（自动按键）
         //线程2

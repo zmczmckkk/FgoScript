@@ -11,7 +11,9 @@ public class GuestSave {
     private Point filesPoint;
     //save文件坐标点
     private Point saveFilePoint;
-    //重命名坐标点
+    /**
+     * 重命名坐标点
+     */
     private Point renamePoint;
     //确认修改坐标点
     private Point saveYesPoint;

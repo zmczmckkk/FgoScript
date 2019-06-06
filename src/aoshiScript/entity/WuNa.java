@@ -3,13 +3,8 @@ package aoshiScript.entity;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.ddxoft.DDTest;
 import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,11 +19,24 @@ import fgoScript.entity.BaseZButton;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 
+import javax.print.attribute.standard.Finishings;
 import javax.swing.*;
 
-public class WuNa {
+public class WuNa implements IWuNa{
 	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
 	private static boolean GO = false;
+	boolean scucess = true;
+
+	@Override
+	public boolean isScucess() {
+		return scucess;
+	}
+
+	@Override
+	public void setScucess(boolean scucess) {
+		this.scucess = scucess;
+	}
+
 	private String name;
 	private int count ;
 	private int clickCount ;
@@ -51,11 +59,13 @@ public class WuNa {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
 	public boolean isGO() {
 		return GO;
 	}
-	public void setGO(boolean gO) {
-		GO = gO;
+	@Override
+	public void setGO(boolean go) {
+		GO = go;
 	}
 	
 	public int getClickCount() {
@@ -64,6 +74,7 @@ public class WuNa {
 	public void setClickCount(int clickCount) {
 		this.clickCount = clickCount;
 	}
+	@Override
 	public void alwaysClick() {
         if (isGO()) {
 			setGO(false);
@@ -72,106 +83,106 @@ public class WuNa {
 		}
         if (isGO()){
             Robot rb = GameUtil.getRb(this.getClass().getName());
-            String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
-            int factor = 0;
-            switch(multiFactor){
-                case "0倍" : {
-                    factor = 0;
-                    break;
-                }case "1倍" : {
-                    factor = 1;
-                    break;
-                }
-                case "2倍" : {
-                    factor = 2;
-                    break;
-                }
-                case "3倍" : {
-                    factor = 3;
-                    break;
-                }
-                default : {
-                    factor = 0;
-                    break;
-                }
-            }
+            int factor = getFactor();
             String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
             if (startegy.equals("判断")) {
-				String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion");
-				String action = PropertiesUtil.getValueFromAutoClickFile("action");
-				condiTion = StringUtils.isBlank(condiTion) ? "" : condiTion.substring(0, condiTion.length()-1);
-				action = StringUtils.isBlank(action) ? "" : action.substring(0, action.length()-1);
-				String[] pcStr = condiTion.split(";");
-				String[] acStr = action.split(";");
-				int size = pcStr.length;
-				int len = acStr.length;
-				if (StringUtils.isBlank(condiTion)) {
-					JOptionPane.showMessageDialog(null, "请点击设置按键！", "信息", JOptionPane.INFORMATION_MESSAGE);
-					setGO(false);
-				}else if(StringUtils.isBlank(action) || size!=len){
-					JOptionPane.showMessageDialog(null, "按键不完整，请补全或重新设置！", "信息", JOptionPane.WARNING_MESSAGE);
-					setGO(false);
-				}else {
-					int minSize = size < len ? size:len;
-					if (size!=len) {
-						LOGGER.info("配置不成对，忽略最后一次点击");
-					}
-					List<PointColor> pcList = new ArrayList<>();
-					String pointStr;
-					String colorStr;
-
-					for (int i = 0; i < minSize; i++) {
-						pointStr = pcStr[i].split("_")[0];
-						colorStr = pcStr[i].split("_")[1];
-						pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
-								Integer.parseInt(pointStr.split(",")[1])),
-								new Color(Integer.parseInt(colorStr.split(",")[0]),
-										Integer.parseInt(colorStr.split(",")[1]),
-										Integer.parseInt(colorStr.split(",")[2])), true));
-
-					}
-					List<Point> pList = new ArrayList<>();
-					for (int i = 0; i < minSize; i++) {
-						pList.add(new Point(Integer.parseInt(acStr[i].split(",")[0]),
-								Integer.parseInt(acStr[i].split(",")[1])));
-					}
-					PointColor pointColor = null;
-					Point p;
-					Color c0;
-					Color c1;
-					boolean flag = true;
-					boolean isEqual;
-					String className = this.getClass().getName();
-					do {
-						for (int i = 0; i < minSize; i++) {
-							pointColor = pcList.get(i);
-							p = pointColor.getPoint();
-							c0 = pointColor.getColor();
-							isEqual = pointColor.isEqual();
-							c1 = GameUtil.getScreenPixel(p,className);
-							flag = GameUtil.likeEqualColor(c0, c1);
-							if (!isEqual) {
-								flag = !flag;
-							}
-							if (flag) {
-								rb.mouseMove((int) pList.get(i).getX(), (int) pList.get(i).getY());
-//								mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-								mousePressAndReleaseByNum5();
-							}
-							rb.delay(200 * factor);
-						}
-					} while (isGO());
-				}
+				alwaysClickForStrategy("clicks", null);
             }else {
                 while (isGO()) {
-                    rb.delay(200 * factor);
-                    mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                    rb.delay(600 * factor);
+                    GameUtil.mousePressAndReleaseByDD();
                 }
             }
         }
 
-		
 	}
+	private int getFactor(){
+		String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
+		int factor = Integer.parseInt(multiFactor.substring(0,multiFactor.indexOf("倍")));
+		return factor;
+	}
+	@Override
+	public void alwaysClickForStrategy(String fileName,Integer factor) {
+		// 初始化参数
+		setScucess(true);
+		setGO(true);
+
+		Robot rb = GameUtil.getRb(this.getClass().getName());
+		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion", fileName);
+		String action = PropertiesUtil.getValueFromAutoClickFile("action", fileName);
+		condiTion = StringUtils.isBlank(condiTion) ? "" : condiTion.substring(0, condiTion.length()-1);
+		action = StringUtils.isBlank(action) ? "" : action.substring(0, action.length()-1);
+		String[] pcStr = condiTion.split(";");
+		String[] acStr = action.split(";");
+		int size = pcStr.length;
+		int len = acStr.length;
+		if (StringUtils.isBlank(condiTion)) {
+			JOptionPane.showMessageDialog(null, "请点击设置按键！", "信息", JOptionPane.INFORMATION_MESSAGE);
+			setGO(false);
+			setScucess(false);
+		}else if(StringUtils.isBlank(action) || size!=len){
+			JOptionPane.showMessageDialog(null, "按键不完整，请补全或重新设置！", "信息", JOptionPane.WARNING_MESSAGE);
+			setGO(false);
+			setScucess(false);
+		}else {
+			int minSize = size < len ? size:len;
+			if (size!=len) {
+				LOGGER.info("配置不成对，忽略最后一次点击");
+			}
+			List<PointColor> pcList = new ArrayList<>();
+			String pointStr;
+			String colorStr;
+
+			for (int i = 0; i < minSize; i++) {
+				pointStr = pcStr[i].split("_")[0];
+				colorStr = pcStr[i].split("_")[1];
+				pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
+						Integer.parseInt(pointStr.split(",")[1])),
+						new Color(Integer.parseInt(colorStr.split(",")[0]),
+								Integer.parseInt(colorStr.split(",")[1]),
+								Integer.parseInt(colorStr.split(",")[2])), true));
+
+			}
+			List<Point> pList = new ArrayList<>();
+			for (int i = 0; i < minSize; i++) {
+				pList.add(new Point(Integer.parseInt(acStr[i].split(",")[0]),
+						Integer.parseInt(acStr[i].split(",")[1])));
+			}
+			PointColor pointColor = null;
+			Point p;
+			Color c0;
+			Color c1;
+			boolean flag = true;
+			boolean isEqual;
+			String className = this.getClass().getName();
+			int count = 0;
+			Random r=new Random();
+			int ri;
+			do {
+				for (int i = 0; i < minSize; i++) {
+					ri = r.nextInt(minSize);
+					System.out.println("scanning!");
+					pointColor = pcList.get(ri);
+					p = pointColor.getPoint();
+					c0 = pointColor.getColor();
+					isEqual = pointColor.isEqual();
+					c1 = GameUtil.getScreenPixel(p,className);
+					flag = GameUtil.likeEqualColor(c0, c1, 10);
+					if (!isEqual) {
+						flag = !flag;
+					}
+					if (flag) {
+						rb.mouseMove((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
+						GameUtil.mousePressAndReleaseByDD();
+					}
+					rb.delay(factor == null ? 200 * getFactor() : factor);
+				}
+			} while (isGO() && count++ < 200);
+		}
+		System.out.println("finish auto click sacnning");
+	}
+
+	@Override
 	public void configClick(BaseZButton bt) {
 		String text = bt.getText();
 		if ("点击设置".equals(text)) {
@@ -184,6 +195,7 @@ public class WuNa {
 			bt.setText("选择条件");
 		}
 	}
+	@Override
 	public void falshClick(BaseZButton bt) {
 		BaseZButton[] bts = FgoFrame.instance().getBts();
 		BaseZButton setbt =bts[bts.length-4];
@@ -222,12 +234,7 @@ public class WuNa {
 		rb.mouseRelease(key);
 
 	}
-	private  void mousePressAndReleaseByNum5() {
-		Robot rb = GameUtil.getRb(this.getClass().getName());
-		DDTest.DD.INSTANCE.DD_btn(1);
-		rb.delay(GameConstant.DELAY/10);
-		DDTest.DD.INSTANCE.DD_btn(2);
-	}
+
 	public static void main(String[] args) {
 	}
 }

@@ -89,9 +89,12 @@ public class PropertiesUtil {
 		String filepath = System.getProperty("user.dir") + "/config/hasDo.properties";
 		return getValue(filepath, key);
 	}
-	public static String getValueFromAutoClickFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/clicks_"+ NativeCp.getUserName() +".properties";
+	public static String getValueFromAutoClickFile(String key, String fileName) {
+		String filepath = System.getProperty("user.dir") + "/config/"+ fileName +"_"+ NativeCp.getUserName() +".properties";
 		return getValue(filepath, key);
+	}
+	public static String getValueFromAutoClickFile(String key) {
+		return getValueFromAutoClickFile(key,"clicks");
 	}
 	public static String getValueFromspecialHasDo(String key) {
 		String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";

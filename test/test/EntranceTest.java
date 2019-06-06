@@ -1,15 +1,13 @@
 package test;
 
-import destinyChild.Entrance;
+import destinyChild.DestinyEntrance;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class EntranceTest {
 
     @Test
     public void getAllGuestSaves() {
-        Entrance et = new Entrance();
+        DestinyEntrance et = new DestinyEntrance();
         new Thread(new Runnable() {
             @Override
             public void run() {

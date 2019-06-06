@@ -23,7 +23,7 @@
          	<Filters>
 				<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="NEUTRAL" />
  			</Filters>
-            <PatternLayout pattern="${console_layout_pattern}" />
+            <PatternLayout pattern="${console_layoutx_pattern}" />
         </Console>
 		<!--输出查看日志的配置 -->	
        	<RollingFile name="InfoFile" fileName="${rollingfile_info-file}"
