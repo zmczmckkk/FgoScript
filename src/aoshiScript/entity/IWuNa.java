@@ -27,7 +27,7 @@ public interface IWuNa {
      * @Author: RENZHEHAO
      * @Date: 2019/6/3
      */
-    public void alwaysClickForStrategy(String fileName,Integer factor);
+    public void alwaysClickForStrategy(String fileName, Integer factor, boolean alwaysGo);
     /**
      * @Description: 配置鼠标点色操作
      * @param bt

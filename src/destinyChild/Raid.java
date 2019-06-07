@@ -3,6 +3,7 @@ package destinyChild;
 import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import destinyChild.entity.RaidFilterMenu;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * @description: Raid战斗挂机
@@ -53,18 +55,23 @@ public class Raid implements IRaid{
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-
+    private void optionClik(){
+        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+                .setNameFormat("option-pool-%d").setDaemon(false).build();
+        ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 2,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+        singleThreadPool.execute(()-> {
+                System.out.println("optionClick start!");
+                new WuNa("optionClick").alwaysClickForStrategy("optionClick", 2000, true);
+                System.out.println("optionClick end!");
+        });
+    }
     @Override
     public void raidBattleStart(){
+        //单启动一个线程B:实时点色教程操作。用来处理断线，重启，升级，补票等操作
+        optionClik();
         while (isFlag() && wuna.isScucess()) {
-            //启动一个线程B:实时点色教程操作。用来处理断线，重启，升级，补票等操作
-            threadPoolTaskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    new WuNa("optionClick").alwaysClickForStrategy("optionClick", 5000);
-
-                }
-            });
             // 设置列表过滤项为：未参加，参加人数（降序）
             try {
                 setFilterOptions();
@@ -105,7 +112,7 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("runClick", null);
+                wuna.alwaysClickForStrategy("runClick", null, false);
             }
         });
         // 当完成一场战斗后，点解结束按钮。结束所有线程
@@ -141,7 +148,7 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("filterClick", null);
+                wuna.alwaysClickForStrategy("filterClick", null, false);
             }
         });
         //如果两个颜色符合条件，点击确认。
@@ -179,12 +186,22 @@ public class Raid implements IRaid{
         Color tempColor;
         int size = menu.getStopPointList().size();
         boolean flag = true;
+        boolean clickFlag = true;
         while (flag) {
             for (int i = 0; i < size; i++) {
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
-                    GameUtil.mouseMoveByPoint(menu.getStopClickPoint());
-                    GameUtil.mousePressAndReleaseByDD();
+                    // 循环点击，防止点击无效。
+                    do {
+                        tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
+                        if (!GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
+                            clickFlag=false;
+                        }else{
+                            GameUtil.mouseMoveByPoint(menu.getStopClickPoint());
+                            GameUtil.mousePressAndReleaseByDD();
+                        }
+                        GameUtil.delay(2000);
+                    }while (clickFlag);
                     flag = false;
                     break;
                 }

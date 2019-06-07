@@ -86,7 +86,7 @@ public class WuNa implements IWuNa{
             int factor = getFactor();
             String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
             if (startegy.equals("判断")) {
-				alwaysClickForStrategy("clicks", null);
+				alwaysClickForStrategy("clicks", null, false);
             }else {
                 while (isGO()) {
                     rb.delay(600 * factor);
@@ -102,11 +102,10 @@ public class WuNa implements IWuNa{
 		return factor;
 	}
 	@Override
-	public void alwaysClickForStrategy(String fileName,Integer factor) {
+	public void alwaysClickForStrategy(String fileName,Integer factor,boolean alwaysGo) {
 		// 初始化参数
 		setScucess(true);
 		setGO(true);
-
 		Robot rb = GameUtil.getRb(this.getClass().getName());
 		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion", fileName);
 		String action = PropertiesUtil.getValueFromAutoClickFile("action", fileName);
@@ -155,13 +154,12 @@ public class WuNa implements IWuNa{
 			boolean flag = true;
 			boolean isEqual;
 			String className = this.getClass().getName();
-			int count = 0;
 			Random r=new Random();
 			int ri;
 			do {
 				for (int i = 0; i < minSize; i++) {
 					ri = r.nextInt(minSize);
-					System.out.println("scanning!");
+					System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
 					c0 = pointColor.getColor();
@@ -177,7 +175,7 @@ public class WuNa implements IWuNa{
 					}
 					rb.delay(factor == null ? 200 * getFactor() : factor);
 				}
-			} while (isGO() && count++ < 200);
+			} while (isGO() || alwaysGo);
 		}
 		System.out.println("finish auto click sacnning");
 	}
