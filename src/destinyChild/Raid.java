@@ -220,8 +220,10 @@ public class Raid implements IRaid{
         boolean flag = true;
         while (flag) {
             for (int i = 0; i < size; i++) {
+                System.out.println("检测终点");
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
+                    System.out.println("到达终点！");
                     GameUtil.mouseMoveByPoint(menu.getStopClickPoint());
                     GameUtil.mousePressAndReleaseByDD();
                     flag = false;

@@ -1,6 +1,7 @@
 package com.ddxoft;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import fgoScript.constant.GameConstant;
 
 public class DDTest {
 	 public static void main(String[] args) {
@@ -11,6 +12,8 @@ public class DDTest {
 		 //DD.INSTANCE.DD_btn(4);DD.INSTANCE.DD_btn(8); //����Ҽ�
 		 DD.INSTANCE.DD_key(601, 1);DD.INSTANCE.DD_key(601, 2); //����win
 		 DD.INSTANCE.DD_str("123@AbC"); //�ַ���
+		 DDTest.DD.INSTANCE.DD_btn(1);
+		 DDTest.DD.INSTANCE.DD_btn(2);
 	 }
 
 	 public interface DD extends Library {
