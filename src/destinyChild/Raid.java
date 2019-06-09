@@ -73,6 +73,7 @@ public class Raid implements IRaid{
         optionClik();
         while (isFlag() && wuna.isScucess()) {
             // 设置列表过滤项为：未参加，参加人数（降序）
+            waitUntilNoneThread();
             try {
                 setFilterOptions();
             } catch (FgoNeedRestartException e) {
