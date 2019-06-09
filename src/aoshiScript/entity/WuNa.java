@@ -156,9 +156,11 @@ public class WuNa implements IWuNa{
 			String className = this.getClass().getName();
 			Random r=new Random();
 			int ri;
+			int[] riArray;
 			do {
+				riArray = getRandomArray(minSize);
 				for (int i = 0; i < minSize; i++) {
-					ri = r.nextInt(minSize);
+					ri = riArray[i];
 					System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
@@ -179,7 +181,37 @@ public class WuNa implements IWuNa{
 		}
 		System.out.println("finish auto click sacnning");
 	}
-
+	private int[] getRandomArray(int length){
+		int[] arr = new int[length];//10个数的数组
+		for (int i = 0; i < arr.length; i++) {
+			//生产一个1-20的随机数
+			int index = (int)(Math.random() * length );
+			arr[i] = index;//把随机数赋值给下标为数组下标为i的值
+			//（遍历数组中储存进去的值，i中有几个值则循环几次）
+			for (int j = 0; j < i; j++)
+			{
+				//把储存在数组中的值j 和 随机出的值i 做比较
+				if (arr[j] == arr[i])
+				{
+					i--; //数组的值下标-1，i的循环次数回到上次
+					break;
+				}
+			}
+		}
+		return arr;
+	}
+	private static void putRandomNumberIntoArrays(int[] arrays) {
+		int datalength =arrays.length;
+		for (int i = 0; i < arrays.length; i++) {
+			arrays[i]= i+1;
+		}
+		do{
+			int  rand =new Random().nextInt(datalength--);
+			int tmp=arrays[rand];
+			arrays[rand] = arrays[datalength];
+			arrays[datalength] = tmp;
+		}while(datalength>0);
+	}
 	@Override
 	public void configClick(BaseZButton bt) {
 		String text = bt.getText();

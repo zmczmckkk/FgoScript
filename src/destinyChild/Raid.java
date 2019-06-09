@@ -189,6 +189,7 @@ public class Raid implements IRaid{
         boolean clickFlag = true;
         while (flag) {
             for (int i = 0; i < size; i++) {
+                System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
                     // 循环点击，防止点击无效。
