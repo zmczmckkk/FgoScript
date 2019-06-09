@@ -63,7 +63,7 @@ public class Raid implements IRaid{
                 new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
         singleThreadPool.execute(()-> {
                 System.out.println("optionClick start!");
-                new WuNa("optionClick").alwaysClickForStrategy("optionClick", 2000, true);
+                new WuNa("optionClick").alwaysClickForStrategy("optionClick", 2000, true, false);
                 System.out.println("optionClick end!");
         });
     }
@@ -112,7 +112,7 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("runClick", null, false);
+                wuna.alwaysClickForStrategy("runClick", null, false,true);
             }
         });
         // 当完成一场战斗后，点解结束按钮。结束所有线程
@@ -148,7 +148,7 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("filterClick", null, false);
+                wuna.alwaysClickForStrategy("filterClick", null, false, true);
             }
         });
         //如果两个颜色符合条件，点击确认。

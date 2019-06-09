@@ -86,7 +86,7 @@ public class WuNa implements IWuNa{
             int factor = getFactor();
             String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
             if (startegy.equals("判断")) {
-				alwaysClickForStrategy("clicks", null, false);
+				alwaysClickForStrategy("clicks", null, false, false);
             }else {
                 while (isGO()) {
                     rb.delay(600 * factor);
@@ -102,7 +102,7 @@ public class WuNa implements IWuNa{
 		return factor;
 	}
 	@Override
-	public void alwaysClickForStrategy(String fileName,Integer factor,boolean alwaysGo) {
+	public void alwaysClickForStrategy(String fileName,Integer factor,boolean alwaysGo, boolean clickWait) {
 		// 初始化参数
 		setScucess(true);
 		setGO(true);
@@ -174,6 +174,9 @@ public class WuNa implements IWuNa{
 					if (flag) {
 						rb.mouseMove((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
 						GameUtil.mousePressAndReleaseByDD();
+						if (clickWait) {
+							GameUtil.delay(2000);
+						}
 					}
 					rb.delay(factor == null ? 200 * getFactor() : factor);
 				}
