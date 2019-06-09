@@ -214,25 +214,6 @@ public class Raid implements IRaid{
     }
 
     public static void main(String[] args) {
-        String filepath = NativeCp.getUserDir() + "/config/RaidFilterMenu.json";
-        RaidFilterMenu menu = JSONObject.parseObject(GameUtil.getJsonString(filepath), RaidFilterMenu.class);
-        Color tempColor;
-        int size = menu.getStopPointList().size();
-        boolean flag = true;
-        while (flag) {
-            for (int i = 0; i < size; i++) {
-                System.out.println("检测终点");
-                tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
-                if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
-                    System.out.println("到达终点！");
-                    GameUtil.mouseMoveByPoint(menu.getStopClickPoint());
-                    GameUtil.mousePressAndReleaseByDD();
-                    flag = false;
-                    break;
-                }
-            }
-            GameUtil.delay(2000);
-        }
     }
 
 }
