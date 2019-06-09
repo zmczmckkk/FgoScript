@@ -73,7 +73,6 @@ public class Raid implements IRaid{
         optionClik();
         while (isFlag() && wuna.isScucess()) {
             // 设置列表过滤项为：未参加，参加人数（降序）
-            waitUntilNoneThread();
             try {
                 setFilterOptions();
             } catch (FgoNeedRestartException e) {
@@ -84,8 +83,6 @@ public class Raid implements IRaid{
             waitUntilNoneThread();
             // 执行点击脚本。当完成一场战斗后，点解结束按钮。结束所有线程
             runClick(threadPoolTaskExecutor.getActiveCount());
-            // 当线程池无活动时，进入下一个循环
-            waitUntilNoneThread();
         }
     }
     /**
@@ -193,6 +190,8 @@ public class Raid implements IRaid{
                 System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
+                    wuna.setGO(false);
+                    waitUntilNoneThread();
                     // 循环点击，防止点击无效。
                     do {
                         tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
@@ -210,7 +209,6 @@ public class Raid implements IRaid{
             }
             GameUtil.delay(2000);
         }
-        wuna.setGO(false);
     }
 
     public static void main(String[] args) {
