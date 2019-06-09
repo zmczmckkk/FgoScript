@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 
 import com.alibaba.fastjson.*;
 import com.ddxoft.DDTest;
+import commons.entity.DD;
 import fgoScript.entity.ColorMonitor;
 import fgoScript.entity.GatesInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -732,9 +733,9 @@ public class GameUtil {
 	}
 	public static void mousePressAndReleaseByDD() {
 		rb = getRb();
-		DDTest.DD.INSTANCE.DD_btn(1);
+		DD.INSTANCE.DD_btn(1);
 		rb.delay(GameConstant.DELAY/10);
-		DDTest.DD.INSTANCE.DD_btn(2);
+		DD.INSTANCE.DD_btn(2);
 	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();
