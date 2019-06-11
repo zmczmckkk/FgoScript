@@ -28,6 +28,5 @@ public class FileUtils {
      
     public static void main(String[] args) {
         Boolean result = FileUtils.deleteAllFiles("./verifyCodeImg");
-        System.out.println(result);
     }
 }

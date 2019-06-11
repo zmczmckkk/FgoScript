@@ -161,7 +161,7 @@ public class WuNa implements IWuNa{
 				riArray = getRandomArray(minSize);
 				for (int i = 0; i < minSize; i++) {
 					ri = riArray[i];
-					System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
+					LOGGER.info("scanning_" + ri);
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
 					c0 = pointColor.getColor();
@@ -182,7 +182,7 @@ public class WuNa implements IWuNa{
 				}
 			} while (isGO() || alwaysGo);
 		}
-		System.out.println("finish auto click sacnning");
+		LOGGER.info("finish auto click scanning");
 	}
 	private int[] getRandomArray(int length){
 		int[] arr = new int[length];//10个数的数组

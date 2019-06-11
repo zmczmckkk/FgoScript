@@ -130,7 +130,6 @@ public class ClipBoardUtil {
 					if (str.contains("<") || str.contains(">")) {
 						str = reduceStr(str);
 					}
-					System.out.println(str);
 				} else {
 					break;
 				}

@@ -447,7 +447,6 @@ public class FgoFrame extends JFrame {
 			@Override
 			public void runMethod() {
 				String dir = System.getenv("USERPROFILE") + "\\OneDrive\\图片\\桌面背景";
-                System.out.println(dir);
 
                 FileDialog fd = new FileDialog(JOptionPane.getFrameForComponent(centerPanel), "选择背景");
 				fd.setDirectory(dir);

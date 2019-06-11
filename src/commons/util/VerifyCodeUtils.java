@@ -278,10 +278,4 @@ public class VerifyCodeUtils {
         }
     }
  
-    public static void main(String[] args) {
-         
-        String codeImage = VerifyCodeUtils.createOneCodeImage();
-        System.out.println(codeImage);
-     
-    }
 }

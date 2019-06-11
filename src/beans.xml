@@ -9,7 +9,7 @@
     </bean>
     <bean id="raid" class="destinyChild.Raid" lazy-init="true">
         <property name="wuna" ref="wuna"/>
-        <property name="threadPoolTaskExecutor" ref="threadPoolTaskExecutor"/>
+        <property name="threadPoolTaskExecutor" ref="poolExecutor"/>
     </bean>
     <bean id="wuna" class="aoshiScript.entity.WuNa" lazy-init="true">
         <constructor-arg value="wuna007"/>
@@ -29,7 +29,7 @@
         <!--</aop:aspect>-->
     <!--</aop:config>-->
 
-        <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <bean id="poolExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <!-- 核心线程数，默认为1 -->
         <property name="corePoolSize" value="4" />
         <!-- 最大线程数，默认为Integer.MAX_VALUE -->
@@ -47,5 +47,6 @@
             <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
         </property>
     </bean>
+
 
 </beans>

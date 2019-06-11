@@ -10,6 +10,8 @@ import destinyChild.entity.RaidFilterMenu;
 import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.awt.*;
@@ -23,6 +25,7 @@ import java.util.concurrent.*;
  * @create: 2019-06-03 21:14
  **/
 public class Raid implements IRaid{
+    private static final Logger LOGGER = LogManager.getLogger(Raid.class);
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private IWuNa wuna;
     private RaidFilterMenu menu;
@@ -62,9 +65,9 @@ public class Raid implements IRaid{
                 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
         singleThreadPool.execute(()-> {
-                System.out.println("optionClick start!");
+                LOGGER.info("optionClick start!");
                 new WuNa("optionClick").alwaysClickForStrategy("optionClick", 2000, true, false);
-                System.out.println("optionClick end!");
+                LOGGER.info("optionClick end!");
         });
     }
     @Override
@@ -95,7 +98,7 @@ public class Raid implements IRaid{
     private void waitUntilNoneThread(){
         do{
             GameUtil.delay(3000);
-            System.out.println("线程个数: " + threadPoolTaskExecutor.getActiveCount());
+            LOGGER.info("线程个数: " + threadPoolTaskExecutor.getActiveCount());
         } while (threadPoolTaskExecutor.getActiveCount() != 0);
     }
     /**
@@ -175,7 +178,7 @@ public class Raid implements IRaid{
                         maxCicle = 0;
                     }
                     GameUtil.delay(1000);
-                    System.out.println(maxCicle);
+                    LOGGER.info(maxCicle);
                 }
             }
         }
@@ -187,7 +190,7 @@ public class Raid implements IRaid{
         boolean clickFlag = true;
         while (flag) {
             for (int i = 0; i < size; i++) {
-                System.out.println(Thread.currentThread().getName() + " : scanning! " + i);
+                LOGGER.info("scanning_" + i);
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
                     wuna.setGO(false);
