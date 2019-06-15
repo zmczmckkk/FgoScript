@@ -6,6 +6,7 @@
 
     <bean id="fgoFrame" class="fgoScript.entity.panel.FgoFrame" lazy-init="true">
         <property name="wuna" ref="wuna"/>
+        <property name="light" ref="light"/>
     </bean>
     <bean id="raid" class="destinyChild.Raid" lazy-init="true">
         <property name="wuna" ref="wuna"/>
@@ -13,6 +14,9 @@
     </bean>
     <bean id="wuna" class="aoshiScript.entity.WuNa" lazy-init="true">
         <constructor-arg value="wuna007"/>
+    </bean>
+    <bean id="light" class="destinyChild.Light" lazy-init="true">
+        <property name="poolExecutor" ref="poolExecutor"/>
     </bean>
 
     <!-- 定义切面bean -->

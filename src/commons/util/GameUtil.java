@@ -737,6 +737,12 @@ public class GameUtil {
 		rb.delay(GameConstant.DELAY/10);
 		DD.INSTANCE.DD_btn(2);
 	}
+	public static void mousePressAndReleaseByDdQuick(int delay) {
+		rb = getRb();
+		DD.INSTANCE.DD_btn(1);
+		rb.delay(delay);
+		DD.INSTANCE.DD_btn(2);
+	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();
 			rb.delay(GameConstant.DELAY / 8);

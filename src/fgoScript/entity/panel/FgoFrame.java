@@ -8,20 +8,19 @@ import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 import commons.entity.NativeCp;
 import commons.util.MySpringUtil;
+import destinyChild.ILight;
 import fgoScript.entity.Gudazi;
 import fgoScript.entity.BaseZButton;
 import fgoScript.entity.Zpanel;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -41,8 +40,12 @@ public class FgoFrame extends JFrame {
 			return f;
 		}
 	}
-
+	private ILight light;
 	private IWuNa wuna;
+
+	public void setLight(ILight light) {
+		this.light = light;
+	}
 
 	public void setWuna(WuNa wuna) {
 		this.wuna = wuna;
@@ -64,6 +67,14 @@ public class FgoFrame extends JFrame {
 	private List<BaseZButton> getListFromJsonFile(){
 		return null;
 	}
+	//百鬼夜行按钮
+	private BaseZButton ghostButton = new BaseZButton(null, 0,"百鬼夜行(ALT+F)",JIntellitype.MOD_ALT, (int) 'F',false, false, BaseZButton.pink) {
+		private static final long serialVersionUID = -7389326247723796445L;
+		@Override
+		public void runMethod() {
+			light.toggleLight();
+		}
+	};
 	private final BaseZButton[] bts = {
 			new BaseZButton(null, 0,"(小号)材料所有号",JIntellitype.MOD_SHIFT, (int) 'P',true, false, BaseZButton.pink) {
 				private static final long serialVersionUID = 3981539681889014623L;
@@ -113,13 +124,6 @@ public class FgoFrame extends JFrame {
 				@Override
 				public void runMethod() throws Exception {
 					new Gudazi().mainAccountEXP40();
-				}
-			},
-			new BaseZButton(null, 0,"获取鼠标位置颜色(Shift+E)",JIntellitype.MOD_SHIFT, (int) 'E',false, false, BaseZButton.pink) {
-				private static final long serialVersionUID = -7389326247723796445L;
-				@Override
-				public void runMethod() {
-					new Gudazi().showPositionAndColor();
 				}
 			},
 			new BaseZButton(null, 0,"开启账号",JIntellitype.MOD_SHIFT, (int) 'O',true, false, BaseZButton.pink) {
@@ -293,27 +297,41 @@ public class FgoFrame extends JFrame {
 						e.printStackTrace();
 					}
 				}
-			}
+			},new BaseZButton(null, 0,"获取鼠标位置颜色(Shift+E)",JIntellitype.MOD_SHIFT, (int) 'E',false, false, BaseZButton.pink) {
+				private static final long serialVersionUID = -7389326247723796445L;
+				@Override
+				public void runMethod() {
+					new Gudazi().showPositionAndColor();
+				}
+			},ghostButton
 	};
-	private final Zpanel backPanel = new Zpanel();
+	private List<Zpanel> pageList = new ArrayList<>();
+	private final Zpanel basePanel = new Zpanel();
+	private final Zpanel backPanel01 = new Zpanel();
+	private final Zpanel pagePanel = new Zpanel();
+	private final Zpanel destinyPanel = new Zpanel();
 	private final Zpanel centerPanel = new Zpanel();
 	private final Zpanel buttonPanel = new Zpanel();
 	private final Zpanel southPanel01 = new Zpanel();
 	private final Zpanel southPanel02 = new Zpanel();
 	private final Zpanel southPanel03 = new Zpanel();
 	private final Zpanel southPanel04 = new Zpanel();
-	private final Zpanel eastPanel01 = new Zpanel();
+	private final Zpanel northPanel = new Zpanel();
+	private final Zpanel toolPanel = new Zpanel();
 	// 初始化
 	private void init() {
-		// 面板对象s
-		backPanel.setLayout(new BorderLayout());
+		basePanel.setLayout(new BorderLayout());
+		destinyPanel.setLayout(null);
+		backPanel01.setLayout(new BorderLayout());
 		centerPanel.setLayout(null);
+		toolPanel.setLayout(null);
 		buttonPanel.setLayout(new GridLayout(2, 1));
+		pagePanel.setLayout(new GridLayout(1, 1));
 		southPanel01.setLayout(new GridLayout(1, 9));
 		southPanel02.setLayout(new GridLayout(1, 3));
 		southPanel03.setLayout(new GridLayout(1, 3));
 		southPanel04.setLayout(new GridLayout(1, 1));
-		eastPanel01.setLayout(new GridLayout(1, 3));
+		northPanel.setLayout(new GridLayout(1, 3));
 		// 添加按钮
 		BaseZButton jbTemp;
 		int size = bts.length;
@@ -351,41 +369,44 @@ public class FgoFrame extends JFrame {
 			}
 			else if ("点击设置".equals(jbTemp.getText())) {
 				jbTemp.setText("点击设置");
-				eastPanel01.add(jbTemp);
+				northPanel.add(jbTemp);
 			}
 			else if ("清空".equals(jbTemp.getText())) {
 				jbTemp.setText("重置");
-				eastPanel01.add(jbTemp);
+				northPanel.add(jbTemp);
 			}
 			else if ("解除激活".equals(jbTemp.getText())) {
 				jbTemp.setText("解除激活");
 				jbTemp.setVerticalTextPosition(SwingConstants.CENTER);
-				eastPanel01.add(jbTemp);
+				northPanel.add(jbTemp);
 			}
 			else if ("新开".equals(jbTemp.getText())) {
 				jbTemp.setText(jbTemp.getReStartFlag());
 				southPanel04.add(jbTemp);
-			}
-			else if (jbTemp.getText().contains("S+W")) {
-				jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
-				centerPanel.add(jbTemp);
 			}
 			else {
 				if ("开启账号".equals(jbTemp.getText())) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
-				} else if (jbTemp.getText().contains("获取鼠标")) {
-					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("刷EXP")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
-				} else if (jbTemp.getText().contains("自动按键")) {
-					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
-					jbTemp.setAllowRepeat(true);
 				} else {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 320, 25+len);
 				}
-				centerPanel.add(jbTemp);
+				if (jbTemp.getText().contains("自动按键")) {
+					jbTemp.setBounds(5, 5 + ((12) * (30+len)), 210, 25+len);
+					jbTemp.setAllowRepeat(true);
+					toolPanel.add(jbTemp);
+				} else if(jbTemp.getText().contains("获取鼠标")){
+					jbTemp.setBounds(5, 5 + (11 * (30+len)), 210, 25+len);
+					toolPanel.add(jbTemp);
+				} else if(jbTemp.getText().contains("S+W")){
+					jbTemp.setBounds(220, 5 + (11 * (30+len)), 105, 25+len);
+					toolPanel.add(jbTemp);
+				} else{
+					centerPanel.add(jbTemp);
+				}
 			}
 		}
 		//选择账号按钮
@@ -398,7 +419,7 @@ public class FgoFrame extends JFrame {
 		};
 		int account = getAccount();
 		jbTemp.setText("账号" + account);
-		jbTemp.setBounds(220, 5 + (8 * (30+len)), 105, 25+len);
+		jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
 		centerPanel.add(jbTemp);
 		//选择战斗策略按钮
 		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
@@ -409,15 +430,15 @@ public class FgoFrame extends JFrame {
 			}
 		};
 		jbTemp.setText(jbTemp.getskillStrategy());
-		jbTemp.setBounds(220, 5 + (9 * (30+len)), 105, 25+len);
+		jbTemp.setBounds(220, 5 + (8 * (30+len)), 105, 25+len);
 		centerPanel.add(jbTemp);
 		//按键类型按钮
 		List<String> changeList = new ArrayList<>();
 		changeList.add("左键");
 		changeList.add("判断");
 		jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "clickStrategy", true, true, BaseZButton.pink);
-		jbTemp.setBounds(220, 5 + (10 * (30+len)), 50, 25+len);
-        centerPanel.add(jbTemp);
+		jbTemp.setBounds(220, 5 + (12 * (30+len)), 50, 25+len);
+		toolPanel.add(jbTemp);
 		//按键倍率按钮
         changeList = new ArrayList<>();
         changeList.add("0倍");
@@ -430,8 +451,8 @@ public class FgoFrame extends JFrame {
 		changeList.add("7倍");
 		changeList.add("8倍");
         jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "multiFactor", true, true, BaseZButton.pink);
-		jbTemp.setBounds(275, 5 + (10 * (30+len)), 50, 25+len);
-		centerPanel.add(jbTemp);
+		jbTemp.setBounds(275, 5 + (12 * (30+len)), 50, 25+len);
+		toolPanel.add(jbTemp);
 		//显示背景按钮
 		BaseZButton showPicBt = new BaseZButton(null, 0,"显示背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
@@ -440,7 +461,7 @@ public class FgoFrame extends JFrame {
 				showBackGround();
 			}
 		};
-		eastPanel01.add(showPicBt);
+		northPanel.add(showPicBt);
 		//切换背景按钮
 		BaseZButton changePicBt = new BaseZButton(null, 0,"切换背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
@@ -465,7 +486,7 @@ public class FgoFrame extends JFrame {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
-		eastPanel01.add(changePicBt);
+		northPanel.add(changePicBt);
 		//MD文件生成目录按钮
 		BaseZButton exportCatalog = new BaseZButton(null, 0,"md目录",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730848L;
@@ -493,30 +514,86 @@ public class FgoFrame extends JFrame {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
+		//添加分页按钮
+		BaseZButton pageBt01 = new BaseZButton(null, 0,"首页", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
+			private static final long serialVersionUID = -7491221341872701498L;
+			@Override
+			public void runMethod() {
+				showFrontPage();
+			}
+		};
+		BaseZButton pageBt02 = new BaseZButton(null, 0,"Destiny", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
+			private static final long serialVersionUID = -7491221341872701498L;
+			@Override
+			public void runMethod() {
+				setCenterPanelVisible(false);
+				pagePanel.setVisible(true);
+				destinyPanel.setVisible(true);
+				northPanel.setVisible(true);
+				toolPanel.setVisible(true);
+			}
+		};
+		BaseZButton pageBt03 = new BaseZButton(null, 0,"FGO", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
+			private static final long serialVersionUID = -7491221341872701498L;
+			@Override
+			public void runMethod() {
+				setCenterPanelVisible(true);
+				destinyPanel.setVisible(false);
+			}
+		};
+
+
 		exportCatalog.setBounds(220, 5 + (6 * (30+len)), 105, 25+len);
-		centerPanel.add(exportCatalog);
-		centerPanel.setOpaque(false);
+
 		buttonPanel.setOpaque(false);
 		southPanel01.setOpaque(false);
 		southPanel02.setOpaque(false);
 		southPanel03.setOpaque(false);
 		southPanel04.setOpaque(false);
-		eastPanel01.setOpaque(false);
+		northPanel.setOpaque(false);
+		pagePanel.setOpaque(false);
+		destinyPanel.setOpaque(false);
+		toolPanel.setOpaque(false);
+		destinyPanel.setVisible(false);
+		destinyPanel.setBounds(0, 0, 335, 518);
+		toolPanel.setBounds(0, 0, 335, 518);
+		buttonPanel.setBounds(5, 8 + (9 * (30+len)), 320, 55+len);
+		northPanel.setBounds(5, 5 + (13 * (30+len)), 320, 25+len);
+		ghostButton.setBounds(5, 5, 320, 25+len);
+		pagePanel.setBounds(5, 10 + (14 * (30+len)), 320, 25+len);
+		backPanel01.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
+		northPanel.setName("bottomButtons");
+
+		pagePanel.add(pageBt01);
+		pagePanel.add(pageBt02);
+		pagePanel.add(pageBt03);
+		destinyPanel.add(ghostButton);
 		buttonPanel.add(southPanel01);
 		buttonPanel.add(southPanel04);
 		buttonPanel.add(southPanel02);
 		buttonPanel.add(southPanel03);
-		buttonPanel.setBounds(5, 10 + (12 * (30+len)), 320, 55+len);
-		centerPanel.add(buttonPanel);
-		eastPanel01.setBounds(5, 5 + (11 * (30+len)), 320, 25+len);
-        eastPanel01.setName("bottomButtons");
-		centerPanel.add(eastPanel01);
-		backPanel.add(centerPanel);
-		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
 
-		this.add(backPanel);
+
+
+		centerPanel.add(exportCatalog);
+		centerPanel.add(buttonPanel);
+		centerPanel.add(northPanel);
+		centerPanel.add(toolPanel);
+		centerPanel.add(pagePanel);
+		centerPanel.add(destinyPanel);
+		centerPanel.setOpaque(false);
+
+		backPanel01.add(centerPanel);
+
+		basePanel.add(backPanel01);
+		pageList.add(backPanel01);
+
+		showFrontPage();
+		ghostButton.setAllowRepeat(true);
+		this.setVisible(true);
+		this.add(basePanel);
 		this.setTitle("FGO-JAI");
-		this.setSize(335, 500);
+		this.setSize(335, 518);
 		this.setLocation(1537, 516);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -529,7 +606,18 @@ public class FgoFrame extends JFrame {
 		};
 		JIntellitype.getInstance().addHotKeyListener(hotkeyListener);
 	}
-
+	private void showFrontPage(){
+		setCenterPanelVisible(false);
+		pagePanel.setVisible(true);
+		northPanel.setVisible(true);
+		toolPanel.setVisible(true);
+	}
+	private void setCenterPanelVisible(boolean flag){
+		Component[] comps = centerPanel.getComponents();
+		for (int i = 0; i < comps.length; i++) {
+			comps[i].setVisible(flag);
+		}
+	}
 	public static int getAccount() {
 		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
 		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
@@ -543,7 +631,6 @@ public class FgoFrame extends JFrame {
 		JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
 		southPanel04.add(jbTemp);
 	}
-
 	private void showBackGround() {
 		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
 		ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
@@ -571,10 +658,10 @@ public class FgoFrame extends JFrame {
                                 }else{
                                 	if (ztTemp.getText().contains("显示背景")){
 										ztTemp.setText("显示按钮");
-										eastPanel01.setBounds(5, 10 + (13 * (30+2)), 320, 25+len);
+										northPanel.setBounds(5, 10 + (13 * (30+2)), 320, 25+len);
 									}else if (ztTemp.getText().contains("显示按钮")) {
 										ztTemp.setText("显示背景");
-										eastPanel01.setBounds(5, 5 + (11 * (30+2)), 320, 25+len);
+										northPanel.setBounds(5, 5 + (11 * (30+2)), 320, 25+len);
 									}
                                     ztTemp.setVisible(ztTemp.isVisible());
 
@@ -590,12 +677,12 @@ public class FgoFrame extends JFrame {
 		singleThreadPool.shutdown();
 	}
 	public void changeBackGround() {
-		backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
+		backPanel01.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
 	}
 	public void changeBackGroundByPath(String path) {
 	    File file = new File(path);
 	    if (file.exists()) {
-            backPanel.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
+            backPanel01.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1),path));
         }
 	}
 

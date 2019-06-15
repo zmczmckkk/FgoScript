@@ -38,10 +38,6 @@ public class Raid implements IRaid{
         return menu;
     }
 
-    public void setMenu(RaidFilterMenu menu) {
-        this.menu = menu;
-    }
-
     public void setThreadPoolTaskExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
