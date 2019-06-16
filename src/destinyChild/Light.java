@@ -45,6 +45,7 @@ public class Light implements ILight{
                 explore();
             }
         });
+        LOGGER.info("是否运行状态： " + isFlag());
         while (poolExecutor.getActiveCount() != 0){
             delay(1000);
         }
@@ -116,11 +117,16 @@ public class Light implements ILight{
     @Override
     public void toggleLight() {
         if (tFlag) {
-            setFlag(true);
-            settFlag(false);
-            startLight();
+            if ( poolExecutor.getActiveCount() == 0) {
+                setFlag(true);
+                settFlag(false);
+                startLight();
+            }
         } else {
             stopLight();
+            while (poolExecutor.getActiveCount()!=0){
+                delay(1000);
+            }
             settFlag(true);
         }
     }

@@ -40,6 +40,7 @@ public class FgoFrame extends JFrame {
 			return f;
 		}
 	}
+	private List<Component> cpList = new ArrayList<>();;
 	private ILight light;
 	private IWuNa wuna;
 
@@ -80,7 +81,6 @@ public class FgoFrame extends JFrame {
 				private static final long serialVersionUID = 3981539681889014623L;
 				@Override
 				public void runMethod() throws Exception {
-
 					new Gudazi().trainSamllFgo();
 				}
 			},
@@ -458,7 +458,7 @@ public class FgoFrame extends JFrame {
 			private static final long serialVersionUID = 6504858991507730448L;
 			@Override
 			public void runMethod() {
-				showBackGround();
+				showBackGround(this);
 			}
 		};
 		northPanel.add(showPicBt);
@@ -618,6 +618,30 @@ public class FgoFrame extends JFrame {
 			comps[i].setVisible(flag);
 		}
 	}
+	private void hideWithOutText(String text,Zpanel zp,boolean flag){
+		Component[] comps = zp.getComponents();
+		Component temp;
+		BaseZButton zt;
+		for (int i = 0; i < comps.length; i++) {
+			temp = comps[i];
+			if (temp instanceof Zpanel ) {
+				hideWithOutText(text, (Zpanel)temp, flag);
+			}else if (temp instanceof BaseZButton){
+				zt = (BaseZButton) temp;
+				if (zt.getText().contains(text)){
+					System.out.println(zt.getText());
+					zt.setVisible(true);
+				}else{
+					if (zt.isVisible()){
+						cpList.add(zt);
+					}
+					zt.setVisible(flag);
+				}
+			}else{
+				temp.setVisible(flag);
+			}
+		}
+	}
 	public static int getAccount() {
 		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
 		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
@@ -631,50 +655,23 @@ public class FgoFrame extends JFrame {
 		JIntellitype.getInstance().registerHotKey(jbTemp.getMarkCode(), jbTemp.getShortcunt01(), jbTemp.getShortcunt02());
 		southPanel04.add(jbTemp);
 	}
-	private void showBackGround() {
-		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
-		ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
-				0L, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
-		singleThreadPool.execute(()-> {
-            centerPanel.setVisible(true);
-            Component[] comps = centerPanel.getComponents();
-            int size = comps.length;
-            Component com;
-            BaseZButton zt;
-            Component[] temps;
-            int len;
-            for (int i = 0; i < size; i++) {
-                com = comps[i];
-                if ("bottomButtons".equals(com.getName())){
-                    if ( com instanceof Zpanel){
-                        temps = ((Zpanel) com).getComponents();
-                        len = temps.length;
-                        for (int j = 0; j < len; j++) {
-                            if (temps[j] instanceof BaseZButton){
-                                BaseZButton ztTemp = (BaseZButton) temps[j];
-                                if (!(ztTemp.getText().contains("显示")||ztTemp.getText().contains("切换"))){
-                                    ztTemp.setVisible(!ztTemp.isVisible());
-                                }else{
-                                	if (ztTemp.getText().contains("显示背景")){
-										ztTemp.setText("显示按钮");
-										northPanel.setBounds(5, 10 + (13 * (30+2)), 320, 25+len);
-									}else if (ztTemp.getText().contains("显示按钮")) {
-										ztTemp.setText("显示背景");
-										northPanel.setBounds(5, 5 + (11 * (30+2)), 320, 25+len);
-									}
-                                    ztTemp.setVisible(ztTemp.isVisible());
-
-                                }
-                            }
-                        }
-                    }
-                }else{
-                    com.setVisible(!com.isVisible());
-                }
-            }
-		});
-		singleThreadPool.shutdown();
+	private void showBackGround(BaseZButton bt) {
+		if (bt.getText().contains("显示背景")){
+			hideWithOutText("背景", centerPanel, false);
+			bt.setText("显示按钮");
+			northPanel.setBounds(5, 10 + (14 * (30+2)), 320, 25+2);
+		} else {
+			int size = cpList.size();
+			Component temp;
+			for (int i = 0; i < size; i++) {
+				temp = cpList.get(i);
+				temp.setVisible(true);
+			}
+			cpList= new ArrayList<>();
+//			hideWithOutText("显示", centerPanel, true);
+			bt.setText("显示背景");
+			northPanel.setBounds(5, 5 + (13 * (30+2)), 320, 25+2);
+		}
 	}
 	public void changeBackGround() {
 		backPanel01.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
