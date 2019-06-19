@@ -195,7 +195,6 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
 
 
     public void clickButton() {
-        String strategy;
         int size = changeList.size();
         int loc = 0;
         for (int i = 0; i < size; i++) {
@@ -417,31 +416,6 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
                 break;
         }
         PropertiesUtil.setValueForSkills(map);
-    }
-
-    public void selectAccount() {
-        int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"), true);
-        String text = this.getText();
-        text = text.substring(text.indexOf("账号") + 2);
-        int account = Integer.valueOf(text);
-        int next = 0;
-        int size = FgoRewardArray.length;
-        for (int i = 0; i < size; i++) {
-            if (account == FgoRewardArray[i]) {
-                next = (++i == size) ? 0 : i;
-            }
-        }
-        if (size == 0) {
-            JOptionPane.showMessageDialog(null, "账号列表未设置！", "错误", JOptionPane.ERROR_MESSAGE);
-            NativeCp.openByssociatedExe(NativeCp.getUserDir() + "/config/init.properties");
-        } else {
-            this.setText("账号" + FgoRewardArray[next]);
-            Map<String, String> map = new HashMap<>();
-            map.put("openAccount", "" + FgoRewardArray[next]);
-            PropertiesUtil.setValueForOpen(map);
-        }
-
-
     }
 
     public void selectBattleStrategy() {

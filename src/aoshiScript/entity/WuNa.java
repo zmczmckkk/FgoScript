@@ -98,7 +98,7 @@ public class WuNa implements IWuNa{
 	}
 	private int getFactor(){
 		String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
-		int factor = Integer.parseInt(multiFactor.substring(0,multiFactor.indexOf("倍")));
+		int factor = Integer.parseInt(multiFactor.trim());
 		return factor;
 	}
 	@Override
@@ -231,7 +231,7 @@ public class WuNa implements IWuNa{
 	@Override
 	public void falshClick(BaseZButton bt) {
 		BaseZButton[] bts = FgoFrame.instance().getBts();
-		BaseZButton setbt =bts[bts.length-4];
+		BaseZButton setbt =bts[bts.length-6];
 		setbt.setEnabled(true);
 		setbt.setText("点击设置");
 		JIntellitype.getInstance().unregisterHotKey(setbt.getMarkCode());

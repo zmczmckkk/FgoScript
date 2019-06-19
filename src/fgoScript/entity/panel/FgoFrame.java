@@ -1,5 +1,8 @@
 package fgoScript.entity.panel;
 
+import alarm.Alarm;
+import alarm.ZLable;
+import alarm.ZTextField;
 import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
@@ -15,21 +18,28 @@ import fgoScript.entity.Zpanel;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
+
 /**
  * @description: Fgo界面框架
  * @author: RENZHEHAO
  * @create: 2019-05-22 03:45
  **/
 public class FgoFrame extends JFrame {
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(FgoFrame.class);
+
 	private static final long serialVersionUID = 1L;
 	private static FgoFrame f;
 	public static FgoFrame instance() {
@@ -318,6 +328,7 @@ public class FgoFrame extends JFrame {
 	private final Zpanel southPanel04 = new Zpanel();
 	private final Zpanel northPanel = new Zpanel();
 	private final Zpanel toolPanel = new Zpanel();
+	private final Zpanel alarmPanel = Alarm.instance().getAlarmPanel();
 	// 初始化
 	private void init() {
 		basePanel.setLayout(new BorderLayout());
@@ -410,17 +421,10 @@ public class FgoFrame extends JFrame {
 			}
 		}
 		//选择账号按钮
-		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
-			private static final long serialVersionUID = 8438279990543323489L;
-			@Override
-			public void runMethod() {
-				this.selectAccount();
-			}
-		};
-		int account = getAccount();
-		jbTemp.setText("账号" + account);
-		jbTemp.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
-		centerPanel.add(jbTemp);
+		//按键倍率按钮
+		ZTextField zf1 = new ZTextField("0", "open_" + NativeCp.getUserName(), "openAccount");
+		zf1.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+		centerPanel.add(zf1);
 		//选择战斗策略按钮
 		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 8438279990546323489L;
@@ -440,19 +444,9 @@ public class FgoFrame extends JFrame {
 		jbTemp.setBounds(220, 5 + (12 * (30+len)), 50, 25+len);
 		toolPanel.add(jbTemp);
 		//按键倍率按钮
-        changeList = new ArrayList<>();
-        changeList.add("0倍");
-        changeList.add("1倍");
-        changeList.add("2倍");
-        changeList.add("3倍");
-		changeList.add("4倍");
-		changeList.add("5倍");
-		changeList.add("6倍");
-		changeList.add("7倍");
-		changeList.add("8倍");
-        jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "multiFactor", true, true, BaseZButton.pink);
-		jbTemp.setBounds(275, 5 + (12 * (30+len)), 50, 25+len);
-		toolPanel.add(jbTemp);
+		ZTextField zf2 = new ZTextField("0", "changeButton_" + NativeCp.getUserName(), "multiFactor");
+		zf2.setBounds(275, 5 + (12 * (30+len)), 50, 25+len);
+		toolPanel.add(zf2);
 		//显示背景按钮
 		BaseZButton showPicBt = new BaseZButton(null, 0,"显示背景",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 6504858991507730448L;
@@ -539,6 +533,14 @@ public class FgoFrame extends JFrame {
 			public void runMethod() {
 				setCenterPanelVisible(true);
 				destinyPanel.setVisible(false);
+				alarmPanel.setVisible(false);
+			}
+		};
+		BaseZButton pageBt04 = new BaseZButton(null, 0,"闹钟", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
+			private static final long serialVersionUID = -7491221341872701498L;
+			@Override
+			public void runMethod() {
+				showAlarmPage();
 			}
 		};
 
@@ -550,11 +552,13 @@ public class FgoFrame extends JFrame {
 		southPanel02.setOpaque(false);
 		southPanel03.setOpaque(false);
 		southPanel04.setOpaque(false);
+		alarmPanel.setOpaque(false);
 		northPanel.setOpaque(false);
 		pagePanel.setOpaque(false);
 		destinyPanel.setOpaque(false);
 		toolPanel.setOpaque(false);
 		destinyPanel.setVisible(false);
+		alarmPanel.setVisible(true);
 		destinyPanel.setBounds(0, 0, 335, 518);
 		toolPanel.setBounds(0, 0, 335, 518);
 		buttonPanel.setBounds(5, 8 + (9 * (30+len)), 320, 55+len);
@@ -567,6 +571,7 @@ public class FgoFrame extends JFrame {
 		pagePanel.add(pageBt01);
 		pagePanel.add(pageBt02);
 		pagePanel.add(pageBt03);
+		pagePanel.add(pageBt04);
 		destinyPanel.add(ghostButton);
 		buttonPanel.add(southPanel01);
 		buttonPanel.add(southPanel04);
@@ -581,8 +586,9 @@ public class FgoFrame extends JFrame {
 		centerPanel.add(toolPanel);
 		centerPanel.add(pagePanel);
 		centerPanel.add(destinyPanel);
-		centerPanel.setOpaque(false);
 
+		centerPanel.add(alarmPanel);
+		centerPanel.setOpaque(false);
 		backPanel01.add(centerPanel);
 
 		basePanel.add(backPanel01);
@@ -611,6 +617,13 @@ public class FgoFrame extends JFrame {
 		pagePanel.setVisible(true);
 		northPanel.setVisible(true);
 		toolPanel.setVisible(true);
+	}
+	private void showAlarmPage(){
+		setCenterPanelVisible(false);
+		pagePanel.setVisible(true);
+		northPanel.setVisible(true);
+		toolPanel.setVisible(true);
+		alarmPanel.setVisible(true);
 	}
 	private void setCenterPanelVisible(boolean flag){
 		Component[] comps = centerPanel.getComponents();
