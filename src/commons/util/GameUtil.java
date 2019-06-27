@@ -1,58 +1,40 @@
 package commons.util;
 
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import com.alibaba.fastjson.*;
-import com.ddxoft.DDTest;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import commons.entity.DD;
+import fgoScript.constant.GameConstant;
+import fgoScript.constant.PointInfo;
+import fgoScript.entity.BaseZButton;
 import fgoScript.entity.ColorMonitor;
 import fgoScript.entity.GatesInfo;
+import fgoScript.entity.PointColor;
+import fgoScript.exception.FgoNeedRestartException;
+import fgoScript.exception.FgoNeedStopException;
+import fgoScript.service.EventFactors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import fgoScript.constant.GameConstant;
-import fgoScript.constant.PointInfo;
-import fgoScript.entity.PointColor;
-import fgoScript.entity.BaseZButton;
-import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.exception.FgoNeedStopException;
-import fgoScript.service.EventFactors;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class GameUtil {
 	private static final Logger LOGGER = LogManager.getLogger(GameUtil.class);
 	private static final int OUT_TIME = Integer.parseInt(GameUtil.getValueFromConfig("OUT_TIME"));// 超时时间(分)
 	private static final int CHECK_TIMES = Integer.parseInt(GameUtil.getValueFromConfig("CHECK_TIMES"));
 	private static final int EROOR_ROUND = 8;// 循环检查系数(DELAY*X*Y)
+	private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
 	private static boolean GO_FLAG = true;
 	private static int CHECK_COUNT = 0;// 检测基数
 	private static boolean STOP_SCRIPT = false;
@@ -558,24 +540,24 @@ public class GameUtil {
 		}
 		List<PointColor> pocoList = new ArrayList<>();
 		// 更新支援
-		Point p_no_support = PointInfo.P_NO_SUPPORT;
-		Color c_no_support = PointInfo.C_NO_SUPPORT;
+		Point p_no_support = POINT_INFO.getpNoSupport();
+		Color c_no_support = POINT_INFO.getcNoSupport();
 		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_no_support, c_no_support, true));
 		count = ColorMatchCount(pocoList);
 		if (count == pocoList.size()) {
 			mouseMoveByPoint(EventFactors.supportServant);
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-			mouseMoveByPoint(PointInfo.P_SUPPORT_UPDATE);
+			mouseMoveByPoint(POINT_INFO.getpSupportUpdate());
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-			mouseMoveByPoint(PointInfo.P_SUPPORT_UPDATE_YES);
+			mouseMoveByPoint(POINT_INFO.getpSupportUpdateYes());
 			mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 			GameUtil.delay(3000);
 			LOGGER.info("更新支援！");
 		}
 		// 无法更新支援
-		Point p_support_no_confirm = PointInfo.P_SUPPORT_NO_CONFIRM;
-		Color c_support_no_confirm = PointInfo.C_SUPPORT_NO_CONFIRM;
+		Point p_support_no_confirm = POINT_INFO.getpSupportNoConfirm();
+		Color c_support_no_confirm = POINT_INFO.getcSupportNoConfirm();
 		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(p_support_no_confirm, c_support_no_confirm, true));
 		count = ColorMatchCount(pocoList);
@@ -782,7 +764,7 @@ public class GameUtil {
 	}
 
 	public static List<Point> getCommondCards() {
-		Point p_support = PointInfo.P_SUPPORT;
+		Point p_support = POINT_INFO.getpSupport();
 		Color color;
 		Point point;
 		PointColor pc;

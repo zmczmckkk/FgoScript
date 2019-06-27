@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class ExpApGudaziForMainSpecial extends ExpApGudazi{
+    private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
+
     private String gatesDirPath;
 
     public String getGatesDirPath() {
@@ -33,28 +35,28 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
 
     @Override
     public void insertIntoExpRoom(int apNum) throws Exception {
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestDown());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestTop());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 进入训练场
         // 周回进去
-        GameUtil.mouseMoveByPoint(PointInfo.getP_WEEK_ENTRANCE());
+        GameUtil.mouseMoveByPoint(POINT_INFO.getP_WEEK_ENTRANCE());
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 
         GameUtil.delay(GameConstant.DELAY*5);
 
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestTop());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestDown());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 拖拽画面
-        Point start = PointInfo.P_DAILY_SLICE_STRAT;
-        Point end = PointInfo.P_DAILY_SLICE_END;
+        Point start = POINT_INFO.getpDailySliceStrat();
+        Point end = POINT_INFO.getpDailySliceEnd();
         moveBySteps(start, end);
 
         // 点击日常
-        Point p6 = PointInfo.P_DAILY_ENTRANCE;
+        Point p6 = POINT_INFO.getpDailyEntrance();
         GameUtil.mouseMoveByPoint(p6);
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         //获取入口信息

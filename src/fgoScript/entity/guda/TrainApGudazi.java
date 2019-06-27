@@ -1,23 +1,23 @@
 package fgoScript.entity.guda;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import commons.util.GameUtil;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.PointColor;
 import fgoScript.entity.ServantSelect;
 import fgoScript.exception.FgoNeedRestartException;
-import commons.util.GameUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrainApGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(TrainApGudazi.class);
+	private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
+
 	@Override
 	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoTrainingRoom(apNum);
@@ -41,40 +41,40 @@ public class TrainApGudazi extends AbstractApGudazi {
 
 	private void insertIntoTrainingRoom(int apNum) throws Exception {
 		// 拉滚动条至最下上
-		GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestDown());
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-		GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestTop());
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 进入训练场
 		// 周回进
-		Point p4 = PointInfo.getP_WEEK_ENTRANCE();
+		Point p4 = POINT_INFO.getP_WEEK_ENTRANCE();
 		GameUtil.mouseMoveByPoint(p4);
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 		
 		GameUtil.delay(GameConstant.DELAY*5);
 		
 		// 拉滚动条至最下
-		Point p16 = PointInfo.P_SCROLL_REST_DOWN;
+		Point p16 = POINT_INFO.getpScrollRestDown();
 		GameUtil.mouseMoveByPoint(p16);
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 拖拽画面
-		Point start = PointInfo.P_DAILY_SLICE_STRAT;
-		Point end = PointInfo.P_DAILY_SLICE_END;
+		Point start = POINT_INFO.getpDailySliceStrat();
+		Point end = POINT_INFO.getpDailySliceEnd();
 		moveBySteps(start, end);
 
 		// 点击日常
-		Point p6 = PointInfo.P_DAILY_ENTRANCE;
+		Point p6 = POINT_INFO.getpDailyEntrance();
 		GameUtil.mouseMoveByPoint(p6);
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 		// 拉滚动条至最上
 		GameUtil.mouseMoveByPoint(p16);
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 拉滚动条至中间
-		Point p7 = PointInfo.P_TRAIN_ALL;
+		Point p7 = POINT_INFO.getpTrainAll();
 		GameUtil.mouseMoveByPoint(p7);
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 点击ap本
-		Point p8 = PointInfo.getTrainingRoom(apNum);
+		Point p8 = POINT_INFO.getTrainingRoom(apNum);
 		GameUtil.mouseMoveByPoint(p8);
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 	}
@@ -217,7 +217,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 	}
 	private List<Point> getCommondCards() {
 		GameUtil.delay(GameConstant.DELAY*2);
-		Point[]  p_supports = PointInfo.P_SUPPORTS;
+		Point[]  p_supports = POINT_INFO.getpSupports();
 		Color color;
 		Point point;
 		PointColor pc;
@@ -297,7 +297,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 			GameUtil.mouseMoveByPoint(p6);
 			GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 			// 防止宝具冻结
-			GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+			GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
 			GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
 			List<Point> pList = getCommondCards();
@@ -363,7 +363,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(p7);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
-		GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		// 等待
 		waitToAttack(null);
@@ -377,7 +377,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(p7);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
-		GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		// 等待
 		waitToAttack(null);
@@ -391,7 +391,7 @@ public class TrainApGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(p7);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
-		GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 	}
 	/**

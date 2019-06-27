@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 import commons.util.PropertiesUtil;
+import fgoScript.constant.PointInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import fgoScript.constant.GameConstant;
-import fgoScript.constant.PointInfo;
 import fgoScript.entity.CardComparator;
 import fgoScript.entity.CommonCard;
 import fgoScript.entity.PointColor;
@@ -21,6 +21,7 @@ import commons.util.GameUtil;
 
 public class EventGudazi extends AbstractApGudazi {
 	private static final Logger LOGGER = LogManager.getLogger(EventGudazi.class);
+	private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
 	@Override
 	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoEventRoom();
@@ -31,7 +32,7 @@ public class EventGudazi extends AbstractApGudazi {
 	}
 	@Override
 	public Point getSuppotServant() {
-		return PointInfo.P_SERVANT_MIX;
+		return POINT_INFO.getpServantMix();
 	}
 
 	@Override
@@ -39,30 +40,30 @@ public class EventGudazi extends AbstractApGudazi {
 	}
 
 	private void insertIntoEventRoom() throws Exception {
-    	GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+    	GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestDown());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestTop());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 进入活动本
-        Point p4 = PointInfo.P_WEEK_ENTRANCE_01;
+        Point p4 = POINT_INFO.getpWeekEntrance01();
         GameUtil.mouseMoveByPoint(p4);
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         
         GameUtil.delay(GameConstant.DELAY*5);
         
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_TOP);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestTop());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.mouseMoveByPoint(PointInfo.P_SCROLL_REST_DOWN);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getpScrollRestDown());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         
         
         
         // 拉滚动条至目标本
-        Point p7 = PointInfo.P_EVENT_SCROLL_LOCATE01;
+        Point p7 = POINT_INFO.getpEventScrollLocate01();
         GameUtil.mouseMoveByPoint(p7);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 点击ap本
-        Point p8 = PointInfo.P_EVENT_BATTLE_LOCATE01;
+        Point p8 = POINT_INFO.getpEventBattleLocate01();
         GameUtil.mouseMoveByPoint(p8);
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
     }
@@ -148,7 +149,7 @@ public class EventGudazi extends AbstractApGudazi {
 			giveServantSkills(EventFactors.getPreSkills(DEFAULT_SKILL_COLORS));
 			if (!hasSelect) {
 				// 选择第2个怪物
-				Point p_moster01 =PointInfo.P_MOSTER01;
+				Point p_moster01 =POINT_INFO.getpMoster01();
 				GameUtil.mouseMoveByPoint(p_moster01);
 				GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 				hasSelect = true;
@@ -226,7 +227,7 @@ public class EventGudazi extends AbstractApGudazi {
 	 * @throws Exception 异常
 	 */
 	private void attackBAAForEvent(boolean goMainNP, boolean[] hases) throws Exception {
-		Point pNp01 = PointInfo.NP_CHECK;
+		Point pNp01 = POINT_INFO.getNpCheck();
 		Point pNp02 = new Point((int)pNp01.getX()+ GameConstant.HEAD_SPACE, (int)pNp01.getY());
 		Point pNp03 = new Point((int)pNp01.getX()+ GameConstant.HEAD_SPACE*2, (int)pNp01.getY());
 		Color cNp01 = GameUtil.getScreenPixel(pNp01);
@@ -277,7 +278,7 @@ public class EventGudazi extends AbstractApGudazi {
 			}else {
 				scMap = getWeakCommondCards(CardComparator.getBgrComparotor());
 			}
-			Point np_np01 = PointInfo.NP_NP;
+			Point np_np01 = POINT_INFO.getNpNp();
 			Point np_np02 = new Point((int) np_np01.getX()+GameConstant.NP_SPACE,(int) np_np01.getY());
 			Point np_np03 = new Point((int) np_np01.getX()+GameConstant.NP_SPACE*2,(int) np_np01.getY());
 			if (hasNp03) {
@@ -329,7 +330,7 @@ public class EventGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(p8);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		// 选择人物
-		GameUtil.mouseMoveByPoint(PointInfo.SKILL_PERSON_01);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getSkillPerson01());
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 
 		// 等待
@@ -342,7 +343,7 @@ public class EventGudazi extends AbstractApGudazi {
 		GameUtil.mouseMoveByPoint(p9);
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 		// 选择人物
-		GameUtil.mouseMoveByPoint(PointInfo.SKILL_PERSON_01);
+		GameUtil.mouseMoveByPoint(POINT_INFO.getSkillPerson01());
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 	}
 }

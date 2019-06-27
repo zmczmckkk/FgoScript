@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
+import commons.util.MySpringUtil;
 import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import commons.util.PropertiesUtil;
 @SuppressWarnings("ALL")
 public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private static final Logger LOGGER = LogManager.getLogger(AbstractApGudazi.class);
+    private static final PointInfo POINT_INFO = (PointInfo) MySpringUtil.getApplicationContext().getBean("pointInfo");
     private String PREFIX = GameUtil.getPreFix();
     private int retunTimes = 0;
     protected Color[][] DEFAULT_SKILL_COLORS;
@@ -54,7 +56,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
     /**
      * @param accountArray
      * @param apArray
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void startAllFgo() throws Exception {
@@ -117,7 +119,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 			}else {
 				continue;
 			}
-        	
+
         }
         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "账号" + accountNum + "_结束战斗首页.");
     }
@@ -137,7 +139,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 				// 检测公告
 				LOGGER.info("开始检测是否重开。。。");
 				PointColor pc = CommonMethods.open2GudaOrRestart();
-				rebootFlag = pc.getColor().getRGB() == PointInfo.C_BUTTON_RESTART_YES.getRGB();
+				rebootFlag = pc.getColor().getRGB() == POINT_INFO.getcButtonRestartYes().getRGB();
 			}
             if (rebootFlag) {
                 LOGGER.info("重开战斗");
@@ -199,10 +201,10 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         Color c_wait = new Color(239, 186, 99);
 
         // 无苹果点
- 		Point p_apple_need01 = PointInfo.P_APPLE_NEED01;
- 		Color c_apple_need01 = PointInfo.C_APPLE_NEED01;
- 		Point p_apple_need02 = PointInfo.P_APPLE_NEED02;
- 		Color c_apple_need02 = PointInfo.C_APPLE_NEED02;
+ 		Point p_apple_need01 = POINT_INFO.getpAppleNeed01();
+ 		Color c_apple_need01 = POINT_INFO.getcAppleNeed01();
+ 		Point p_apple_need02 = POINT_INFO.getpAppleNeed02();
+ 		Color c_apple_need02 = POINT_INFO.getcAppleNeed02();
 
         List<PointColor> pcList = new ArrayList<PointColor>();
         pcList.add(new PointColor(p_wait, c_wait, null, true));
@@ -221,9 +223,9 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                         throw new FgoNeedNextException();
                     }else {
                         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + acountNum + "_使用第"+(appleCost+1)+"个苹果.");
-                        GameUtil.mouseMoveByPoint(PointInfo.P_APPLE_NEED01);
+                        GameUtil.mouseMoveByPoint(POINT_INFO.getpAppleNeed01());
                         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-                        GameUtil.mouseMoveByPoint(PointInfo.P_CONNECT_YES);
+                        GameUtil.mouseMoveByPoint(POINT_INFO.getpConnectYes());
                         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
                         GameUtil.delay(GameConstant.DELAY*5);
                         LOGGER.info("ap不足，更新苹果。");
@@ -264,7 +266,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   			Point p10 = new Point(300, 319);// 颜色：255;255;219 Color c = new Color(255, 255, 219);
   			GameUtil.mouseMoveByPoint(p10);
   			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-  			
+
   			// 等待进入队伍配置界面
   			Point p12 = new Point(427, 731);// 颜色：210;0;58
   			Color c12 = new Color(210, 0, 58);
@@ -286,8 +288,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
      */
     private void move2WinAndTransferPage(int countNum) throws Exception {
         // 检测异动前的FGO游戏图标
-        Point p_left_top = PointInfo.P_LEFT_TOP;
-        Color c_left_top = PointInfo.C_LEFT_TOP;
+        Point p_left_top = POINT_INFO.getpLeftTop();
+        Color c_left_top = POINT_INFO.getcLeftTop();
         java.util.List<PointColor> pocoList = new ArrayList<PointColor>();
         pocoList.add(new PointColor(p_left_top, c_left_top, true));
         GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY);
@@ -302,15 +304,15 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 
     private void checkLoadingAndTransferPage(int countNum) throws Exception {
         List<PointColor> pcList = new ArrayList<PointColor>();
-        pcList.add(new PointColor(PointInfo.P_LOADING, PointInfo.C_LOADING, PointInfo.DEAD_POINT, true));
-        pcList.add(new PointColor(PointInfo.P_TRANSFER, PointInfo.C_TRANSFER, PointInfo.DEAD_POINT, true));
+        pcList.add(new PointColor(POINT_INFO.getpLoading(), POINT_INFO.getcLoading(), POINT_INFO.getDeadPoint(), true));
+        pcList.add(new PointColor(POINT_INFO.getpTransfer(), POINT_INFO.getcTransfer(), POINT_INFO.getDeadPoint(), true));
         List<PointColor> finishPCList = new ArrayList<PointColor>();
-        finishPCList.add(new PointColor(PointInfo.P_TRANSFER, PointInfo.C_TRANSFER, PointInfo.DEAD_POINT, true));
+        finishPCList.add(new PointColor(POINT_INFO.getpTransfer(), POINT_INFO.getcTransfer(), POINT_INFO.getDeadPoint(), true));
         AutoAct ac = new AutoAct(pcList, finishPCList) {
             @Override
             public void doSomeThing() {
                 Color cWait = this.getPcWait().getColor();
-                if (GameUtil.likeEqualColor(PointInfo.C_TRANSFER, cWait)) {
+                if (GameUtil.likeEqualColor(POINT_INFO.getcTransfer(), cWait)) {
                     GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + countNum + "_引继页面.");
                 }
             }
@@ -321,16 +323,16 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private void waitForHomePage() throws Exception {
         GameUtil.getRb().delay(GameConstant.DELAY*5);
         // 公告×点
-        Point p_notice_exit = PointInfo.P_NOTICE_EXIT;
-        Color c_notice_exit = PointInfo.C_NOTICE_EXIT;
+        Point p_notice_exit = POINT_INFO.getpNoticeExit();
+        Color c_notice_exit = POINT_INFO.getcNoticeExit();
         // 公告×点
-        Point p_notice_exit_dark = PointInfo.P_NOTICE_EXIT_DARK;
-        Color c_notice_exit_dark = PointInfo.C_NOTICE_EXIT_DARK;
+        Point p_notice_exit_dark = POINT_INFO.getpNoticeExitDark();
+        Color c_notice_exit_dark = POINT_INFO.getcNoticeExitDark();
         // 盲点
-        Point dead_point = PointInfo.DEAD_POINT;
+        Point dead_point = POINT_INFO.getDeadPoint();
         // 咕哒子
-        Point p_guda = PointInfo.P_GUDA;
-        Color c_guda = PointInfo.C_GUDA;
+        Point p_guda = POINT_INFO.getpGuda();
+        Color c_guda = POINT_INFO.getcGuda();
 
         List<PointColor> pcList = new ArrayList<PointColor>();
         pcList.add(new PointColor(p_guda, c_guda, dead_point, true));
@@ -358,11 +360,11 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             LOGGER.info("等待（ " + str + " ）回合蓝盾攻击：");
         }
         // 蓝盾攻击点
-        Point p_blue_attack = PointInfo.P_BLUE_ATTACK;
-        Color c_blue_attack = PointInfo.C_BLUE_ATTACK;
+        Point p_blue_attack = POINT_INFO.getpBlueAttack();
+        Color c_blue_attack = POINT_INFO.getcBlueAttack();
         // 羁绊结算三角
-        Point p_fetter01 = PointInfo.P_FETTER01;
-        Color c_fetter01 = PointInfo.C_FETTER01;
+        Point p_fetter01 = POINT_INFO.getpFetter01();
+        Color c_fetter01 = POINT_INFO.getcFetter01();
 
         List<PointColor> pocoList = new ArrayList<PointColor>();
         pocoList.add(new PointColor(p_blue_attack, c_blue_attack, true, "attack"));
@@ -401,7 +403,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         }
         // 死角点击
-        GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+        GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 蓝色圆板
         Point p0 = new Point(1171, 697);// 颜色：0;113;216 Color c1 = new Color(0, 113, 216);
@@ -425,32 +427,32 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private void startBalance(int accountNum, int apNum, int count) throws Exception {
         LOGGER.info("结算侦测");
         // 死角点
-        Point dead_point = PointInfo.DEAD_POINT;
+        Point dead_point = POINT_INFO.getDeadPoint();
         // 复位点
-        Point p_reset = PointInfo.P_RESET;
+        Point p_reset = POINT_INFO.getpReset();
         // 羁绊三角1
-        Point p_fetter01 = PointInfo.P_FETTER01;
-        Color c_fetter01 = PointInfo.C_FETTER01;
+        Point p_fetter01 = POINT_INFO.getpFetter01();
+        Color c_fetter01 = POINT_INFO.getcFetter01();
         // 羁绊三角2
-        Point p_fetter02 = PointInfo.P_FETTER02;
-        Color c_fetter02 = PointInfo.C_FETTER02;
+        Point p_fetter02 = POINT_INFO.getpFetter02();
+        Color c_fetter02 = POINT_INFO.getcFetter02();
         // 羁绊升级
-        Point p_fetter_up = PointInfo.P_FETTER_UP;
-        Color c_fetter_up = PointInfo.C_FETTER_UP;
-        Point p_level_up = PointInfo.P_LEVEL_UP;
-        Color c_level_up = PointInfo.C_LEVEL_UP;
+        Point p_fetter_up = POINT_INFO.getpFetterUp();
+        Color c_fetter_up = POINT_INFO.getcFetterUp();
+        Point p_level_up = POINT_INFO.getpLevelUp();
+        Color c_level_up = POINT_INFO.getcLevelUp();
         // 确认点
-        Point p_confirm_rd = PointInfo.P_CONFIRM_RD;
-        Color c_confirm_rd = PointInfo.C_CONFIRM_RD;
+        Point p_confirm_rd = POINT_INFO.getpConfirmRd();
+        Color c_confirm_rd = POINT_INFO.getcConfirmRd();
         //好友申请拒绝点
-  		Point p_get_friend_no = PointInfo.P_GET_FRIEND_NO;
-  		Color c_get_friend_no = PointInfo.C_GET_FRIEND_NO;
+  		Point p_get_friend_no = POINT_INFO.getpGetFriendNo();
+  		Color c_get_friend_no = POINT_INFO.getcGetFriendNo();
         // 咕哒子
-        Point p_guda = PointInfo.P_GUDA;
-        Color c_guda = PointInfo.C_GUDA;
+        Point p_guda = POINT_INFO.getpGuda();
+        Color c_guda = POINT_INFO.getcGuda();
         // 获取奖励动态坐标颜色
-        Point p_reward_action = PointInfo.P_REWARD_ACTION;
-        Color c_reward_action = PointInfo.C_REWARD_ACTION;
+        Point p_reward_action = POINT_INFO.getpRewardAction();
+        Color c_reward_action = POINT_INFO.getcRewardAction();
 
         List<PointColor> pcList = new ArrayList<PointColor>();
         pcList.add(new PointColor(p_fetter01, c_fetter01, p_reset, true));
@@ -475,8 +477,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         ac.autoAct();
     }
     private void returnTopPage() throws Exception {
-        Point pNotice = PointInfo.P_NOTICE_EXIT;
-        Color cNotice = PointInfo.C_NOTICE_EXIT;
+        Point pNotice = POINT_INFO.getpNoticeExit();
+        Color cNotice = POINT_INFO.getcNoticeExit();
         Color temp = GameUtil.getScreenPixel(pNotice);
         Point pBack = null;
         LOGGER.info("开始返回首页");
@@ -484,7 +486,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             if (GameUtil.likeEqualColor(cNotice, temp)) {
                 break;
             }
-            pBack = PointInfo.P_BACK;
+            pBack = POINT_INFO.getpBack();
             GameUtil.mouseMoveByPoint(pBack);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
             GameUtil.delay(GameConstant.DELAY*2);
@@ -528,7 +530,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         GameUtil.getRb().delay(GameConstant.DELAY);
         GameUtil.getRb().delay(GameConstant.DELAY);
     }
-    
+
     protected final  void giveServantSkills(List<Map<String, Object>> list) throws Exception {
         Map<String, Object> tempMap = null;
         int size = list.size();
@@ -550,21 +552,21 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             int key = skill[i];
             switch (key) {
                 case 0:{
-                    temp = PointInfo.P_SKILL01;
+                    temp = POINT_INFO.getpSkill01();
                     skillPoints[i]=	new Point((int) temp.getX()
                             + GameConstant.HEAD_SPACE * from,
                             (int) temp.getY());
                     break;
                 }
                 case 1:{
-                    temp = PointInfo.P_SKILL02;
+                    temp = POINT_INFO.getpSkill02();
                     skillPoints[i]=	new Point((int) temp.getX()
                             + GameConstant.HEAD_SPACE * from,
                             (int) temp.getY());
                     break;
                 }
                 case 2:{
-                    temp = PointInfo.P_SKILL03;
+                    temp = POINT_INFO.getpSkill03();
                     skillPoints[i]=	new Point((int) temp.getX()
                             + GameConstant.HEAD_SPACE * from,
                             (int) temp.getY());
@@ -578,15 +580,15 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         Point toPerson = null;
         switch (to) {
             case 0:{
-                toPerson = PointInfo.SKILL_PERSON_01;
+                toPerson = POINT_INFO.getSkillPerson01();
                 break;
             }
             case 1:{
-                toPerson = PointInfo.SKILL_PERSON_02;
+                toPerson = POINT_INFO.getSkillPerson02();
                 break;
             }
             case 2:{
-                toPerson = PointInfo.SKILL_PERSON_03;
+                toPerson = POINT_INFO.getSkillPerson03();
                 break;
             }
             default:{
@@ -602,7 +604,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             GameUtil.mouseMoveByPoint(toPerson);
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
-            GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+            GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
             if (i != num - 1) {
                 // 等待
@@ -629,15 +631,15 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             int key = skill[i];
             switch (key) {
                 case 0:{
-                    skillPoints[i]=	PointInfo.P_CLOTH_SKILL01;
+                    skillPoints[i]=	POINT_INFO.getpClothSkill01();
                     break;
                 }
                 case 1:{
-                    skillPoints[i]=	PointInfo.P_CLOTH_SKILL02;
+                    skillPoints[i]=	POINT_INFO.getpClothSkill02();
                     break;
                 }
                 case 2:{
-                    skillPoints[i]=	PointInfo.P_CLOTH_SKILL03;
+                    skillPoints[i]=	POINT_INFO.getpClothSkill03();
                     break;
                 }
                 default:{
@@ -648,15 +650,15 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         Point toPerson = null;
         switch (to) {
             case 0:{
-                toPerson = PointInfo.SKILL_PERSON_01;
+                toPerson = POINT_INFO.getSkillPerson01();
                 break;
             }
             case 1:{
-                toPerson = PointInfo.SKILL_PERSON_02;
+                toPerson = POINT_INFO.getSkillPerson02();
                 break;
             }
             case 2:{
-                toPerson = PointInfo.SKILL_PERSON_03;
+                toPerson = POINT_INFO.getSkillPerson03();
                 break;
             }
             default:{
@@ -666,7 +668,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         int num = skillPoints.length;
         for (int i = 0; i < num; i++) {
             // 选择衣服，技能
-            GameUtil.mouseMoveByPoint(PointInfo.P_CLOTH);
+            GameUtil.mouseMoveByPoint(POINT_INFO.getpCloth());
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
             GameUtil.mouseMoveByPoint(skillPoints[i]);
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
@@ -675,7 +677,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             GameUtil.mouseMoveByPoint(toPerson);
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
 
-            GameUtil.mouseMoveByPoint(PointInfo.DEAD_POINT);
+            GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
             GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
             if (i != num - 1) {
                 // 等待
@@ -812,8 +814,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         checkExitCardSelect();
     }
     private boolean isTopage() {
-		Point p_guda = PointInfo.P_GUDA;
-		Color c_guda = PointInfo.C_GUDA;
+		Point p_guda = POINT_INFO.getpGuda();
+		Color c_guda = POINT_INFO.getcGuda();
 		Color Temp = GameUtil.getScreenPixel(p_guda);
 		if (GameUtil.likeEqualColor(Temp, c_guda)) {
 			return true;
@@ -822,8 +824,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 	}
     protected final  void checkExitCardSelect() throws FgoNeedRestartException {
         GameUtil.delay(GameConstant.DELAY * 5);
-        Point p = PointInfo.P_CARD_EXIT;
-        Color c = PointInfo.C_CARD_EXIT;
+        Point p = POINT_INFO.getpCardExit();
+        Color c = POINT_INFO.getcCardExit();
         Color temp = GameUtil.getScreenPixel(p);
         boolean isColor = GameUtil.likeEqualColor(c, temp);
         if (isColor) {
@@ -832,8 +834,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         }
     }
     protected final  void blueAttackSelect() throws FgoNeedRestartException {
-    	 Point p_card_exit = PointInfo.P_CARD_EXIT;
-         Color c_card_exit = PointInfo.C_CARD_EXIT;
+    	 Point p_card_exit = POINT_INFO.getpCardExit();
+         Color c_card_exit = POINT_INFO.getcCardExit();
          PointColor pc = new PointColor(p_card_exit, c_card_exit, true);
          Point p5 = new Point(1171, 697);
          GameUtil.mouseMoveByPoint(p5);

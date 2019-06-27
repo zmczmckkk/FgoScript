@@ -2,18 +2,19 @@ package fgoScript.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import fgoScript.entity.panel.FgoFrame;
+import commons.util.ClipBoardUtil;
+import commons.util.GameUtil;
+import commons.util.ProcessDealUtil;
+import commons.util.PropertiesUtil;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
-import fgoScript.entity.guda.*;
+import fgoScript.entity.guda.ApGudaziFactory;
+import fgoScript.entity.guda.EventGudazi;
+import fgoScript.entity.panel.FgoFrame;
 import fgoScript.exception.FgoNeedNextException;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
-import commons.util.ProcessDealUtil;
-import commons.util.ClipBoardUtil;
-import commons.util.GameUtil;
-import commons.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,11 +36,11 @@ import java.util.concurrent.*;
  *
  */
 public class Gudazi extends TimerTask {
+	private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
 
 	private static final Logger LOGGER = LogManager.getLogger(Gudazi.class);
 	private final int DELAY = GameConstant.DELAY;
 	private static boolean ifRestart;
-	private final Point DEAD_POINT = PointInfo.DEAD_POINT;
 
 	public static boolean isIfRestart() {
 		return ifRestart;
@@ -271,8 +272,8 @@ public class Gudazi extends TimerTask {
 		Point p4 = new Point(702, 194);// 周常按钮坐标
 //		Point p5 = new Point(1060, 195);// 限定按钮坐标
 		// 获取任务过滤按钮的1个坐标1个颜色 （可领取的颜色）
-		Point pRewardGet = PointInfo.P_REWARD_GET;
-		Color cRewardGet = PointInfo.C_REWARD_GET;
+		Point pRewardGet = POINT_INFO.getpRewardGet();
+		Color cRewardGet = POINT_INFO.getcRewardGet();
 		GameUtil.mouseMoveByPoint(p4);
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 循环7次尝试获取
@@ -338,7 +339,8 @@ public class Gudazi extends TimerTask {
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 		Point p1 = new Point(573, 701);// 颜色：46;65;178 Color c = new Color(46, 65, 178);
 		GameUtil.mouseMoveByPoint(p1);
-		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(PointInfo.P_DOWN_PANEL_CLOSE, PointInfo.C_DOWN_PANEL_CLOSE, false));
+		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(POINT_INFO.getpDownPanelClose(),
+				POINT_INFO.getcDownPanelClose(), false));
 		// 等待石头图标
 		Point p2 = new Point(429, 89);// 颜色：167;231;209
 		Color c2 = new Color(167, 231, 209);
@@ -351,7 +353,7 @@ public class Gudazi extends TimerTask {
 		GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		// 等待小手图标
 		pocoList = new ArrayList<>();
-		pocoList.add(new PointColor(PointInfo.P_HAND, PointInfo.C_HAND, true));
+		pocoList.add(new PointColor(POINT_INFO.getpHand(), POINT_INFO.getcHand(), true));
 		GameUtil.waitUntilAllColor(pocoList, DELAY);
 		// 判断 免费召唤图标 并点击确定按钮抽取
 		Point p5 = new Point(677, 603);// 颜色：31;167;202
@@ -395,8 +397,8 @@ public class Gudazi extends TimerTask {
 	}
 	private void beforeNotice() throws Exception {
 		// 检测异动前的FGO游戏图标
-		Point pLeftTop = PointInfo.P_LEFT_TOP;
-		Color cLeftTop = PointInfo.C_LEFT_TOP;
+		Point pLeftTop = POINT_INFO.getpLeftTop();
+		Color cLeftTop = POINT_INFO.getcLeftTop();
 		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(pLeftTop, cLeftTop, true));
 		GameUtil.waitUntilAllColor(pocoList, DELAY);
@@ -405,17 +407,17 @@ public class Gudazi extends TimerTask {
 		GameUtil.moveToLeftTop();
 
 		// 检测loading是否完毕
-		Point pLoading = PointInfo.P_LOADING;
-		Color cLoading = PointInfo.C_LOADING;
+		Point pLoading = POINT_INFO.getpLoading();
+		Color cLoading = POINT_INFO.getcLoading();
 
-		Point pTransfer = PointInfo.P_TRANSFER;
-		Color cTransfer = PointInfo.C_TRANSFER;
+		Point pTransfer = POINT_INFO.getpTransfer();
+		Color cTransfer = POINT_INFO.getcTransfer();
 
 		List<PointColor> pcList = new ArrayList<>();
-		pcList.add(new PointColor(pLoading, cLoading, PointInfo.DEAD_POINT, true));
-		pcList.add(new PointColor(pTransfer, cTransfer, PointInfo.DEAD_POINT, true));
+		pcList.add(new PointColor(pLoading, cLoading, POINT_INFO.getDeadPoint(), true));
+		pcList.add(new PointColor(pTransfer, cTransfer, POINT_INFO.getDeadPoint(), true));
 		List<PointColor> finishPCList = new ArrayList<>();
-		finishPCList.add(new PointColor(pTransfer, cTransfer, PointInfo.DEAD_POINT, true));
+		finishPCList.add(new PointColor(pTransfer, cTransfer, POINT_INFO.getDeadPoint(), true));
 		AutoAct ac = new AutoAct(pcList, finishPCList) {
 			@Override
 			public void doSomeThing() {
@@ -439,30 +441,30 @@ public class Gudazi extends TimerTask {
 	private void startBalanceForEvent(int count) throws Exception {
 		LOGGER.info("结算侦测");
 		// 死角点
-		Point deadPoint = PointInfo.DEAD_POINT;
+		Point deadPoint = POINT_INFO.getDeadPoint();
 		// 复位点
-		Point pReset = PointInfo.P_RESET;
+		Point pReset = POINT_INFO.getpReset();
 		// 羁绊三角1
-		Point pFetter01 = PointInfo.P_FETTER01;
-		Color cFetter01 = PointInfo.C_FETTER01;
+		Point pFetter01 = POINT_INFO.getpFetter01();
+		Color cFetter01 = POINT_INFO.getcFetter01();
 		// 羁绊三角2
-		Point pFetter02 = PointInfo.P_FETTER02;
-		Color cFetter02 = PointInfo.C_FETTER02;
+		Point pFetter02 = POINT_INFO.getpFetter02();
+		Color cFetter02 = POINT_INFO.getcFetter02();
 		// 羁绊升级
-		Point pFetterUp = PointInfo.P_FETTER_UP;
-		Color cFetterUp = PointInfo.C_FETTER_UP;
+		Point pFetterUp = POINT_INFO.getpFetterUp();
+		Color cFetterUp = POINT_INFO.getcFetterUp();
 		// 确认点
-		Point pConfirmRd = PointInfo.P_CONFIRM_RD;
-		Color cConfirmRd = PointInfo.C_CONFIRM_RD;
+		Point pConfirmRd = POINT_INFO.getpConfirmRd();
+		Color cConfirmRd = POINT_INFO.getcConfirmRd();
 		//好友申请拒绝点
-		Point pGetFriendNo = PointInfo.P_GET_FRIEND_NO;
-		Color cGetFriendNo = PointInfo.C_GET_FRIEND_NO;
+		Point pGetFriendNo = POINT_INFO.getpGetFriendNo();
+		Color cGetFriendNo = POINT_INFO.getcGetFriendNo();
 		// 咕哒子
-		Point pGuda = PointInfo.P_GUDA;
-		Color cGuda = PointInfo.C_GUDA;
+		Point pGuda = POINT_INFO.getpGuda();
+		Color cGuda = POINT_INFO.getcGuda();
 		// 获取奖励动态坐标颜色
-		Point pRewardAction = PointInfo.P_REWARD_ACTION;
-		Color cRewardAction = PointInfo.C_REWARD_ACTION;
+		Point pRewardAction = POINT_INFO.getpRewardAction();
+		Color cRewardAction = POINT_INFO.getcRewardAction();
 
 		List<PointColor> pcList = new ArrayList<>();
 		pcList.add(new PointColor(pFetter01, cFetter01, pReset, true));
@@ -650,16 +652,16 @@ public class Gudazi extends TimerTask {
 	private void waitForHomePage() throws Exception {
 		r.delay(DELAY*5);
 		// 公告×点
-		Point p_notice_exit = PointInfo.P_NOTICE_EXIT;
-		Color c_notice_exit = PointInfo.C_NOTICE_EXIT;
+		Point p_notice_exit = POINT_INFO.getpNoticeExit();
+		Color c_notice_exit = POINT_INFO.getcNoticeExit();
 		// 公告×点
-		Point p_notice_exit_dark = PointInfo.P_NOTICE_EXIT_DARK;
-		Color c_notice_exit_dark = PointInfo.C_NOTICE_EXIT_DARK;
+		Point p_notice_exit_dark = POINT_INFO.getpNoticeExitDark();
+		Color c_notice_exit_dark = POINT_INFO.getcNoticeExitDark();
 		// 盲点
-		Point dead_point = PointInfo.DEAD_POINT;
+		Point dead_point = POINT_INFO.getDeadPoint();
 		// 咕哒子
-		Point p_guda = PointInfo.P_GUDA;
-		Color c_guda = PointInfo.C_GUDA;
+		Point p_guda = POINT_INFO.getpGuda();
+		Color c_guda = POINT_INFO.getcGuda();
 
 		List<PointColor> pcList = new ArrayList<>();
 		pcList.add(new PointColor(p_guda, c_guda, dead_point, true));
@@ -677,9 +679,9 @@ public class Gudazi extends TimerTask {
 	}
 
 	public Map<String, List<CommonCard>> getWeakCommondCards(Comparator<CommonCard> comp){
-		Point p_card_click = PointInfo.P_CARD_CLICK;
-		Point p_card_color = PointInfo.P_CARD_COLOR;
-		Point p_card_weak = PointInfo.P_CARD_WEAK;
+		Point p_card_click = POINT_INFO.getpCardClick();
+		Point p_card_color = POINT_INFO.getpCardColor();
+		Point p_card_weak = POINT_INFO.getpCardWeak();
 		Point pLoc;
 		Point pColor;
 		Point pWeak;

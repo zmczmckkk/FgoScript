@@ -1,21 +1,18 @@
 package fgoScript.service;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
-import fgoScript.constant.GameConstant;
-import fgoScript.constant.PointInfo;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
+import fgoScript.constant.GameConstant;
+import fgoScript.constant.PointInfo;
+import org.apache.commons.lang3.StringUtils;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 public class EventFactors {
+	private static final PointInfo POINT_INFO = PointInfo.getSpringBean();
+
 	public static final Point P_INSIDE = new Point(1218,564);
 	public static final Color C_INSIDE = new Color(240, 167, 17);
 	public static final Point P_OUTSIDE = new Point(1215,490);
@@ -60,11 +57,11 @@ public class EventFactors {
 	/**
 	 * 拖拽后选哪个副本
 	 */
-	public static Point p_room_select = PointInfo.P_ROOM_SELECT01;
+	public static Point p_room_select = POINT_INFO.getpRoomSelect01();
 	/**
 	 * 进入副本后支援的职介
 	 */
-	public static Point supportServant = PointInfo.P_SERVANT_FOUR;
+	public static Point supportServant = POINT_INFO.getpServantFour();
 	public static final int battleRounds = 3;
 	/**
 	 * 第一回事是否仍副宝具
@@ -361,15 +358,15 @@ public class EventFactors {
 			for (int j = 0; j < num; j++) {
 				switch (j) {
 					case 0:{
-						temp = PointInfo.P_SKILL01;
+						temp = POINT_INFO.getpSkill01();
 						break;
 					}
 					case 1:{
-						temp = PointInfo.P_SKILL02;
+						temp = POINT_INFO.getpSkill02();
 						break;
 					}
 					case 2:{
-						temp = PointInfo.P_SKILL03;
+						temp = POINT_INFO.getpSkill03();
 						break;
 					}
 					default:{
@@ -390,10 +387,10 @@ public class EventFactors {
 		String toM = PropertiesUtil.getValueFromSkillsFile("monster03");
 		switch (StringUtils.isBlank(toM) ? 2 : Integer.valueOf(toM)) {
 		case 0:
-			p = PointInfo.P_MOSTER01;
+			p = POINT_INFO.getpMoster01();
 			break;
 		case 1:
-			p = PointInfo.P_MOSTER02;
+			p = POINT_INFO.getpMoster02();
 			break;
 		case 2:
 			p = null;
