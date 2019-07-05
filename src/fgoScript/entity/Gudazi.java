@@ -78,9 +78,11 @@ public class Gudazi extends TimerTask {
 	public void onlyFight() throws Exception {
 		String flag = PropertiesUtil.getValueFromColorFile("ifRestart");
 		try {
-			new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
-			autoClose();
-			startBalanceForEvent(0);
+			for (int i = 0; i < 99; i++) {
+				new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
+				autoClose();
+				startBalanceForEvent(0);
+			}
 		} catch (FgoNeedNextException | FgoNeedRestartException e) {
 			setIfRestart(true);
 			onlyFight();

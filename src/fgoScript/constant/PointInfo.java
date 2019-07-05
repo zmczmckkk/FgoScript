@@ -1425,7 +1425,6 @@ public class PointInfo {
 		PointInfo pi = PointInfo.getInstance();
 		String text = JSON.toJSONString(pi);
 		System.out.println(text);
-
 	}
 
 }
