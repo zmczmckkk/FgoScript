@@ -7,6 +7,7 @@ import java.util.*;
 
 import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,12 +19,14 @@ import fgoScript.entity.PointColor;
 import fgoScript.entity.BaseZButton;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.spi.StandardLevel;
 
 import javax.print.attribute.standard.Finishings;
 import javax.swing.*;
 
 public class WuNa implements IWuNa{
-	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
+//	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
 	private static boolean GO = false;
 	boolean scucess = true;
 
@@ -126,7 +129,7 @@ public class WuNa implements IWuNa{
 		}else {
 			int minSize = size < len ? size:len;
 			if (size!=len) {
-				LOGGER.info("配置不成对，忽略最后一次点击");
+//				LOGGER.info("配置不成对，忽略最后一次点击");
 			}
 			List<PointColor> pcList = new ArrayList<>();
 			String pointStr;
@@ -161,7 +164,7 @@ public class WuNa implements IWuNa{
 				riArray = getRandomArray(minSize);
 				for (int i = 0; i < minSize; i++) {
 					ri = riArray[i];
-					LOGGER.info("scanning_" + ri);
+//					LOGGER.info("scanning_" + ri);
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
 					c0 = pointColor.getColor();
@@ -182,7 +185,7 @@ public class WuNa implements IWuNa{
 				}
 			} while (isGO() || alwaysGo);
 		}
-		LOGGER.info("finish auto click scanning");
+//		LOGGER.info("finish auto click scanning");
 	}
 	private int[] getRandomArray(int length){
 		int[] arr = new int[length];//10个数的数组

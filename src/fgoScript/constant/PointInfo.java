@@ -24,6 +24,7 @@ public class PointInfo {
 	// 周回入口
 	private Point pWeekEntrance01;
 	private Point pWeekEntrance02;
+	private Point pWeekEntrance03;
 
 	/* 副本01  Y间隔 190 */
 	private Point pRoomSelect01;
@@ -86,6 +87,9 @@ public class PointInfo {
 	// 羁绊三角2
 	private Point pFetter02;
 	private Color cFetter02;
+	// 羁绊三角3
+	private Point pFetter03;
+	private Color cFetter03;
 	// 关闭点
 	private Point pCloseMd;
 	private Color cCloseMd;
@@ -236,7 +240,9 @@ public class PointInfo {
             return pWeekEntrance01;
         } else if ("02".equals(code)) {
             return pWeekEntrance02;
-        } else {
+        } else if ("03".equals(code)) {
+			return pWeekEntrance03;
+		} else {
             return pWeekEntrance02;
         }
 
@@ -1419,6 +1425,30 @@ public class PointInfo {
 
 	public void setpEventBattleLocate01(Point pEventBattleLocate01) {
 		this.pEventBattleLocate01 = pEventBattleLocate01;
+	}
+
+	public Point getpFetter03() {
+		return pFetter03;
+	}
+
+	public void setpFetter03(Point pFetter03) {
+		this.pFetter03 = pFetter03;
+	}
+
+	public Color getcFetter03() {
+		return cFetter03;
+	}
+
+	public void setcFetter03(Color cFetter03) {
+		this.cFetter03 = cFetter03;
+	}
+
+	public Point getpWeekEntrance03() {
+		return pWeekEntrance03;
+	}
+
+	public void setpWeekEntrance03(Point pWeekEntrance03) {
+		this.pWeekEntrance03 = pWeekEntrance03;
 	}
 
 	public static void main(String[] args) {

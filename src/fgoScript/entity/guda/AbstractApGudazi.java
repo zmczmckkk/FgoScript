@@ -359,16 +359,15 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         if (str != null) {
             LOGGER.info("等待（ " + str + " ）回合蓝盾攻击：");
         }
-        // 蓝盾攻击点
-        Point p_blue_attack = POINT_INFO.getpBlueAttack();
-        Color c_blue_attack = POINT_INFO.getcBlueAttack();
-        // 羁绊结算三角
-        Point p_fetter01 = POINT_INFO.getpFetter01();
-        Color c_fetter01 = POINT_INFO.getcFetter01();
 
         List<PointColor> pocoList = new ArrayList<PointColor>();
-        pocoList.add(new PointColor(p_blue_attack, c_blue_attack, true, "attack"));
-        pocoList.add(new PointColor(p_fetter01, c_fetter01, true, "balance"));
+        pocoList.add(new PointColor(POINT_INFO.getpBlueAttack(), POINT_INFO.getcBlueAttack(), true, "attack"));
+        pocoList.add(new PointColor(POINT_INFO.getpFetter01(), POINT_INFO.getcFetter01(), true, "balance"));
+        pocoList.add(new PointColor(POINT_INFO.getpFetter02(), POINT_INFO.getcFetter02(), true, ""));
+        pocoList.add(new PointColor(POINT_INFO.getpFetter03(), POINT_INFO.getcFetter03(), true, ""));
+        pocoList.add(new PointColor(POINT_INFO.getpFetterUp(), POINT_INFO.getcFetterUp(), true, ""));
+        pocoList.add(new PointColor(POINT_INFO.getpLevelUp(), POINT_INFO.getcLevelUp(), true, ""));
+        pocoList.add(new PointColor(POINT_INFO.getpConfirmRd(), POINT_INFO.getcConfirmRd(), true, ""));
         PointColor pc = GameUtil.waitUntilOneColor(pocoList);
         return pc;
     }
@@ -684,6 +683,44 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 waitToAttack(null);
             }
         }
+    }
+    protected boolean checkFinish(){
+        boolean flag = false;
+        List<Point> pointList = new ArrayList<>();
+        List<Color> colorList = new ArrayList<>();
+        // 羁绊三角1
+        // 羁绊三角2
+        // 羁绊三角3
+        // 羁绊升级
+        // 等级升级
+        // 确认点
+        pointList.add(POINT_INFO.getpFetter01());
+        pointList.add(POINT_INFO.getpFetter02());
+        pointList.add(POINT_INFO.getpFetter03());
+        pointList.add(POINT_INFO.getpFetterUp());
+        pointList.add(POINT_INFO.getpLevelUp());
+        pointList.add(POINT_INFO.getpConfirmRd());
+
+        colorList.add(POINT_INFO.getcFetter01());
+        colorList.add(POINT_INFO.getcFetter02());
+        colorList.add(POINT_INFO.getcFetter03());
+        colorList.add(POINT_INFO.getcFetterUp());
+        colorList.add(POINT_INFO.getcLevelUp());
+        colorList.add(POINT_INFO.getcConfirmRd());int size = colorList.size();
+
+        Point tempP;
+        Color tempC;
+        Color nowColor;
+        for (int i = 0; i < size; i++) {
+            tempP = pointList.get(i);
+            tempC = colorList.get(i);
+            nowColor = GameUtil.getScreenPixel(tempP);
+            if (GameUtil.likeEqualColor(tempC, nowColor)) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
     }
     private final List<CommonCard> getColorCommondCards(){
         String  zeroPosition =  PropertiesUtil.getValueFromCommandCardFile("zeroPosition");

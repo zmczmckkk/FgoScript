@@ -193,6 +193,7 @@ public class EventGudazi extends AbstractApGudazi {
 			hasSelect= false;
 			while (eveValue > GameConstant.THRESHOLD && battleRounds < MaxRounds) {
 				battleRounds++;
+				waitToAttack("3");
 				/*
 				  连续使用技能组
 				 */
@@ -207,16 +208,13 @@ public class EventGudazi extends AbstractApGudazi {
 						hasSelect = true;
 					}
 				}
+				attackBAAForEvent(true, hases);
 				// 宝具平A
-				pc = waitToAttack("3");
-				if ("attack".equals(pc.getName())) {
-					attackBAAForEvent(true, hases);
-				}else {
+				waitToAttack("3");
+				if (checkFinish()) {
 					LOGGER.info("羁绊了，跳出来");
 					break;
 				}
-				// 等待
-				waitToAttack("3");
 				eveValue = GameUtil.getColorEveValue(pointList);
 			}
 		}

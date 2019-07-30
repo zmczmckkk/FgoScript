@@ -188,42 +188,6 @@ public class TrainApGudazi extends AbstractApGudazi {
 			bCount++;
 		}
 	}
-	private boolean checkFinish(){
-		boolean flag = false;
-		List<Point> pointList = new ArrayList<>();
-		List<Color> colorList = new ArrayList<>();
-		// 羁绊三角1
-		// 羁绊三角2
-		// 羁绊升级
-		// 等级升级
-		// 确认点
-		pointList.add(POINT_INFO.getpFetter01());
-		pointList.add(POINT_INFO.getpFetter02());
-		pointList.add(POINT_INFO.getpFetterUp());
-		pointList.add(POINT_INFO.getpLevelUp());
-		pointList.add(POINT_INFO.getpConfirmRd());
-
-		colorList.add(POINT_INFO.getcFetter01());
-		colorList.add(POINT_INFO.getcFetter02());
-		colorList.add(POINT_INFO.getcFetterUp());
-		colorList.add(POINT_INFO.getcLevelUp());
-		colorList.add(POINT_INFO.getcConfirmRd());
-		int size = colorList.size();
-
-		Point tempP;
-		Color tempC;
-		Color nowColor;
-		for (int i = 0; i < size; i++) {
-			tempP = pointList.get(i);
-			tempC = colorList.get(i);
-			nowColor = GameUtil.getScreenPixel(tempP);
-			if (GameUtil.likeEqualColor(tempC, nowColor)) {
-				flag = true;
-				break;
-			}
-		}
-		return flag;
-	}
 
 	/**
 	 * 平a攻击
