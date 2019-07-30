@@ -1,5 +1,7 @@
 package fgoScript.entity;
 
+import aoshiScript.entity.IWuNa;
+import aoshiScript.entity.WuNa;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import commons.util.ClipBoardUtil;
@@ -77,11 +79,40 @@ public class Gudazi extends TimerTask {
 	}
 	public void onlyFight() throws Exception {
 		String flag = PropertiesUtil.getValueFromColorFile("ifRestart");
+		boolean stopFlag = false;
+		WuNa wuna = new WuNa("none");
+		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+				.setNameFormat("demo-pool-%d").build();
+		ThreadPoolExecutor singleThreadPool = new ThreadPoolExecutor(1, 1,
+				0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+
+
 		try {
 			for (int i = 0; i < 99; i++) {
 				new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
-				autoClose();
-				startBalanceForEvent(0);
+				singleThreadPool.execute(()-> {
+					wuna.alwaysClick();
+				});
+				Color tempColor;
+				do {
+					tempColor = GameUtil.getScreenPixel(POINT_INFO.getpBlueAttack());
+					if(GameUtil.isSTOP_SCRIPT()){
+						stopFlag=true;
+						break;
+					}
+				} while (!GameUtil.likeEqualColor(POINT_INFO.getcBlueAttack(), tempColor));
+				if(stopFlag){
+					wuna.setGO(false);
+					break;
+				}
+				wuna.setGO(false);
+				int n = 0;
+				while ((n = singleThreadPool.getActiveCount())!=0){
+					LOGGER.info("线程个数" + singleThreadPool.getActiveCount());
+					GameUtil.delay(1500);
+				}
+				LOGGER.info("进入下一个循环！");
 			}
 		} catch (FgoNeedNextException | FgoNeedRestartException e) {
 			setIfRestart(true);
@@ -667,10 +698,12 @@ public class Gudazi extends TimerTask {
 
 		List<PointColor> pcList = new ArrayList<>();
 		pcList.add(new PointColor(p_guda, c_guda, dead_point, true));
+		pcList.add(new PointColor(POINT_INFO.getpBlueAttack(), POINT_INFO.getcBlueAttack(), dead_point, true));
 		pcList.add(new PointColor(p_notice_exit, c_notice_exit, p_notice_exit, true));
 		pcList.add(new PointColor(p_notice_exit_dark, c_notice_exit_dark, p_notice_exit_dark, true));
 		List<PointColor> finishPCList = new ArrayList<>();
 		finishPCList.add(new PointColor(p_guda, c_guda, dead_point, true));
+		finishPCList.add(new PointColor(POINT_INFO.getpBlueAttack(), POINT_INFO.getcBlueAttack(), dead_point, true));
 
 		AutoAct ac = new AutoAct(pcList, finishPCList) {
 			@Override

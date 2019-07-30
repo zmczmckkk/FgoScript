@@ -534,6 +534,7 @@ public class GameUtil {
 					OUTTIME_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("OUTTIME_COUNT"));
 				}
 				if (cm.isThrowException()){
+					delay(5000);
 					throw new FgoNeedRestartException();
 				}
 			}

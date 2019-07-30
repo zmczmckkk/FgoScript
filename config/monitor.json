@@ -169,13 +169,13 @@
     "name": "宝具详情关闭",
     "checkPointArray": [
       {
-        "point": "1123,94",
-        "color": "8, 20, 41"
+        "point": "1131,101",
+        "color": "41, 52, 107"
       }
     ],
     "clickPointArray": [
       {
-        "point": "1123,94"
+        "point": "1131,101"
       }
     ],
     "throwException": "false",
