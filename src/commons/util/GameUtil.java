@@ -527,6 +527,12 @@ public class GameUtil {
 				for (int j = 0; j < clickPointListSize; j++) {
 					tempPoint = clickPointList.get(j);
 					mouseMoveByPoint(tempPoint);
+					if ("选择人物".equals(cm.getName())) {
+						mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+					}else {
+						mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+					}
+
 					mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					LOGGER.info(cm.getName());
 				}
@@ -662,7 +668,7 @@ public class GameUtil {
 	public static void mousePressAndRelease(int key) {
 			rb = getRb();
 			rb.mousePress(key);
-			rb.delay(GameConstant.DELAY/2);
+			rb.delay(GameConstant.DELAY/4);
 			rb.mouseRelease(key);
 			rb.delay(GameConstant.DELAY);
 			rb.delay(GameConstant.DELAY);
