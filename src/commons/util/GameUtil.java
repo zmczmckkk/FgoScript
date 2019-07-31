@@ -532,8 +532,6 @@ public class GameUtil {
 					}else {
 						mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					}
-
-					mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					LOGGER.info(cm.getName());
 				}
 				if (cm.isExtendOutTime()){
