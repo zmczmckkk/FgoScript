@@ -29,7 +29,7 @@ public class NativeCp {
         this.userName = userName;
     }
 
-    public String getUserProfile() {
+    public static String getUserProfile() {
         return System.getenv("USERPROFILE");
     }
 
