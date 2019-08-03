@@ -1,0 +1,50 @@
+﻿{
+  "levelColor": {
+    "r": 255,
+    "g": 255,
+    "b": 255,
+    "alpha": 255
+  },
+  "levelPoint": {
+    "x": 580,
+    "y": 219
+  },
+  "noTicketColor": {
+    "r": 217,
+    "g": 217,
+    "b": 217,
+    "alpha": 255
+  },
+  "noTicketPoint": {
+    "x": 1212,
+    "y": 381
+  },
+  "rankColor": {
+    "r": 237,
+    "g": 217,
+    "b": 137,
+    "alpha": 255
+  },
+  "rankPoint": {
+    "x": 437,
+    "y": 503
+  },
+  "returnPoint": {
+    "x": 1240,
+    "y": 62
+  },
+  "startPoint": {
+    "x": 1215,
+    "y": 330
+  },
+  "ticketColor": {
+    "r": 0,
+    "g": 0,
+    "b": 0,
+    "alpha": 255
+  },
+  "ticketPoint": {
+    "x": 0,
+    "y": 0
+  }
+}
