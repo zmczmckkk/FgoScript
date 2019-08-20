@@ -462,6 +462,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 		pcList.add(new PointColor(p_get_friend_no, c_get_friend_no, p_get_friend_no, true));
         pcList.add(new PointColor(p_guda, c_guda, dead_point, true));
         pcList.add(new PointColor(p_reward_action, c_reward_action, p_reward_action, true));
+        pcList.add(new PointColor(POINT_INFO.getpBattleReapeatYes(), POINT_INFO.getcBattleReapeatYes(), POINT_INFO.getpBattleReapeatNo(), true));
         List<PointColor> finishPCList = new ArrayList<PointColor>();
         finishPCList.add(new PointColor(p_guda, c_guda, dead_point, true));
         AutoAct ac = new AutoAct(pcList, finishPCList) {

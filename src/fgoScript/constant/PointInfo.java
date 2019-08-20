@@ -18,6 +18,11 @@ public class PointInfo {
 	public static PointInfo getSpringBean(){
 		return (PointInfo) MySpringUtil.getApplicationContext().getBean("pointInfo");
 	}
+	//重复战斗
+	private Point pBattleReapeatYes;
+	private Color cBattleReapeatYes;
+	private Point pBattleReapeatNo;
+	private Color cBattleReapeatNo;
 	// 滚动条重置点
 	private Point pScrollRestTop;
 	private Point pScrollRestDown;
@@ -1451,8 +1456,44 @@ public class PointInfo {
 		this.pWeekEntrance03 = pWeekEntrance03;
 	}
 
+	public Point getpBattleReapeatYes() {
+		return pBattleReapeatYes;
+	}
+
+	public void setpBattleReapeatYes(Point pBattleReapeatYes) {
+		this.pBattleReapeatYes = pBattleReapeatYes;
+	}
+
+	public Color getcBattleReapeatYes() {
+		return cBattleReapeatYes;
+	}
+
+	public void setcBattleReapeatYes(Color cBattleReapeatYes) {
+		this.cBattleReapeatYes = cBattleReapeatYes;
+	}
+
+	public Point getpBattleReapeatNo() {
+		return pBattleReapeatNo;
+	}
+
+	public void setpBattleReapeatNo(Point pBattleReapeatNo) {
+		this.pBattleReapeatNo = pBattleReapeatNo;
+	}
+
+	public Color getcBattleReapeatNo() {
+		return cBattleReapeatNo;
+	}
+
+	public void setcBattleReapeatNo(Color cBattleReapeatNo) {
+		this.cBattleReapeatNo = cBattleReapeatNo;
+	}
+
 	public static void main(String[] args) {
-		PointInfo pi = PointInfo.getInstance();
+		PointInfo pi = new PointInfo();
+		pi.setpBattleReapeatYes(new Point(0,0));
+		pi.setpBattleReapeatNo(new Point(0,0));
+		pi.setcBattleReapeatYes(new Color(0,0,0));
+		pi.setcBattleReapeatNo(new Color(0,0,0));
 		String text = JSON.toJSONString(pi);
 		System.out.println(text);
 	}
