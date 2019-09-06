@@ -194,7 +194,7 @@ public class GameUtil {
 			}
 			// 意外检查
 			if (check != 0 && (count == 0) && (check % EROOR_ROUND == 0)) {
-				waitInteruptSolution();
+				waitInteruptSolution(check);
 			}
 			check++;
 			Thread.sleep(GameConstant.DELAY*CHECK_TIMES);
@@ -341,7 +341,7 @@ public class GameUtil {
 			toCheck = (count == pocoList.size());
 			// 异常检查
 			if ((!toCheck) && (check % EROOR_ROUND == 0)) {
-				waitInteruptSolution();
+				waitInteruptSolution(check);
 			}
 			check++;
 			Thread.sleep(delay*CHECK_TIMES);
@@ -504,8 +504,8 @@ public class GameUtil {
 		}
 		return colorMonitorList;
 	}
-	private static String waitInteruptSolution() throws FgoNeedRestartException {
-		if (colorMonitorList == null) {
+	private static String waitInteruptSolution(int check) throws FgoNeedRestartException {
+		if (colorMonitorList == null || check == 0) {
 			colorMonitorList = getColorMonitorList();
 		}
 		int size = colorMonitorList.size();
