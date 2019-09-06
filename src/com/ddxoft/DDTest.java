@@ -1,29 +1,22 @@
 package com.ddxoft;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import commons.entity.NativeCp;
 import fgoScript.constant.GameConstant;
 
 public class DDTest {
 	 public static void main(String[] args) {
-		 System.out.println("���Կ�ʼ");
-
-		 //DD.INSTANCE.DD_mov(500, 500);   //�����ƶ�
-		 //DD.INSTANCE.DD_movR(100, 100); //����ƶ�
-		 //DD.INSTANCE.DD_btn(4);DD.INSTANCE.DD_btn(8); //����Ҽ�
-		 DD.INSTANCE.DD_key(601, 1);DD.INSTANCE.DD_key(601, 2); //����win
-		 DD.INSTANCE.DD_str("123@AbC"); //�ַ���
-		 DDTest.DD.INSTANCE.DD_btn(1);
-		 DDTest.DD.INSTANCE.DD_btn(2);
+		 DD.INSTANCE.HIVK_KEY(601, 1);DD.INSTANCE.HIVK_KEY(601, 2);
+		 DDTest.DD.INSTANCE.HIVM_BTN(1);
+		 DDTest.DD.INSTANCE.HIVM_BTN(2);
 	 }
 
 	 public interface DD extends Library {
-		   DD INSTANCE = (DD)Native.loadLibrary("DD64", DD.class);
-		   //64λJAVA����DD64.dll, 32λ����DD32.dll ����ϵͳ����λ���޹ء���
-		   public int DD_mov(int x, int y);
-		   public int DD_movR(int dx, int dy);
-		   public int DD_btn(int btn);
-		   public int DD_whl(int whl);
-		   public int DD_key(int ddcode, int flag);
-		   public int DD_str(String s);
+		   DD INSTANCE = (DD)Native.loadLibrary("HIVKDll64", DDTest.DD.class);
+		   public int HIVM_MOV(long x, long y);
+		   public int HIVM_MOVR(long dx, long dy);
+		   public int HIVM_BTN(int btn);
+		   public int HIVM_WHL(int whl);
+		   public int HIVK_KEY(int ddcode, int flag);
 	 }
 }

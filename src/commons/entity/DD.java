@@ -5,12 +5,10 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 public interface DD extends Library {
-    DDTest.DD INSTANCE = (DDTest.DD) Native.loadLibrary("DD64", DDTest.DD.class);
-    //64λJAVA����DD64.dll, 32λ����DD32.dll ����ϵͳ����λ���޹ء���
-    public int DD_mov(int x, int y);
-    public int DD_movR(int dx, int dy);
-    public int DD_btn(int btn);
-    public int DD_whl(int whl);
-    public int DD_key(int ddcode, int flag);
-    public int DD_str(String s);
+    DDTest.DD INSTANCE = (DDTest.DD)Native.loadLibrary("HIVKDll64", DDTest.DD.class);
+    public int HIVM_MOV(int x, int y);
+    public int HIVM_MOVR(int dx, int dy);
+    public int HIVM_BTN(int btn);
+    public int HIVM_WHL(int whl);
+    public int HIVK_KEY(int ddcode, int flag);
 }

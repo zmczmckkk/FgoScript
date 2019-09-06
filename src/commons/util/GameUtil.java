@@ -532,8 +532,6 @@ public class GameUtil {
 					}else {
 						mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					}
-
-					mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 					LOGGER.info(cm.getName());
 				}
 				if (cm.isExtendOutTime()){
@@ -722,15 +720,15 @@ public class GameUtil {
 	}
 	public static void mousePressAndReleaseByDD() {
 		rb = getRb();
-		DD.INSTANCE.DD_btn(1);
+		DD.INSTANCE.HIVM_BTN(1);
 		rb.delay(GameConstant.DELAY/10);
-		DD.INSTANCE.DD_btn(2);
+		DD.INSTANCE.HIVM_BTN(2);
 	}
 	public static void mousePressAndReleaseByDdQuick(int delay) {
 		rb = getRb();
-		DD.INSTANCE.DD_btn(1);
+		DD.INSTANCE.HIVM_BTN(1);
 		rb.delay(delay);
-		DD.INSTANCE.DD_btn(2);
+		DD.INSTANCE.HIVM_BTN(2);
 	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();

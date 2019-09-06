@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
+import commons.util.PropertiesUtil;
 import destinyChild.entity.RaidFilterMenu;
+import destinyChild.entity.RaidStartPage;
 import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
@@ -15,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -29,6 +32,7 @@ public class Raid implements IRaid{
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private IWuNa wuna;
     private RaidFilterMenu menu;
+    private RaidStartPage rsPage;
 
     public RaidFilterMenu getMenu() {
         if (menu == null) {
@@ -36,6 +40,14 @@ public class Raid implements IRaid{
             menu = JSONObject.parseObject(GameUtil.getJsonString(filepath), RaidFilterMenu.class);
         }
         return menu;
+    }
+
+    public RaidStartPage getRsPage() {
+        if (rsPage == null) {
+            String filepath = NativeCp.getUserDir() + "/config/RaidStartPage.json";
+            rsPage = JSONObject.parseObject(GameUtil.getJsonString(filepath), RaidStartPage.class);
+        }
+        return rsPage;
     }
 
     public void setThreadPoolTaskExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
@@ -54,23 +66,78 @@ public class Raid implements IRaid{
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-    private void optionClik(){
-        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("option-pool-%d").setDaemon(false).build();
-        ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 2,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+    private void checkStart(WuNa optWuna, ExecutorService singleThreadPool){
         singleThreadPool.execute(()-> {
-                LOGGER.info("optionClick start!");
-                new WuNa("optionClick").alwaysClickForStrategy("optionClick", 2000, true, false);
-                LOGGER.info("optionClick end!");
+            LOGGER.info("optionClick 02 start!");
+            getRsPage();
+            List<Color> colors = new ArrayList<>();
+            List<Point> points = new ArrayList<>();
+
+            colors.add(rsPage.getLevelColor());
+            colors.add(rsPage.getRankColor());
+
+            points.add(rsPage.getLevelPoint());
+            points.add(rsPage.getRankPoint());
+            int size = colors.size();
+            Color tempColor;
+            Point tempPoint;
+            Color checkColor;
+            int rightCount;
+            while(true){
+                rightCount = 0;
+                for (int i = 0; i < size; i++) {
+                    tempColor = colors.get(i);
+                    tempPoint = points.get(i);
+                    checkColor = GameUtil.getScreenPixel(tempPoint);
+                    if (GameUtil.likeEqualColor(tempColor,checkColor,5)){
+                        rightCount++;
+                    }
+                }
+                checkColor = GameUtil.getScreenPixel(rsPage.getNoTicketPoint());
+                if (size == rightCount && !GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor())){
+                    wuna.setGO(false);
+                    optWuna.setGO(false);
+                    GameUtil.mouseMoveByPoint(rsPage.getStartPoint());
+                    GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
+                if (GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor())){
+                    GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
+                    GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
+                boolean noLevel40 = !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getLevelPoint()),rsPage.getLevelColor());
+                boolean hasTicket = !GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor());
+                boolean hasRank = GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getRankPoint()),rsPage.getRankColor());
+                if (hasRank && noLevel40 && hasTicket){
+                    GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
+                    GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
+                GameUtil.delay(2000);
+                LOGGER.info("checkStart" + System.currentTimeMillis());
+            }
+//            LOGGER.info("optionClick02 end!");
         });
+    }
+    private int getFactor(){
+        String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
+        int factor = Integer.parseInt(multiFactor.trim());
+        return factor;
     }
     @Override
     public void raidBattleStart(){
-        //单启动一个线程B:实时点色教程操作。用来处理断线，重启，升级，补票等操作
-        optionClik();
+        WuNa optWuna = new WuNa("optionClick");
+        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+                .setNameFormat("option-pool-%d").setDaemon(false).build();
+        ExecutorService singleThreadPool = new ThreadPoolExecutor(2, 3,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+        checkStart(optWuna, singleThreadPool);
         while (isFlag() && wuna.isScucess()) {
+            //单启动一个线程B:实时点色教程操作。用来处理断线，重启，升级，补票等操作
+            singleThreadPool.execute(()-> {
+                LOGGER.info("optionClick 01 start!");
+                optWuna.alwaysClickForStrategy("optionClick", 2000, false, false);
+                LOGGER.info("optionClick 01 end!");
+            });
             // 设置列表过滤项为：未参加，参加人数（降序）
             try {
                 setFilterOptions();
@@ -82,6 +149,7 @@ public class Raid implements IRaid{
             waitUntilNoneThread();
             // 执行点击脚本。当完成一场战斗后，点解结束按钮。结束所有线程
             runClick(threadPoolTaskExecutor.getActiveCount());
+            waitUntilNoneThread();
         }
     }
     /**
@@ -126,6 +194,7 @@ public class Raid implements IRaid{
         int maxCicle = 999;
         getMenu();
         //等待菜单按钮
+        LOGGER.info("等待菜单按钮");
         List<PointColor> pocoList = new ArrayList<PointColor>();
         pocoList.add(new PointColor(menu.getMenuPoint(), menu.getMenuColor(), true));
         GameUtil.waitUntilAllColor(pocoList,500);
@@ -184,13 +253,16 @@ public class Raid implements IRaid{
         int size = menu.getStopPointList().size();
         boolean flag = true;
         boolean clickFlag = true;
+        int count;
+        count = 0;
         while (flag) {
             for (int i = 0; i < size; i++) {
-                LOGGER.info("scanning_" + i);
+                LOGGER.info("scanning_" + count++ +"_"+i);
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
                 if (GameUtil.likeEqualColor(tempColor,menu.getStopColorList().get(i),2)) {
-                    wuna.setGO(false);
-                    waitUntilNoneThread();
+//                    wuna.setGO(false);
+                    LOGGER.info("战斗结束，点击返回");
+//                    waitUntilNoneThread();
                     // 循环点击，防止点击无效。
                     do {
                         tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));

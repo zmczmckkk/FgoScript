@@ -1,14 +1,49 @@
 ﻿{
-  "menuPoint": {"x" : 782, "y" : 306},
-  "menuColor": {"r" : 60, "g" : 68, "b" : 76},
-  "unDoPoint": {"x" : 665, "y" : 759},
-  "unDoColor": {"r" : 232, "g" : 232, "b" : 231},
-  "partPoint": {"x" : 772, "y" : 688},
-  "partColor": {"r" : 241, "g" : 241, "b" : 241},
-  "confirmPoint": {"x" : 678, "y" : 601},
-  "confirmColor": {"r" : 247, "g" : 186, "b" : 0},
-  "loadPoint": {"x" : 627, "y" : 754},
-  "loadColor": {"r" : 224, "g" : 140, "b" : 1},
+  "menuPoint": {
+    "x": 782,
+    "y": 306
+  },
+  "menuColor": {
+    "r": 60,
+    "g": 68,
+    "b": 76
+  },
+  "unDoPoint": {
+    "x": 665,
+    "y": 759
+  },
+  "unDoColor": {
+    "r": 232,
+    "g": 232,
+    "b": 231
+  },
+  "partPoint": {
+    "x": 772,
+    "y": 688
+  },
+  "partColor": {
+    "r": 255,
+    "g": 255,
+    "b": 255
+  },
+  "confirmPoint": {
+    "x": 678,
+    "y": 601
+  },
+  "confirmColor": {
+    "r": 247,
+    "g": 186,
+    "b": 0
+  },
+  "loadPoint": {
+    "x": 627,
+    "y": 754
+  },
+  "loadColor": {
+    "r": 224,
+    "g": 140,
+    "b": 1
+  },
   "stopClickPoint": {
     "x": 1234,
     "y": 561
@@ -21,6 +56,10 @@
     {
       "x": 640,
       "y": 268
+    },
+    {
+      "x": 598,
+      "y": 290
     }
   ],
   "stopColorList": [
@@ -33,6 +72,11 @@
       "r": 231,
       "g": 214,
       "b": 142
+    },
+    {
+      "r": 159,
+      "g": 129,
+      "b": 83
     }
   ]
 }

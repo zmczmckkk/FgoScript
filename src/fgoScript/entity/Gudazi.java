@@ -388,22 +388,15 @@ public class Gudazi extends TimerTask {
 		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(POINT_INFO.getpHand(), POINT_INFO.getcHand(), true));
 		GameUtil.waitUntilAllColor(pocoList, DELAY);
-		// 判断 免费召唤图标 并点击确定按钮抽取
+		// 点击确定按钮抽取
 		Point p5 = new Point(677, 603);// 颜色：31;167;202
-		Color c5 = new Color(31, 167, 202);
-		Color c5temp = GameUtil.getScreenPixel(p5);
-		for (int i = 0; i < 5; i++) {
-			if (GameUtil.likeEqualColor(c5, c5temp)) {
-				GameUtil.mouseMoveByPoint(p5);
-				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-				Point p6 = new Point(886, 609);
-				GameUtil.mouseMoveByPoint(p6);
-				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-				// 等待3秒
-				r.delay(10 * DELAY);
-				break;
-			}
-		}
+		GameUtil.mouseMoveByPoint(p5);
+		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+		Point p6 = new Point(886, 609);
+		GameUtil.mouseMoveByPoint(p6);
+		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+		// 等待3秒
+		r.delay(10 * DELAY);
 
 	}
 	/***

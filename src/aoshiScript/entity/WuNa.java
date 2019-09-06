@@ -26,8 +26,8 @@ import javax.print.attribute.standard.Finishings;
 import javax.swing.*;
 
 public class WuNa implements IWuNa{
-//	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
-	private static boolean GO = false;
+	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
+	private boolean GO = false;
 	boolean scucess = true;
 
 	@Override
@@ -185,7 +185,7 @@ public class WuNa implements IWuNa{
 				}
 			} while (isGO() || alwaysGo);
 		}
-//		LOGGER.info("finish auto click scanning");
+		LOGGER.info("finish auto click scanning");
 	}
 	private int[] getRandomArray(int length){
 		int[] arr = new int[length];//10个数的数组
