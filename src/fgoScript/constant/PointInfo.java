@@ -168,6 +168,9 @@ public class PointInfo {
 	//小手图标
 	private Point pHand;
 	private Color cHand;
+	// 召唤石头图标
+	private Point pSummonStone;
+	private Color cSummonStone;
 	// 卡牌支援判断点
 	private Point pSupport;
 	private Point[] pSupports = {
@@ -1488,12 +1491,26 @@ public class PointInfo {
 		this.cBattleReapeatNo = cBattleReapeatNo;
 	}
 
+	public Point getpSummonStone() {
+		return pSummonStone;
+	}
+
+	public void setpSummonStone(Point pSummonStone) {
+		this.pSummonStone = pSummonStone;
+	}
+
+	public Color getcSummonStone() {
+		return cSummonStone;
+	}
+
+	public void setcSummonStone(Color cSummonStone) {
+		this.cSummonStone = cSummonStone;
+	}
+
 	public static void main(String[] args) {
 		PointInfo pi = new PointInfo();
-		pi.setpBattleReapeatYes(new Point(0,0));
-		pi.setpBattleReapeatNo(new Point(0,0));
-		pi.setcBattleReapeatYes(new Color(0,0,0));
-		pi.setcBattleReapeatNo(new Color(0,0,0));
+		pi.setpSummonStone(new Point(0,0));
+		pi.setcSummonStone(new Color(0,0,0));
 		String text = JSON.toJSONString(pi);
 		System.out.println(text);
 	}

@@ -375,10 +375,8 @@ public class Gudazi extends TimerTask {
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK, new PointColor(POINT_INFO.getpDownPanelClose(),
 				POINT_INFO.getcDownPanelClose(), false));
 		// 等待石头图标
-		Point p2 = new Point(429, 89);// 颜色：167;231;209
-		Color c2 = new Color(167, 231, 209);
 		List<PointColor> pocoList = new ArrayList<>();
-		pocoList.add(new PointColor(p2, c2, true));
+		pocoList.add(new PointColor(POINT_INFO.getpSummonStone(), POINT_INFO.getcSummonStone(), true));
 		GameUtil.waitUntilAllColor(pocoList, DELAY);
 		// 切换左箭头
 		Point p3 = new Point(85, 410);// 颜色：248;244;248 Color c = new Color(248, 244, 248);
