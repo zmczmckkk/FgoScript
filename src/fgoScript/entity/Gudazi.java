@@ -89,7 +89,7 @@ public class Gudazi extends TimerTask {
 
 
 		try {
-			for (int i = 0; i < 99; i++) {
+			for (int i = 0; i < GameConstant.APPLE_COUNT; i++) {
 				new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
 				singleThreadPool.execute(()-> {
 					wuna.alwaysClick();
