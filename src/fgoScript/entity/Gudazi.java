@@ -80,6 +80,7 @@ public class Gudazi extends TimerTask {
 	public void onlyFight() throws Exception {
 		String flag = PropertiesUtil.getValueFromColorFile("ifRestart");
 		boolean stopFlag = false;
+		GameUtil.setSTOP_SCRIPT(false);
 		WuNa wuna = new WuNa("none");
 		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
 				.setNameFormat("demo-pool-%d").build();
@@ -90,7 +91,6 @@ public class Gudazi extends TimerTask {
 
 		try {
 			for (int i = 0; i < GameConstant.APPLE_COUNT; i++) {
-				new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
 				singleThreadPool.execute(()-> {
 					wuna.alwaysClick();
 				});
@@ -112,6 +112,7 @@ public class Gudazi extends TimerTask {
 					LOGGER.info("线程个数" + singleThreadPool.getActiveCount());
 					GameUtil.delay(1500);
 				}
+                new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
 				LOGGER.info("进入下一个循环！");
 			}
 		} catch (FgoNeedNextException | FgoNeedRestartException e) {
