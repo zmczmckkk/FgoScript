@@ -161,10 +161,10 @@ public class WuNa implements IWuNa{
 			int ri;
 			int[] riArray;
 			do {
+				LOGGER.info("执行检测点击，对应脚本文件名： "+fileName);
 				riArray = getRandomArray(minSize);
 				for (int i = 0; i < minSize; i++) {
 					ri = riArray[i];
-//					LOGGER.info("scanning_" + ri);
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
 					c0 = pointColor.getColor();
@@ -175,7 +175,10 @@ public class WuNa implements IWuNa{
 						flag = !flag;
 					}
 					if (flag) {
-						rb.mouseMove((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
+						LOGGER.info("移动( " + pList.get(ri).getX()+"_"+pList.get(ri).getY()+" )");
+						rb.delay(1000);
+						GameUtil.mouseMoveByDD((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
+						LOGGER.info("左键单击");
 						GameUtil.mousePressAndReleaseByDD();
 						if (clickWait) {
 							GameUtil.delay(2000);
@@ -185,7 +188,7 @@ public class WuNa implements IWuNa{
 				}
 			} while (isGO() || alwaysGo);
 		}
-		LOGGER.info("finish auto click scanning");
+		LOGGER.info("Finish auto click scanning!");
 	}
 	private int[] getRandomArray(int length){
 		int[] arr = new int[length];//10个数的数组

@@ -659,9 +659,10 @@ public class GameUtil {
 	}
 
 	public static void mouseMoveByPoint(Point p) {
-			rb = getRb();
-			rb.mouseMove((int) p.getX(), (int) p.getY());
-			rb.delay(GameConstant.DELAY);
+			mouseMoveByDD((int) p.getX(), (int) p.getY());
+//			rb = getRb();
+//			rb.mouseMove((int) p.getX(), (int) p.getY());
+//			rb.delay(GameConstant.DELAY);
 	}
 
 	public static void mousePressAndRelease(int key) {
@@ -718,11 +719,15 @@ public class GameUtil {
 		} while (flag);
 		
 	}
+
 	public static void mousePressAndReleaseByDD() {
 		rb = getRb();
 		DD.INSTANCE.HIVM_BTN(1);
 		rb.delay(GameConstant.DELAY/10);
 		DD.INSTANCE.HIVM_BTN(2);
+	}
+	public static void mouseMoveByDD(int x, int y) {
+		DD.INSTANCE.HIVM_MOV(x, y);
 	}
 	public static void mousePressAndReleaseByDdQuick(int delay) {
 		rb = getRb();

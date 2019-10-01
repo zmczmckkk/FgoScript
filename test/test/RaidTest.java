@@ -1,5 +1,6 @@
 package test;
 
+import aoshiScript.entity.WuNa;
 import commons.util.MySpringUtil;
 import destinyChild.Raid;
 import fgoScript.entity.panel.FgoFrame;
@@ -30,6 +31,7 @@ public class RaidTest extends Raid {
 
     @Test
     public void raidBattleStopTest() {
+        new WuNa("").alwaysClickForStrategy("filterClick", null, false, true);
     }
 
     @Before
