@@ -278,8 +278,14 @@ public class Raid implements IRaid{
                     break;
                 }
             }
+            if (count > 10 && threadPoolTaskExecutor.getActiveCount() != 0 && GameUtil.likeEqualColor(menu.getMenuColor(),GameUtil.getScreenPixel(menu.getMenuPoint()),2)) {
+                LOGGER.info("战斗被提前结束，不明原因，发现菜单按钮，重新开始脚本");
+                flag = false;
+            }
             GameUtil.delay(4000);
         }
+        //防止过滤超时后，仍然执行runclick脚本
+        wuna.setGO(false);
     }
 
     public static void main(String[] args) {

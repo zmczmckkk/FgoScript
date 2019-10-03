@@ -45,7 +45,10 @@ public class GameUtil {
 	private static Object lock = new Object();
 	private static Map<String, Robot> rbMap = new HashMap<>();
 	private static List<ColorMonitor> colorMonitorList;
-
+	private static final DD dd = getDD();
+	private static DD getDD(){
+		return (DD) MySpringUtil.getApplicationContext().getBean("dd");
+	}
 
 	public static Point getMousePosition() {
 		PointerInfo pinfo = MouseInfo.getPointerInfo();
@@ -660,9 +663,7 @@ public class GameUtil {
 
 	public static void mouseMoveByPoint(Point p) {
 			mouseMoveByDD((int) p.getX(), (int) p.getY());
-//			rb = getRb();
-//			rb.mouseMove((int) p.getX(), (int) p.getY());
-//			rb.delay(GameConstant.DELAY);
+			rb.delay(GameConstant.DELAY);
 	}
 
 	public static void mousePressAndRelease(int key) {
@@ -722,18 +723,18 @@ public class GameUtil {
 
 	public static void mousePressAndReleaseByDD() {
 		rb = getRb();
-		DD.INSTANCE.HIVM_BTN(1);
+		dd.HIVM_BTN(1);
 		rb.delay(GameConstant.DELAY/10);
-		DD.INSTANCE.HIVM_BTN(2);
+		dd.HIVM_BTN(2);
 	}
 	public static void mouseMoveByDD(int x, int y) {
-		DD.INSTANCE.HIVM_MOV(x, y);
+		dd.HIVM_MOV(x, y);
 	}
 	public static void mousePressAndReleaseByDdQuick(int delay) {
 		rb = getRb();
-		DD.INSTANCE.HIVM_BTN(1);
+		dd.HIVM_BTN(1);
 		rb.delay(delay);
-		DD.INSTANCE.HIVM_BTN(2);
+		dd.HIVM_BTN(2);
 	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();

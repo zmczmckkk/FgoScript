@@ -176,7 +176,6 @@ public class WuNa implements IWuNa{
 					}
 					if (flag) {
 						LOGGER.info("移动( " + pList.get(ri).getX()+"_"+pList.get(ri).getY()+" )");
-						rb.delay(1000);
 						GameUtil.mouseMoveByDD((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
 						LOGGER.info("左键单击");
 						GameUtil.mousePressAndReleaseByDD();
