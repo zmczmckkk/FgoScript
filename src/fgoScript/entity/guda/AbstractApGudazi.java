@@ -9,6 +9,7 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import commons.util.MySpringUtil;
+import fgoScript.constant.FgoPreference;
 import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import commons.util.PropertiesUtil;
 public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private static final Logger LOGGER = LogManager.getLogger(AbstractApGudazi.class);
     private static final PointInfo POINT_INFO = (PointInfo) MySpringUtil.getApplicationContext().getBean("pointInfo");
+    private static final FgoPreference fgoPreference = (fgoScript.constant.FgoPreference) MySpringUtil.getApplicationContext().getBean("fgoPreference");
     private String PREFIX = GameUtil.getPreFix();
     private int retunTimes = 0;
     protected Color[][] DEFAULT_SKILL_COLORS;
@@ -375,51 +377,45 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private void preferenceSet() {
         // 初始化偏好
         // 偏好坐标点
-        Point ph0 = new Point(1231, 257);// 颜色：25;55;98 Color ch0 = new Color(25, 55, 98);
+        Point ph0 = fgoPreference.getLocation();// 颜色：25;55;98 Color ch0 = new Color(25, 55, 98);
         GameUtil.mouseMoveByPoint(ph0);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         GameUtil.delay(2 *GameConstant.DELAY);
         // 选项坐标点
-        Point ph1 = new Point(898, 327);// 颜色：156;150;140 灰色 不等于
-        Color ch1 = new Color(156, 150, 140);
-        Color ch11 = GameUtil.getScreenPixel(ph1);
-        Point ph2 = new Point(1125, 329);// 颜色：156;153;147 灰色 不等于
-        Color ch2 = new Color(156, 153, 147);
-        Color ch22 = GameUtil.getScreenPixel(ph2);
-        Point ph3 = new Point(897, 396);// 颜色：156;150;140 灰色 等于
-        Color ch3 = new Color(156, 150, 140);
-        Color ch33 = GameUtil.getScreenPixel(ph3);
-        if (!GameUtil.likeEqualColor(ch1, ch11)) {
-            GameUtil.mouseMoveByPoint(ph1);
-            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        }
-        if (!GameUtil.likeEqualColor(ch2, ch22)) {
-            GameUtil.mouseMoveByPoint(ph2);
-            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        }
-        if (GameUtil.likeEqualColor(ch3, ch33)) {
-            GameUtil.mouseMoveByPoint(ph3);
-            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        List<Point> optionPoints = fgoPreference.getOptionPoints();
+        List<Color> optionColors = fgoPreference.getOptionColors();
+        int arraySize = optionPoints.size();
+        Point tempPoint;
+        Color tempColor;
+        Color screenColor;
+        for (int i = 0; i < arraySize; i++) {
+            tempPoint = optionPoints.get(i);
+            tempColor = optionColors.get(i);
+            screenColor = GameUtil.getScreenPixel(tempPoint);
+            if (!GameUtil.likeEqualColor(tempColor, screenColor)) {
+                GameUtil.mouseMoveByPoint(tempPoint);
+                GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+            }
         }
         // 死角点击
         GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         // 蓝色圆板
-        Point p0 = new Point(1171, 697);// 颜色：0;113;216 Color c1 = new Color(0, 113, 216);
+        Point p0 = POINT_INFO.getpBlueAttack();// 颜色：0;113;216 Color c1 = new Color(0, 113, 216);
         GameUtil.mouseMoveByPoint(p0);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         GameUtil.delay(2 * GameConstant.DELAY);
         // 加速坐标
         // 偏中间
-        Point pm = new Point(1171, 118);// 颜色：55;71;53 Color c = new Color(55, 71, 53);
+        Point pm = fgoPreference.getAccelerateMiddle();
         // 偏左
-        Point pl = new Point(1158, 116);// 颜色：21;51;16 Color c = new Color(21, 51, 16);
+        Point pl = fgoPreference.getAccelerateLeft();
         if (GameUtil.colorMinus(pm, pl) > 0) {
             GameUtil.mouseMoveByPoint(pm);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
         }
         // 复位点
-        Point pf = new Point(1237, 733);// 颜色：202;204;207 Color cf = new Color(202, 204, 207);
+        Point pf = POINT_INFO.getpReset();
         GameUtil.mouseMoveByPoint(pf);
         GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
     }
@@ -888,5 +884,50 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         return gi;
     }
     public static void main(String[] args) {
+        FgoPreference fgoPreference = (fgoScript.constant.FgoPreference) MySpringUtil.getApplicationContext().getBean("fgoPreference");
+        GameUtil.reNewRobot();
+        // 初始化偏好
+        // 偏好坐标点
+        Point ph0 = fgoPreference.getLocation();// 颜色：25;55;98 Color ch0 = new Color(25, 55, 98);
+        GameUtil.mouseMoveByPoint(ph0);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        GameUtil.delay(2 *GameConstant.DELAY);
+        // 选项坐标点
+        List<Point> optionPoints = fgoPreference.getOptionPoints();
+        List<Color> optionColors = fgoPreference.getOptionColors();
+        int arraySize = optionPoints.size();
+        Point tempPoint;
+        Color tempColor;
+        Color screenColor;
+        for (int i = 0; i < arraySize; i++) {
+            tempPoint = optionPoints.get(i);
+            tempColor = optionColors.get(i);
+            screenColor = GameUtil.getScreenPixel(tempPoint);
+            if (!GameUtil.likeEqualColor(tempColor, screenColor)) {
+                GameUtil.mouseMoveByPoint(tempPoint);
+                GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+            }
+        }
+        // 死角点击
+        GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        // 蓝色圆板
+        Point p0 = POINT_INFO.getpBlueAttack();// 颜色：0;113;216 Color c1 = new Color(0, 113, 216);
+        GameUtil.mouseMoveByPoint(p0);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        GameUtil.delay(2 * GameConstant.DELAY);
+        // 加速坐标
+        // 偏中间
+        Point pm = fgoPreference.getAccelerateMiddle();
+        // 偏左
+        Point pl = fgoPreference.getAccelerateLeft();
+        if (GameUtil.colorMinus(pm, pl) > 0) {
+            GameUtil.mouseMoveByPoint(pm);
+            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+        }
+        // 复位点
+        Point pf = POINT_INFO.getpReset();
+        GameUtil.mouseMoveByPoint(pf);
+        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
     }
 }

@@ -17,6 +17,8 @@
     </bean>
     <bean id="pointInfo" class="fgoScript.constant.PointInfo" factory-method="getInstance"  >
     </bean>
+    <bean id="fgoPreference" class="fgoScript.constant.FgoPreference" factory-method="getInstance"  >
+    </bean>
     <bean id="dd" class="commons.entity.DD" factory-method="getInstance"  >
     </bean>
     <bean id="light" class="destinyChild.Light" lazy-init="true">
