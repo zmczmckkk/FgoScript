@@ -7,9 +7,16 @@
     <bean id="fgoFrame" class="fgoScript.entity.panel.FgoFrame" lazy-init="true">
         <property name="wuna" ref="wuna"/>
         <property name="light" ref="light"/>
+        <property name="raid" ref="raid"/>
+        <property name="daillyMission" ref="daillyMission"/>
     </bean>
-    <bean id="raid" class="destinyChild.Raid" lazy-init="true">
+    <bean id="raid" class="destinychild.Raid" lazy-init="true">
         <property name="wuna" ref="wuna"/>
+        <property name="threadPoolTaskExecutor" ref="poolExecutor"/>
+    </bean>
+    <bean id="daillyMission" class="destinychild.DaillyMission" lazy-init="true">
+        <property name="wuna" ref="wuna"/>
+        <property name="light" ref="light"/>
         <property name="threadPoolTaskExecutor" ref="poolExecutor"/>
     </bean>
     <bean id="wuna" class="aoshiScript.entity.WuNa" lazy-init="true">
@@ -21,7 +28,7 @@
     </bean>
     <bean id="dd" class="commons.entity.DD" factory-method="getInstance"  >
     </bean>
-    <bean id="light" class="destinyChild.Light" lazy-init="true">
+    <bean id="light" class="destinychild.Light" lazy-init="true">
         <property name="poolExecutor" ref="poolExecutor"/>
     </bean>
 

@@ -81,6 +81,12 @@ public class PointInfo {
 	// 获取奖励动态坐标颜色
 	private Point pRewardAction;
 	private Color cRewardAction;
+	// 开始战斗点色
+	private Point pBattleStart;
+	private Color cBattleStart;
+	// 开始战斗点色
+	private Point pSupportSelect;
+	private Color cSupportSelect;
 	// 复位点
 	private Point pReset;
 	// 蓝盾攻击点
@@ -1507,10 +1513,42 @@ public class PointInfo {
 		this.cSummonStone = cSummonStone;
 	}
 
+	public Point getpBattleStart() {
+		return pBattleStart;
+	}
+
+	public void setpBattleStart(Point pBattleStart) {
+		this.pBattleStart = pBattleStart;
+	}
+
+	public Color getcBattleStart() {
+		return cBattleStart;
+	}
+
+	public void setcBattleStart(Color cBattleStart) {
+		this.cBattleStart = cBattleStart;
+	}
+
+	public Point getpSupportSelect() {
+		return pSupportSelect;
+	}
+
+	public void setpSupportSelect(Point pSupportSelect) {
+		this.pSupportSelect = pSupportSelect;
+	}
+
+	public Color getcSupportSelect() {
+		return cSupportSelect;
+	}
+
+	public void setcSupportSelect(Color cSupportSelect) {
+		this.cSupportSelect = cSupportSelect;
+	}
+
 	public static void main(String[] args) {
 		PointInfo pi = new PointInfo();
-		pi.setpSummonStone(new Point(0,0));
-		pi.setcSummonStone(new Color(0,0,0));
+		pi.setpBattleStart(new Point(0,0));
+		pi.setcBattleStart(new Color(0,0,0));
 		String text = JSON.toJSONString(pi);
 		System.out.println(text);
 	}

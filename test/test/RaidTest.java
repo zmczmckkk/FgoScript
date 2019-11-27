@@ -2,15 +2,11 @@ package test;
 
 import aoshiScript.entity.WuNa;
 import commons.util.MySpringUtil;
-import destinyChild.Raid;
-import fgoScript.entity.panel.FgoFrame;
-import fgoScript.service.TimerManager;
+import destinychild.Raid;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import static org.junit.Assert.*;
 
 public class RaidTest extends Raid {
     private ClassPathXmlApplicationContext applicationContext;

@@ -1,4 +1,4 @@
-package destinyChild.entity;
+package destinychild.entity;
 
 public class SingleObject {
     //创建 SingleObject 的一个对象

@@ -134,7 +134,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 			}else {
 				if (count == 0 || reStart == true) {
 					// 打开账号
-					ProcessDealUtil.startFgo(accountNum);
+					ProcessDealUtil.startApp(accountNum);
 					// 检测loading
 					move2WinAndTransferPage(accountNum);
 				}
@@ -149,7 +149,27 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 waitForHomePage();
                 // 选本选人
                 LOGGER.info("选本选人");
-                intoAndSelect(apNum, accountNum);
+                try {
+                    intoAndSelect(apNum, accountNum);
+                } catch (FgoNeedRestartException e) {
+                    if (GameUtil.likeEqualColor(POINT_INFO.getcAppleNeed01(), GameUtil.getScreenPixel(POINT_INFO.getpAppleNeed01())) ||
+                            GameUtil.likeEqualColor(POINT_INFO.getcAppleNeed02(), GameUtil.getScreenPixel(POINT_INFO.getpAppleNeed02()))) {
+                        if (appleCost == GameConstant.APPLE_COUNT) {
+                            LOGGER.info("已达到苹果消耗量，停止更新苹果。");
+                            throw new FgoNeedNextException();
+                        }else {
+                            GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_使用第"+(appleCost+1)+"个苹果.");
+                            GameUtil.mouseMoveByPoint(POINT_INFO.getpAppleNeed01());
+                            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                            GameUtil.mouseMoveByPoint(POINT_INFO.getpConnectYes());
+                            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                            GameUtil.delay(GameConstant.DELAY*5);
+                            LOGGER.info("ap不足，更新苹果。");
+                        }
+                    }else{
+                        throw e;
+                    }
+                }
                 EventFactors.supportServant = getSuppotServant();
                 selectRoomPressFightForQp(accountNum, appleCost, apNum);
                 waitToAttack(null);
@@ -199,8 +219,8 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
     private void selectRoomPressFightForQp(int acountNum, int appleCost, int apNum) throws Exception {
         List<PointColor> pocoList = new ArrayList<PointColor>();
         // 选人界面点
-        Point p_wait = new Point(1235, 298);// 颜色：239;186;99
-        Color c_wait = new Color(239, 186, 99);
+        Point p_wait = POINT_INFO.getpSupportSelect();
+        Color c_wait = POINT_INFO.getcSupportSelect();
 
         // 无苹果点
  		Point p_apple_need01 = POINT_INFO.getpAppleNeed01();
@@ -268,17 +288,13 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   			Point p10 = new Point(300, 319);// 颜色：255;255;219 Color c = new Color(255, 255, 219);
   			GameUtil.mouseMoveByPoint(p10);
   			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-
+            LOGGER.info("等待进入队伍配置界面!");
   			// 等待进入队伍配置界面
-  			Point p12 = new Point(427, 731);// 颜色：210;0;58
-  			Color c12 = new Color(210, 0, 58);
-  			pocoList = new ArrayList<PointColor>();
-  			pocoList.add(new PointColor(p12, c12, true));
+            pocoList = new ArrayList<PointColor>();
+  			pocoList.add(new PointColor(POINT_INFO.getpBattleStart(), POINT_INFO.getcBattleStart(), true));
   			GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY);
   			// 点击开始战斗按钮
-  			Point p18 = new Point(1256, 731);// 颜色：41;45;90 开始战斗按钮
-  			GameUtil.mouseMoveByPoint(p18);
-  			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+  			GameUtil.mouseMoveByPoint(POINT_INFO.getpBattleStart());
   			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
   		}
     }
@@ -383,18 +399,25 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         GameUtil.delay(2 *GameConstant.DELAY);
         // 选项坐标点
         List<Point> optionPoints = fgoPreference.getOptionPoints();
-        List<Color> optionColors = fgoPreference.getOptionColors();
+        List<String> colorStyles = fgoPreference.getColorStyles();
         int arraySize = optionPoints.size();
         Point tempPoint;
-        Color tempColor;
+        String tempStyle;
         Color screenColor;
         for (int i = 0; i < arraySize; i++) {
             tempPoint = optionPoints.get(i);
-            tempColor = optionColors.get(i);
+            tempStyle = colorStyles.get(i);
             screenColor = GameUtil.getScreenPixel(tempPoint);
-            if (!GameUtil.likeEqualColor(tempColor, screenColor)) {
-                GameUtil.mouseMoveByPoint(tempPoint);
-                GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+            if("bright".equals(tempStyle)){
+                if (screenColor.getRed()>100){
+                    GameUtil.mouseMoveByPoint(tempPoint);
+                    GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
+            }else{
+                if (screenColor.getRed()<100){
+                    GameUtil.mouseMoveByPoint(tempPoint);
+                    GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+                }
             }
         }
         // 死角点击
@@ -884,50 +907,12 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         return gi;
     }
     public static void main(String[] args) {
-        FgoPreference fgoPreference = (fgoScript.constant.FgoPreference) MySpringUtil.getApplicationContext().getBean("fgoPreference");
-        GameUtil.reNewRobot();
-        // 初始化偏好
-        // 偏好坐标点
-        Point ph0 = fgoPreference.getLocation();// 颜色：25;55;98 Color ch0 = new Color(25, 55, 98);
-        GameUtil.mouseMoveByPoint(ph0);
-        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.delay(2 *GameConstant.DELAY);
-        // 选项坐标点
-        List<Point> optionPoints = fgoPreference.getOptionPoints();
-        List<Color> optionColors = fgoPreference.getOptionColors();
-        int arraySize = optionPoints.size();
-        Point tempPoint;
-        Color tempColor;
-        Color screenColor;
-        for (int i = 0; i < arraySize; i++) {
-            tempPoint = optionPoints.get(i);
-            tempColor = optionColors.get(i);
-            screenColor = GameUtil.getScreenPixel(tempPoint);
-            if (!GameUtil.likeEqualColor(tempColor, screenColor)) {
-                GameUtil.mouseMoveByPoint(tempPoint);
-                GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-            }
-        }
-        // 死角点击
-        GameUtil.mouseMoveByPoint(POINT_INFO.getDeadPoint());
-        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        // 蓝色圆板
-        Point p0 = POINT_INFO.getpBlueAttack();// 颜色：0;113;216 Color c1 = new Color(0, 113, 216);
-        GameUtil.mouseMoveByPoint(p0);
-        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        GameUtil.delay(2 * GameConstant.DELAY);
-        // 加速坐标
-        // 偏中间
-        Point pm = fgoPreference.getAccelerateMiddle();
-        // 偏左
-        Point pl = fgoPreference.getAccelerateLeft();
-        if (GameUtil.colorMinus(pm, pl) > 0) {
-            GameUtil.mouseMoveByPoint(pm);
-            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
-        }
-        // 复位点
-        Point pf = POINT_INFO.getpReset();
-        GameUtil.mouseMoveByPoint(pf);
-        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
+    }
+
+    /**
+     * 打开窗口方法
+     */
+    protected void openWindow(int location) {
+        ProcessDealUtil.startApp(location);
     }
 }

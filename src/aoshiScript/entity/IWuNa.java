@@ -76,4 +76,33 @@ public interface IWuNa {
      * @Date: 2019/6/4
      */
     public void setGO(boolean go);
+    /**
+     * @Description: 是否强制停止
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/4
+     */
+    public boolean isForceStop();
+    /**
+     * @Description: 强制停止状态
+     * @param forceStop
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/4
+     */
+    public void setForceStop(boolean forceStop);
+    /**
+     * @Description: 最后点击时间戳
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/4
+     */
+    public Long getLastClickTime();
+    /**
+     * @Description: 设置最后点击时间戳
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/4
+     */
+    public void setLastClickTime(Long lastClickTime);
 }

@@ -21,7 +21,6 @@ public class TrainApGudazi extends AbstractApGudazi {
 	@Override
 	public void intoAndSelect(int apNum, int acountNum) throws Exception {
 		insertIntoTrainingRoom(apNum);
-
 	}
 
 	@Override

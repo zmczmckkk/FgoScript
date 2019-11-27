@@ -68,20 +68,53 @@
     "extendOutTime": "false"
   },
   {
-    "name": "异常点重启",
+    "name": "正常启动剔除时间",
     "checkPointArray": [
       {
-        "point": "467, 604",
-        "color": "225, 224, 225"
+        "point": "470, 452",
+        "color": "89, 89, 89"
       },
       {
-        "point": "512, 613",
-        "color": "217, 216, 217"
+        "point": "787, 389",
+        "color": "44, 54, 65"
       }
     ],
     "clickPointArray": [
       {
         "point": "512, 613"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  
+  {
+    "name": "人物卡回退",
+    "checkPointArray": [
+      {
+        "point": "570, 165",
+        "color": "211, 128, 32"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "71, 84"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "选择人物",
+    "checkPointArray": [
+      {
+        "point": "1238, 287",
+        "color": "239, 186, 16"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "1238, 287"
       }
     ],
     "throwException": "false",
@@ -116,9 +149,9 @@
     "checkPointArray": [
       {
         "point": "326, 366",
-        "color": "141, 139, 141"
+        "color": "150, 148, 150"
       }
-    ],
+    ],	
     "clickPointArray": [
       {
         "point": "326, 366"
@@ -208,6 +241,70 @@
     "clickPointArray": [
       {
         "point": "725,394"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "技能选择异常",
+    "checkPointArray": [
+      {
+        "point": "1121,199",
+        "color": "214, 215, 214"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "1121,199"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "tiantian停止工作",
+    "checkPointArray": [
+      {
+        "point": "740,413",
+        "color": "237, 74, 124"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "819,542"
+      }
+    ],
+    "throwException": "true",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "返回游戏界面",
+    "checkPointArray": [
+      {
+        "point": "242,28",
+        "color": "241, 94, 145"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "333,30"
+      }
+    ],
+    "throwException": "false",
+    "extendOutTime": "false"
+  },
+  {
+    "name": "vbox停止工作",
+    "checkPointArray": [
+      {
+        "point": "736,413",
+        "color": "85, 158, 193"
+      }
+    ],
+    "clickPointArray": [
+      {
+        "point": "819,542"
       }
     ],
     "throwException": "false",

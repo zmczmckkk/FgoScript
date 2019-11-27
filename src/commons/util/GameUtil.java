@@ -728,7 +728,7 @@ public class GameUtil {
 		dd.HIVM_BTN(2);
 	}
 	public static void mouseMoveByDD(int x, int y) {
-		dd.HIVM_MOV(x, y);
+		dd.HIVM_MOV(x+1, y+1);
 	}
 	public static void mousePressAndReleaseByDdQuick(int delay) {
 		rb = getRb();
@@ -738,11 +738,11 @@ public class GameUtil {
 	}
 	public static void mousePressAndReleaseQuick(int key) {
 			rb = getRb();
-			rb.delay(GameConstant.DELAY / 8);
+			rb.delay(GameConstant.DELAY / 6);
 			rb.mousePress(key);
-			rb.delay(GameConstant.DELAY / 8);
+			rb.delay(GameConstant.DELAY / 6);
 			rb.mouseRelease(key);
-			rb.delay(GameConstant.DELAY / 8);
+			rb.delay(GameConstant.DELAY / 6);
 	}
 	public static void mousePressAndReleaseForLongTime(int key,int milliSeconds) {
 		rb = getRb();
@@ -868,7 +868,11 @@ public class GameUtil {
 		rb.keyRelease(KeyEvent.VK_CONTROL);
 	}
 	public static void delay(int delay) {
-		GameUtil.getRb().delay(delay);
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 两个颜色差

@@ -1,6 +1,5 @@
 package fgoScript.entity;
 
-import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -78,7 +77,7 @@ public class Gudazi extends TimerTask {
 		}
 	}
 	public void onlyFight() throws Exception {
-		String flag = PropertiesUtil.getValueFromColorFile("ifRestart");
+		String flag = PropertiesUtil.getValueFromSkillsFile("ifRestart");
 		boolean stopFlag = false;
 		GameUtil.setSTOP_SCRIPT(false);
 		WuNa wuna = new WuNa("none");
@@ -90,7 +89,7 @@ public class Gudazi extends TimerTask {
 
 
 		try {
-			for (int i = 0; i < GameConstant.APPLE_COUNT; i++) {
+			for (int i = 0; i < GameConstant.BATTLE_COUNT; i++) {
 				singleThreadPool.execute(()-> {
 					wuna.alwaysClick();
 				});
@@ -112,7 +111,7 @@ public class Gudazi extends TimerTask {
 					LOGGER.info("线程个数" + singleThreadPool.getActiveCount());
 					GameUtil.delay(1500);
 				}
-                new EventGudazi().fightAndStop(StringUtils.isNoneBlank(flag) ? Boolean.valueOf(flag) : false, 0);
+                new EventGudazi().fightAndStop(i == 0 ? false : true, 0);
 				LOGGER.info("进入下一个循环！");
 			}
 		} catch (FgoNeedNextException | FgoNeedRestartException e) {
@@ -154,7 +153,7 @@ public class Gudazi extends TimerTask {
 		//小号刷资源
 		ApGudaziFactory.getInstance(qts[0],"small", null).startAllFgo();
 		//主账号刷qp
-		ApGudaziFactory.getInstance(qts[0],"big", null).startAllFgo();
+		ApGudaziFactory.getInstance(qts[1],"big", null).startAllFgo();
 		//抽奖
 		allRewardAndRoll();
 		//是否关机
@@ -208,7 +207,7 @@ public class Gudazi extends TimerTask {
 		try {
 			reNewRobot();
 			// 打开窗口
-			openWindow(account);
+			ProcessDealUtil.startApp(countNum);
 			// 检测loading
 			beforeNotice();
 			// 检测公告
@@ -521,8 +520,8 @@ public class Gudazi extends TimerTask {
 	/**
 	 * 打开窗口方法
 	 */
-	private void openWindow(int location) {
-		ProcessDealUtil.startFgo(location);
+	protected void openWindow(int location) {
+		ProcessDealUtil.startApp(location);
 	}
 
 	/**

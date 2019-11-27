@@ -3,8 +3,8 @@
   "menuColor": {"r" : 47, "g" : 53, "b" : 59},
   "unDoPoint": {"x" : 665, "y" : 759},
   "unDoColor": {"r" : 232, "g" : 232, "b" : 231},
-  "partPoint": {"x" : 773, "y" : 688},
-  "partColor": {"r" : 248, "g" : 248, "b" : 248},
+  "partPoint": {"x" : 812, "y" : 685},
+  "partColor": {"r" : 255, "g" : 255, "b" : 255},
   "confirmPoint": {"x" : 669, "y" : 604},
   "confirmColor": {"r" : 249, "g" : 199, "b" : 0},
   "loadPoint": {

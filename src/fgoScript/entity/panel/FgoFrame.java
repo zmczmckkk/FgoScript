@@ -6,31 +6,28 @@ import alarm.ZTextField;
 import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 import commons.entity.NativeCp;
 import commons.util.MySpringUtil;
-import destinyChild.ILight;
+import commons.util.ProcessDealUtil;
+import destinychild.DaillyMission;
+import destinychild.IModule;
+import destinychild.IRaid;
 import fgoScript.entity.Gudazi;
 import fgoScript.entity.BaseZButton;
 import fgoScript.entity.Zpanel;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.logging.Logger;
 
 /**
  * @description: Fgo界面框架
@@ -51,15 +48,25 @@ public class FgoFrame extends JFrame {
 		}
 	}
 	private List<Component> cpList = new ArrayList<>();;
-	private ILight light;
+	private IModule light;
+	private IRaid raid;
 	private IWuNa wuna;
+	private DaillyMission daillyMission;
 
-	public void setLight(ILight light) {
+	public void setLight(IModule light) {
 		this.light = light;
 	}
 
 	public void setWuna(WuNa wuna) {
 		this.wuna = wuna;
+	}
+
+	public void setRaid(IRaid raid) {
+		this.raid = raid;
+	}
+
+	public void setDaillyMission(DaillyMission daillyMission) {
+		this.daillyMission = daillyMission;
 	}
 
 	@Override
@@ -78,12 +85,28 @@ public class FgoFrame extends JFrame {
 	private List<BaseZButton> getListFromJsonFile(){
 		return null;
 	}
-	//百鬼夜行按钮
+	// 百鬼夜行按钮
 	private BaseZButton ghostButton = new BaseZButton(null, 0,"百鬼夜行(ALT+F)",JIntellitype.MOD_ALT, (int) 'F',false, false, BaseZButton.pink) {
 		private static final long serialVersionUID = -7389326247723796445L;
 		@Override
 		public void runMethod() {
-			light.toggleLight();
+			light.toggle();
+		}
+	};
+	// raid按钮
+	private BaseZButton raidButton = new BaseZButton(null, 0,"raid(ALT+R)",JIntellitype.MOD_ALT, (int) 'R',false, false, BaseZButton.pink) {
+		private static final long serialVersionUID = -7389326247723796445L;
+		@Override
+		public void runMethod() {
+			raid.toggle();
+		}
+	};
+	// 日常任务按钮
+	private BaseZButton daillyMissionButton = new BaseZButton(null, 0,"日常任务(ALT+D)",JIntellitype.MOD_ALT, (int) 'D',false, false, BaseZButton.pink) {
+		private static final long serialVersionUID = -7389326247723796445L;
+		@Override
+		public void runMethod() {
+			daillyMission.toggle();
 		}
 	};
 	private final BaseZButton[] bts = {
@@ -313,7 +336,7 @@ public class FgoFrame extends JFrame {
 				public void runMethod() {
 					new Gudazi().showPositionAndColor();
 				}
-			},ghostButton
+			},ghostButton,raidButton,daillyMissionButton
 	};
 	private List<Zpanel> pageList = new ArrayList<>();
 	private final Zpanel basePanel = new Zpanel();
@@ -328,6 +351,7 @@ public class FgoFrame extends JFrame {
 	private final Zpanel southPanel04 = new Zpanel();
 	private final Zpanel northPanel = new Zpanel();
 	private final Zpanel toolPanel = new Zpanel();
+	private final Zpanel systemPanel = new Zpanel();
 	private final Zpanel alarmPanel = Alarm.instance().getAlarmPanel();
 	// 初始化
 	private void init() {
@@ -336,6 +360,7 @@ public class FgoFrame extends JFrame {
 		backPanel01.setLayout(new BorderLayout());
 		centerPanel.setLayout(null);
 		toolPanel.setLayout(null);
+		systemPanel.setLayout(null);
 		buttonPanel.setLayout(new GridLayout(2, 1));
 		pagePanel.setLayout(new GridLayout(1, 1));
 		southPanel01.setLayout(new GridLayout(1, 9));
@@ -397,7 +422,7 @@ public class FgoFrame extends JFrame {
 			}
 			else {
 				if ("开启账号".equals(jbTemp.getText())) {
-					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
+					jbTemp.setBounds(5, 5 + (i * (30+len)), 80, 25+len);
 				} else if (jbTemp.getText().contains("自动战斗")) {
 					jbTemp.setBounds(5, 5 + (i * (30+len)), 210, 25+len);
 				} else if (jbTemp.getText().contains("刷EXP")) {
@@ -421,10 +446,13 @@ public class FgoFrame extends JFrame {
 			}
 		}
 		//选择账号按钮
-		//按键倍率按钮
 		ZTextField zf1 = new ZTextField("0", "open_" + NativeCp.getUserName(), "openAccount");
-		zf1.setBounds(220, 5 + (7 * (30+len)), 105, 25+len);
+		zf1.setBounds(90, 5 + (7 * (30+len)), 30, 25+len);
 		centerPanel.add(zf1);
+		//app文件名设置
+		ZTextField appNameZtext = new ZTextField("0", "open_" + NativeCp.getUserName(), "appName");
+		appNameZtext.setBounds(125, 5 + (7 * (30+len)), 200, 25+len);
+		centerPanel.add(appNameZtext);
 		//选择战斗策略按钮
 		jbTemp = new BaseZButton(null, 0,"",JIntellitype.MOD_SHIFT, (int) 'P',true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = 8438279990546323489L;
@@ -508,6 +536,30 @@ public class FgoFrame extends JFrame {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
+		//自动关机按钮
+		BaseZButton ShutdownButton = new BaseZButton(null, 0,"定时关机",JIntellitype.MOD_SHIFT, (int) 'S',true, false, BaseZButton.pink) {
+			private static final long serialVersionUID = 53933841194261802L;
+			@Override
+			public void runMethod() throws Exception {
+				int minutes = Integer.valueOf(PropertiesUtil.getValueFromSystemFile("minutes"));
+				ProcessDealUtil.closeComputerInTime(minutes);
+				this.setText("定时关机");
+			}
+		};
+		//取消自动关机按钮
+		BaseZButton abortShutdownButton = new BaseZButton(null, 0,"取消",JIntellitype.MOD_SHIFT, (int) 'S',true, false, BaseZButton.pink) {
+			private static final long serialVersionUID = 53933841194261802L;
+			@Override
+			public void runMethod() throws Exception {
+				ProcessDealUtil.abordCloseComputer();
+				this.setText("取消");
+			}
+		};
+		ShutdownButton.setBounds(5, 5, 80, 25+len);
+		abortShutdownButton.setBounds(90, 5, 40, 25+len);
+		//关机时间设置
+		ZTextField closeTimeZt = new ZTextField("0", "system_" + NativeCp.getUserName(), "minutes");
+		closeTimeZt.setBounds(135, 5, 190, 25+len);
 		//添加分页按钮
 		BaseZButton pageBt01 = new BaseZButton(null, 0,"首页", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = -7491221341872701498L;
@@ -534,6 +586,7 @@ public class FgoFrame extends JFrame {
 				setCenterPanelVisible(true);
 				destinyPanel.setVisible(false);
 				alarmPanel.setVisible(false);
+				systemPanel.setVisible(false);
 			}
 		};
 		BaseZButton pageBt04 = new BaseZButton(null, 0,"闹钟", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
@@ -541,6 +594,13 @@ public class FgoFrame extends JFrame {
 			@Override
 			public void runMethod() {
 				showAlarmPage();
+			}
+		};
+		BaseZButton pageBt05 = new BaseZButton(null, 0,"系统", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
+			private static final long serialVersionUID = -7491221341872701498L;
+			@Override
+			public void runMethod() {
+				showSystemPage();
 			}
 		};
 
@@ -556,14 +616,19 @@ public class FgoFrame extends JFrame {
 		northPanel.setOpaque(false);
 		pagePanel.setOpaque(false);
 		destinyPanel.setOpaque(false);
+		systemPanel.setOpaque(false);
 		toolPanel.setOpaque(false);
 		destinyPanel.setVisible(false);
+		systemPanel.setVisible(false);
 		alarmPanel.setVisible(true);
 		destinyPanel.setBounds(0, 0, 335, 518);
+		systemPanel.setBounds(0, 0, 335, 518);
 		toolPanel.setBounds(0, 0, 335, 518);
 		buttonPanel.setBounds(5, 8 + (9 * (30+len)), 320, 55+len);
 		northPanel.setBounds(5, 5 + (13 * (30+len)), 320, 25+len);
 		ghostButton.setBounds(5, 5, 320, 25+len);
+		raidButton.setBounds(5, 5 + (1 * (30+len)), 320, 25+len);
+		daillyMissionButton.setBounds(5, 5 + (2 * (30+len)), 320, 25+len);
 		pagePanel.setBounds(5, 10 + (14 * (30+len)), 320, 25+len);
 		backPanel01.setBackground(GameUtil.getBackGroundPreFix((int)(333*1.1), (int)(470*1.1)));
 		northPanel.setName("bottomButtons");
@@ -572,7 +637,13 @@ public class FgoFrame extends JFrame {
 		pagePanel.add(pageBt02);
 		pagePanel.add(pageBt03);
 		pagePanel.add(pageBt04);
+		pagePanel.add(pageBt05);
 		destinyPanel.add(ghostButton);
+		destinyPanel.add(raidButton);
+		destinyPanel.add(daillyMissionButton);
+		systemPanel.add(ShutdownButton);
+		systemPanel.add(abortShutdownButton);
+		systemPanel.add(closeTimeZt);
 		buttonPanel.add(southPanel01);
 		buttonPanel.add(southPanel04);
 		buttonPanel.add(southPanel02);
@@ -588,6 +659,7 @@ public class FgoFrame extends JFrame {
 		centerPanel.add(destinyPanel);
 
 		centerPanel.add(alarmPanel);
+		centerPanel.add(systemPanel);
 		centerPanel.setOpaque(false);
 		backPanel01.add(centerPanel);
 
@@ -596,6 +668,8 @@ public class FgoFrame extends JFrame {
 
 		showFrontPage();
 		ghostButton.setAllowRepeat(true);
+		raidButton.setAllowRepeat(true);
+		daillyMissionButton.setAllowRepeat(true);
 		this.setVisible(true);
 		this.add(basePanel);
 		this.setTitle("FGO-JAI");
@@ -625,6 +699,13 @@ public class FgoFrame extends JFrame {
 		toolPanel.setVisible(true);
 		alarmPanel.setVisible(true);
 	}
+	private void showSystemPage(){
+		setCenterPanelVisible(false);
+		pagePanel.setVisible(true);
+		northPanel.setVisible(true);
+		toolPanel.setVisible(true);
+		systemPanel.setVisible(true);
+	}
 	private void setCenterPanelVisible(boolean flag){
 		Component[] comps = centerPanel.getComponents();
 		for (int i = 0; i < comps.length; i++) {
@@ -650,6 +731,11 @@ public class FgoFrame extends JFrame {
 					}
 					zt.setVisible(flag);
 				}
+			}else if (temp instanceof ZTextField || temp instanceof ZLable){
+				if (temp.isVisible()){
+					cpList.add(temp);
+				}
+				temp.setVisible(flag);
 			}else{
 				temp.setVisible(flag);
 			}
@@ -657,10 +743,7 @@ public class FgoFrame extends JFrame {
 	}
 	public static int getAccount() {
 		String openAccountStr = PropertiesUtil.getValueFromOpenFile("openAccount");
-		int[] FgoRewardArray = GameUtil.strToIntArray(GameUtil.getValueFromConfig("FgoRewardArray"),true);
-		return StringUtils.isBlank(openAccountStr)?
-					FgoRewardArray[0]:
-					Integer.valueOf(openAccountStr);
+		return Integer.valueOf(openAccountStr);
 	}
 
 	private void addSouthPanle04(BaseZButton jbTemp) {

@@ -1,0 +1,257 @@
+{
+  "tasklist": [
+    {
+      "taskId": 0,
+      "taskName": "gameInto",
+      "startModleName": "",
+      "taskClickPoints": [],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 0,
+      "taskAutoClickDelaySeconds": 3,
+      "taskInToDelaySeconds": 30,
+	  "smallReturn": false,
+      "enable": true
+    },
+    {
+      "taskId": 1,
+      "taskName": "explore",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 516,
+          "y": 312
+        },
+        {
+          "x": 636,
+          "y": 257
+        },
+        {
+          "x": 763,
+          "y": 310
+        },
+        {
+          "x": 680,
+          "y": 513
+        },
+        {
+          "x": 526,
+          "y": 583
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 2,
+      "taskAutoClickDelaySeconds": 3,
+      "taskInToDelaySeconds": 3,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 2,
+      "taskName": "spring",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 616,
+          "y": 622
+        },
+        {
+          "x": 527,
+          "y": 446
+        },
+        {
+          "x": 677,
+          "y": 371
+        },
+        {
+          "x": 766,
+          "y": 493
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 10,
+      "taskInToDelaySeconds": 3,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 3,
+      "taskName": "ghost",
+      "startModleName": "light",
+      "taskClickPoints": [
+        {
+          "x": 651,
+          "y": 676
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 20,
+      "taskInToDelaySeconds": 6,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 4,
+      "taskName": "skin",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 1225,
+          "y": 293
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 5,
+      "taskName": "subway",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 641,
+          "y": 744
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 6,
+      "taskName": "threeOne",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 636,
+          "y": 367
+        },
+		{
+          "x": 467,
+          "y": 697
+        },
+		{
+          "x": 598,
+          "y": 776
+        },
+		{
+          "x": 622,
+          "y": 359
+        },
+		{
+          "x": 479,
+          "y": 576
+        },
+		{
+          "x": 436,
+          "y": 720
+        },
+		{
+          "x": 611,
+          "y": 361
+        },
+		{
+          "x": 485,
+          "y": 473
+        },
+		{
+          "x": 531,
+          "y": 587
+        },
+		{
+          "x": 571,
+          "y": 561
+        }
+      ],
+	  "taskClickColors": [
+		{
+		  "r": 195,
+		  "g": 37,
+		  "b": 17,
+		  "alpha": 255
+		},
+		{
+		  "r": 170,
+		  "g": 76,
+		  "b": 30,
+		  "alpha": 255
+		},
+		{
+		  "r": 227,
+		  "g": 176,
+		  "b": 132,
+		  "alpha": 255
+		},
+		{
+		  "r": 228,
+		  "g": 82,
+		  "b": 237,
+		  "alpha": 255
+		},
+		{
+		  "r": 249,
+		  "g": 237,
+		  "b": 45,
+		  "alpha": 255
+		},
+		{
+		  "r": 101,
+		  "g": 0,
+		  "b": 3,
+		  "alpha": 255
+		},
+		{
+		  "r": 239,
+		  "g": 213,
+		  "b": 9,
+		  "alpha": 255
+		},
+		{
+		  "r": 161,
+		  "g": 56,
+		  "b": 15,
+		  "alpha": 255
+		},
+		{
+		  "r": 95,
+		  "g": 62,
+		  "b": 63,
+		  "alpha": 255
+		},
+		{
+		  "r": 211,
+		  "g": 2,
+		  "b": 7,
+		  "alpha": 255
+		}
+	  ],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 12,
+      "taskInToDelaySeconds": 3,
+      "smallReturn": false,
+	  "enable": true
+    }
+  ],
+  "taskPagePoint": {
+    "x": 26,
+    "y": 95
+  },
+  "taskPageColor": {
+    "r": 111,
+    "g": 66,
+    "b": 23,
+    "alpha": 255
+  },
+  "taskReturnPoint": {
+    "x": 1237,
+    "y": 60
+  }
+}

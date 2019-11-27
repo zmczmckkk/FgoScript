@@ -1,7 +1,6 @@
-package destinyChild.entity;
+package destinychild.entity;
 
 import com.alibaba.fastjson.JSON;
-import fgoScript.constant.PointInfo;
 
 import java.awt.*;
 
@@ -31,8 +30,15 @@ public class RaidStartPage {
     /** 无票色 */
     private Color noTicketColor;
 
+    /** 10票点 */
+    private Point tenTicketPoint;
+    /** 10票色 */
+    private Color tenTicketColor;
+
     /** 开始点 */
     private Point startPoint;
+    /** 开始色 */
+    private Color startColor;
 
     /** 回退点 */
     private Point returnPoint;
@@ -93,6 +99,14 @@ public class RaidStartPage {
         this.startPoint = startPoint;
     }
 
+    public Color getStartColor() {
+        return startColor;
+    }
+
+    public void setStartColor(Color startColor) {
+        this.startColor = startColor;
+    }
+
     public Point getReturnPoint() {
         return returnPoint;
     }
@@ -117,22 +131,26 @@ public class RaidStartPage {
         this.noTicketColor = noTicketColor;
     }
 
+    public Point getTenTicketPoint() {
+        return tenTicketPoint;
+    }
+
+    public void setTenTicketPoint(Point tenTicketPoint) {
+        this.tenTicketPoint = tenTicketPoint;
+    }
+
+    public Color getTenTicketColor() {
+        return tenTicketColor;
+    }
+
+    public void setTenTicketColor(Color tenTicketColor) {
+        this.tenTicketColor = tenTicketColor;
+    }
+
     public static void main(String[] args) {
         RaidStartPage pi = new RaidStartPage();
-        pi.setLevelColor(new Color(0,0,0));
-        pi.setLevelPoint(new Point());
-
-        pi.setRankColor(new Color(0,0,0));
-        pi.setRankPoint(new Point());
-
-        pi.setTicketColor(new Color(0,0,0));
-        pi.setTicketPoint(new Point());
-
-        pi.setNoTicketColor(new Color(0,0,0));
-        pi.setNoTicketPoint(new Point());
-
-        pi.setStartPoint(new Point());
-        pi.setReturnPoint(new Point());
+        pi.setTenTicketColor(new Color(255,255,255));
+        pi.setTenTicketPoint(new Point(0,0));
         String text = JSON.toJSONString(pi);
         System.out.println(text);
     }

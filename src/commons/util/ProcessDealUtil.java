@@ -94,11 +94,23 @@ public class ProcessDealUtil {
 		}
 	}
 
-	public static void startFgo(int account) {
-
-		String url = GameUtil.getValueFromConfig("EXE_PATH");
+	public static void startApp(int account) {
+		String urlstring = GameUtil.getValueFromConfig("EXE_PATH");
+		String[] urls = urlstring.split(";");
+		int size = urls.length;
+		File tempFile;
+		String url = "";
+		String tempUrl;
+		for (int i = 0; i < size; i++) {
+			tempUrl = urls[i];
+			tempFile = new File(tempUrl);
+			if(tempFile.exists()){
+				url = tempUrl;
+			}
+		}
+		String appName = PropertiesUtil.getValueFromOpenFile("appName");
 		String line = url + "/TianTian.exe  -n " + account + " -t 天天二次元" + account + " -i " + url
-				+ "/apps/com.aniplex.fategrandorder.apk";
+				+ "/apps/" + appName;
 		startTianTain(line);
 
 	}
@@ -136,12 +148,22 @@ public class ProcessDealUtil {
 			LOGGER.error("关机失败");
 		}
 	}
+	public static void closeComputerInTime(int minutes) {
+		int seconds = 60 * minutes;
+		String line= "C:\\Windows\\System32\\shutdown.exe -s -t " + seconds;
+		try {
+			executeCmd(line,false);
+			LOGGER.info(minutes + "分钟后关机《《》《》《》》");
+		} catch (IOException e) {
+			LOGGER.error("关机失败");
+		}
+	}
 	public static void abordCloseComputer() {
 		String line= "C:\\Windows\\System32\\shutdown.exe -a";
 		try {
 			executeCmd(line,false);
 		} catch (IOException e) {
-			LOGGER.error("关机失败");
+			LOGGER.error("取消定时关机失败");
 		}
 	}
 

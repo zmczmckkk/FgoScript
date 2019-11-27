@@ -73,9 +73,6 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
         GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         //获取入口信息
         GatesInfo gi = getSpecialGatesInfo();
-        // 拉滚动条至最下
-        GameUtil.mouseMoveByPoint(gi.getSliceDownPoint());
-        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 
         List<Gates> gatesList = gi.getGatesArray();
         int size = gatesList.size();
@@ -99,6 +96,15 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
             }
             locPoint = gatesTemp.getpSetLoc();
             gatePoint = gatesTemp.getGateByApNum(apNum);
+            // 拉滚动条至最远点
+            double minusDown = Math.abs(locPoint.getY() - gi.getSliceDownPoint().getY());
+            double minusUp = Math.abs(locPoint.getY() - gi.getSliceTopPoint().getY());
+            if (minusDown < minusUp) {
+                GameUtil.mouseMoveByPoint(gi.getSliceTopPoint());
+            }else{
+                GameUtil.mouseMoveByPoint(gi.getSliceDownPoint());
+            }
+            GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
             // 拉滚动条目标位置
             GameUtil.mouseMoveByPoint(locPoint);
             GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);

@@ -1,4 +1,4 @@
-package destinyChild;
+package destinychild;
 
 /**
  * @description: 用于Raid战斗处理特殊情况

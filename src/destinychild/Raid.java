@@ -1,4 +1,4 @@
-package destinyChild;
+package destinychild;
 
 import aoshiScript.entity.IWuNa;
 import aoshiScript.entity.WuNa;
@@ -7,8 +7,9 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
-import destinyChild.entity.RaidFilterMenu;
-import destinyChild.entity.RaidStartPage;
+import commons.util.ThreadUtil;
+import destinychild.entity.RaidFilterMenu;
+import destinychild.entity.RaidStartPage;
 import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
@@ -33,6 +34,21 @@ public class Raid implements IRaid{
     private RaidFilterMenu menu;
     private RaidStartPage rsPage;
 
+    @Override
+    public void toggle() {
+        if (!isFlag()){
+            LOGGER.info("启动raid脚本");
+            raidBattleStart();
+            setFlag(false);
+        }else{
+            LOGGER.info("关闭raid脚本");
+            raidBattleStop();
+            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            setFlag(false);
+
+        }
+    }
+
     public RaidFilterMenu getMenu() {
         if (menu == null) {
             String filepath = NativeCp.getUserDir() + "/config/RaidFilterMenu_"+NativeCp.getUserName()+".json";
@@ -56,7 +72,7 @@ public class Raid implements IRaid{
         this.wuna = wuna;
     }
 
-    private boolean flag = true;
+    private boolean flag = false;
 
     public boolean isFlag() {
         return flag;
@@ -65,7 +81,7 @@ public class Raid implements IRaid{
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-    private void oneThreadCheckStart(WuNa optWuna, ExecutorService singleThreadPool){
+    private void oneThreadCheckStart(IWuNa wuna, ExecutorService singleThreadPool){
         singleThreadPool.execute(()-> {
             LOGGER.info("开始检测并处理战斗条件!");
             getRsPage();
@@ -82,9 +98,13 @@ public class Raid implements IRaid{
             Point tempPoint;
             Color checkColor;
             int rightCount;
-            while(true){
+            boolean checkTwice = false;
+            while(!wuna.isForceStop()){
                 rightCount = 0;
                 for (int i = 0; i < size; i++) {
+                    if(wuna.isForceStop()){
+                        break;
+                    }
                     tempColor = colors.get(i);
                     tempPoint = points.get(i);
                     checkColor = GameUtil.getScreenPixel(tempPoint);
@@ -93,22 +113,36 @@ public class Raid implements IRaid{
                     }
                 }
                 checkColor = GameUtil.getScreenPixel(rsPage.getNoTicketPoint());
-                if (size == rightCount && !GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor())){
-                    wuna.setGO(false);
-                    optWuna.setGO(false);
-                    GameUtil.mouseMoveByPoint(rsPage.getStartPoint());
-                    GameUtil.mousePressAndReleaseByDD();
-                }
-                if (GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor())){
-                    GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
-                    GameUtil.mousePressAndReleaseByDD();
-                }
                 boolean noLevel40 = !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getLevelPoint()),rsPage.getLevelColor());
-                boolean hasTicket = !GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor());
-                boolean hasRank = GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getRankPoint()),rsPage.getRankColor());
-                if (hasRank && noLevel40 && hasTicket){
-                    GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
-                    GameUtil.mousePressAndReleaseByDD();
+                boolean noTicket = GameUtil.likeEqualColor(checkColor,rsPage.getNoTicketColor())
+                        && !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getTenTicketPoint()),rsPage.getTenTicketColor());
+                boolean noRank = !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getRankPoint()),rsPage.getRankColor());
+                if (size == rightCount ){
+                    if(noLevel40 || noTicket || noRank){
+                        GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
+                        GameUtil.mousePressAndReleaseByDD();
+                        LOGGER.info("返回页面1");
+                    }else {
+                        wuna.setGO(false);
+                        GameUtil.mouseMoveByPoint(rsPage.getStartPoint());
+                        GameUtil.mousePressAndReleaseByDD();
+                    }
+                } else {
+                    if (GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getStartPoint()),rsPage.getStartColor())){
+                        LOGGER.info("出现开始战斗页面");
+                        if(checkTwice == false){
+                            LOGGER.info("等待3秒");
+                            GameUtil.delay(3000);
+                            checkTwice = true;
+                            LOGGER.info("等待3秒结束");
+                        }else {
+                            LOGGER.info("返回页面2");
+                            GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
+                            GameUtil.mousePressAndReleaseByDD();
+                            checkTwice = false;
+                        }
+
+                    }
                 }
                 GameUtil.delay(2000);
                 LOGGER.info("单线程检测副本等级，是否有人打，都符合则点击战斗！" + System.currentTimeMillis());
@@ -122,7 +156,8 @@ public class Raid implements IRaid{
     }
     @Override
     public void raidBattleStart(){
-        WuNa optWuna = new WuNa("optionClick");
+        setFlag(true);
+        wuna.setForceStop(false);
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
                 .setNameFormat("option-pool-%d").setDaemon(false).build();
         ExecutorService singleThreadPool = new ThreadPoolExecutor(2, 3,
@@ -132,40 +167,31 @@ public class Raid implements IRaid{
         //单启动一个线程:实时点色教程操作。用来处理断线，重启，升级，补票等操作(脚本文件)
         singleThreadPool.execute(()-> {
             LOGGER.info("开始处理断线，重启，升级，补票!");
-            optWuna.alwaysClickForStrategy("optionClick", 2000, true, false);
+            wuna.alwaysClickForStrategy("optionClick", 2000, true, false);
             LOGGER.info("结束处理断线，重启，升级，补票!");
         });
         //单启动一个线程:检测并处理战斗条件（逻辑判断）
-        oneThreadCheckStart(optWuna, singleThreadPool);
-        while (isFlag() && wuna.isScucess()) {
+        oneThreadCheckStart(wuna, singleThreadPool);
+        while (isFlag()) {
+            if(wuna.isForceStop()){
+                break;
+            }
             // 设置列表过滤项为：未参加，参加人数（降序）
             try {
                 setFilterOptions();
             } catch (FgoNeedRestartException e) {
                 e.printStackTrace();
             } catch (FgoNeedStopException e) {
-                e.printStackTrace();
+                break;
             }
-            waitUntilNoneThread();
+            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
             // 执行点击脚本。当完成一场战斗后，点解结束按钮。结束所有线程
             runClick(threadPoolTaskExecutor.getActiveCount());
             // 当完成一场战斗后，点结束按钮。结束所有线程
             stopOneBattle();
-            waitUntilNoneThread();
+            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            setFlag(true);
         }
-    }
-    /**
-     * @Description: 当线程池无活动时，执行下一步
-     * @return: void
-     * @throw:
-     * @Author: RENZHEHAO
-     * @Date: 2019/6/7
-     */
-    private void waitUntilNoneThread(){
-        do{
-            GameUtil.delay(3000);
-            LOGGER.info("线程个数: " + threadPoolTaskExecutor.getActiveCount());
-        } while (threadPoolTaskExecutor.getActiveCount() != 0);
     }
     /**
      * @Description: 递归判断线程池中是否只有一个线程，然后在执行点击脚本
@@ -185,8 +211,9 @@ public class Raid implements IRaid{
     }
     @Override
     public void raidBattleStop() {
-        setFlag(false);
         wuna.setGO(false);
+        wuna.setForceStop(true);
+        GameUtil.setSTOP_SCRIPT(true);
     }
 
     private void setFilterOptions() throws FgoNeedRestartException, FgoNeedStopException {
@@ -201,6 +228,9 @@ public class Raid implements IRaid{
         //如果未出现“确认按钮”，点击“菜单按钮”，
         Color tempColor;
         for (int i = 0; i < maxCicle; i++) {
+            if(wuna.isForceStop()){
+                break;
+            }
             tempColor = GameUtil.getScreenPixel(menu.getConfirmPoint());
             if (!GameUtil.likeEqualColor(tempColor,menu.getConfirmColor(),2)) {
                 LOGGER.info("未出现确认按钮点击！");
@@ -222,6 +252,9 @@ public class Raid implements IRaid{
         int count;
         Color temp;
         for (int i = 0; i < maxCicle; i++) {
+            if(wuna.isForceStop()){
+                break;
+            }
             count = 0;
             temp = GameUtil.getScreenPixel(menu.getUnDoPoint());
             if (GameUtil.likeEqualColor(temp, menu.getUnDoColor(), 0)) {
@@ -236,6 +269,9 @@ public class Raid implements IRaid{
                 wuna.setGO(false);
                 //点击确定按钮
                 for (int j = 0; j < maxCicle; j++) {
+                    if(wuna.isForceStop()){
+                        break;
+                    }
                     temp = GameUtil.getScreenPixel(menu.getConfirmPoint());
                     if (GameUtil.likeEqualColor(temp,menu.getConfirmColor())){
                         GameUtil.mouseMoveByPoint(menu.getConfirmPoint());
@@ -245,7 +281,6 @@ public class Raid implements IRaid{
                         maxCicle = 0;
                     }
                     GameUtil.delay(1000);
-                    LOGGER.info(maxCicle);
                 }
             }
         }
@@ -253,11 +288,17 @@ public class Raid implements IRaid{
     private void stopOneBattle() {
         Color tempColor;
         int size = menu.getStopPointList().size();
-        boolean flag = true;
         boolean clickFlag = true;
         int count;
         count = 0;
-        while (flag) {
+        while (isFlag()) {
+            if(wuna.isForceStop()){
+                break;
+            }
+            if (count > 10 && threadPoolTaskExecutor.getActiveCount() == 0 && GameUtil.likeEqualColor(menu.getMenuColor(),GameUtil.getScreenPixel(menu.getMenuPoint()),2)) {
+                LOGGER.info("战斗被提前结束，不明原因，发现菜单按钮，重新开始脚本");
+                setFlag(false);
+            }
             LOGGER.info("检测战斗结束标志_" + count++);
             for (int i = 0; i < size; i++) {
                 tempColor = GameUtil.getScreenPixel(menu.getStopPointList().get(i));
@@ -274,13 +315,9 @@ public class Raid implements IRaid{
                         }
                         GameUtil.delay(2000);
                     }while (clickFlag);
-                    flag = false;
+                    setFlag(false);
                     break;
                 }
-            }
-            if (count > 10 && threadPoolTaskExecutor.getActiveCount() != 0 && GameUtil.likeEqualColor(menu.getMenuColor(),GameUtil.getScreenPixel(menu.getMenuPoint()),2)) {
-                LOGGER.info("战斗被提前结束，不明原因，发现菜单按钮，重新开始脚本");
-                flag = false;
             }
             GameUtil.delay(4000);
         }

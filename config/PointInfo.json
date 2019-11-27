@@ -71,6 +71,26 @@
     "b": 222,
     "alpha": 255
   },
+  "cBattleStart": {
+		"r": 46,
+		"g": 59,
+		"b": 106,
+		"alpha": 255 
+  },
+  "pBattleStart": {
+		"x": 1256,
+		"y": 729
+  },
+  "cSupportSelect": {
+		"r": 66,
+		"g": 67,
+		"b": 74,
+		"alpha": 255
+  },
+  "pSupportSelect": {
+		"x": 193,
+		"y": 179
+  },
   "cConnectEnd": {
     "r": 84,
     "g": 84,
@@ -132,9 +152,9 @@
     "alpha": 255
   },
   "cHand": {
-    "r": 173,
-    "g": 231,
-    "b": 107,
+    "r": 165,
+    "g": 227,
+    "b": 82,
     "alpha": 255
   },
   "cLeftTop": {
@@ -150,9 +170,9 @@
     "alpha": 255
   },
   "cLoading": {
-    "r": 111,
-    "g": 188,
-    "b": 217,
+    "r": 27,
+    "g": 120,
+    "b": 145,
     "alpha": 255
   },
   "cLtApp": {
@@ -234,8 +254,8 @@
     "alpha": 255
   },
   "cTransfer": {
-    "r": 0,
-    "g": 60,
+    "r": 7,
+    "g": 69,
     "b": 165,
     "alpha": 255
   },
@@ -424,8 +444,8 @@
     "y": 742
   },
   "pHand": {
-    "x": 710,
-    "y": 92
+    "x": 708,
+    "y": 95
   },
   "pLeftTop": {
     "x": 401,
@@ -436,8 +456,8 @@
     "y": 337
   },
   "pLoading": {
-    "x": 477,
-    "y": 720
+    "x": 588,
+    "y": 718
   },
   "pLtApp": {
     "x": 416,
@@ -520,12 +540,12 @@
     "y": 241
   },
   "pScrollRestDown": {
-    "x": 1294,
-    "y": 679
+    "x": 1295,
+    "y": 677
   },
   "pScrollRestTop": {
-    "x": 1294,
-    "y": 146
+    "x": 1296,
+    "y": 156
   },
   "pServantAll": {
     "x": 131,
@@ -650,12 +670,12 @@
     "y": 612
   },
   "pWeekEntrance01": {
-    "x": 937,
-    "y": 422
+    "x": 969,
+    "y": 440
   },
   "pWeekEntrance02": {
-    "x": 955,
-    "y": 598
+    "x": 884,
+    "y": 589
   },
   "pWeekEntrance03": {
     "x": 884,
@@ -678,23 +698,25 @@
     "y": 507
   },
   "cBattleReapeatNo": {
-    "r": 0,
-    "g": 0,
-    "b": 0,
+    "r": 172,
+    "g": 172,
+    "b": 172,
     "alpha": 255
   },
   "cBattleReapeatYes": {
-    "r": 0,
-    "g": 0,
-    "b": 0,
+    "r": 69,
+    "g": 69,
+    "b": 69,
     "alpha": 255
   },
   "pBattleReapeatNo": {
-    "x": 0,
-    "y": 0
+    "x": 458,
+    "y": 617
   },
   "pBattleReapeatYes": {
-    "x": 0,
-    "y": 0
-  }
+    "x": 827,
+    "y": 608
+  },
+  "cSummonStone":{"r":127,"g":209,"b":144,"alpha":255},
+  "pSummonStone":{"x":431,"y":86}
 }

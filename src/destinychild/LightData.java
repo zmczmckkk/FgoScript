@@ -1,4 +1,4 @@
-package destinyChild;
+package destinychild;
 
 import java.awt.*;
 
@@ -22,6 +22,18 @@ public class LightData {
     private Point confirmPoint;
     /** 确认色 */
     private Color confirmColor;
+    /** 终了点 */
+    private Point finishPoint;
+    /** 终了色 */
+    private Color finishColor;
+    /** 开灯点 */
+    private Point startPoint;
+    /** 开灯色 */
+    private Color startColor;
+    /** 免费灯点 */
+    private Point freeFinishPoint;
+    /** 免费灯色（无） */
+    private Color freeFinishColor;
     /** 起始毫秒步长 */
     private int smStep;
     /** 毫秒加速步长 */
@@ -107,5 +119,53 @@ public class LightData {
 
     public void setConfirmColor(Color confirmColor) {
         this.confirmColor = confirmColor;
+    }
+
+    public Point getFinishPoint() {
+        return finishPoint;
+    }
+
+    public void setFinishPoint(Point finishPoint) {
+        this.finishPoint = finishPoint;
+    }
+
+    public Color getFinishColor() {
+        return finishColor;
+    }
+
+    public void setFinishColor(Color finishColor) {
+        this.finishColor = finishColor;
+    }
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(Point startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public Color getStartColor() {
+        return startColor;
+    }
+
+    public void setStartColor(Color startColor) {
+        this.startColor = startColor;
+    }
+
+    public Point getFreeFinishPoint() {
+        return freeFinishPoint;
+    }
+
+    public void setFreeFinishPoint(Point freeFinishPoint) {
+        this.freeFinishPoint = freeFinishPoint;
+    }
+
+    public Color getFreeFinishColor() {
+        return freeFinishColor;
+    }
+
+    public void setFreeFinishColor(Color freeFinishColor) {
+        this.freeFinishColor = freeFinishColor;
     }
 }

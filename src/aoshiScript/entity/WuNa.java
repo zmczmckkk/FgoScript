@@ -7,7 +7,6 @@ import java.util.*;
 
 import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,15 +18,14 @@ import fgoScript.entity.PointColor;
 import fgoScript.entity.BaseZButton;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.spi.StandardLevel;
 
-import javax.print.attribute.standard.Finishings;
 import javax.swing.*;
 
 public class WuNa implements IWuNa{
 	private static final Logger LOGGER = LogManager.getLogger(WuNa.class);
 	private boolean GO = false;
+	private boolean forceStop = false;
+	private Long lastClickTime;
 	boolean scucess = true;
 
 	@Override
@@ -62,6 +60,17 @@ public class WuNa implements IWuNa{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public void setLastClickTime(Long lastClickTime) {
+		this.lastClickTime = lastClickTime;
+	}
+
+	@Override
+	public Long getLastClickTime() {
+		return lastClickTime;
+	}
+
 	@Override
 	public boolean isGO() {
 		return GO;
@@ -70,7 +79,17 @@ public class WuNa implements IWuNa{
 	public void setGO(boolean go) {
 		GO = go;
 	}
-	
+
+	@Override
+	public boolean isForceStop() {
+		return forceStop;
+	}
+
+	@Override
+	public void setForceStop(boolean forceStop) {
+		this.forceStop = forceStop;
+	}
+
 	public int getClickCount() {
 		return clickCount;
 	}
@@ -79,6 +98,7 @@ public class WuNa implements IWuNa{
 	}
 	@Override
 	public void alwaysClick() {
+		setForceStop(false);
         if (isGO()) {
 			setGO(false);
 		} else{
@@ -109,6 +129,7 @@ public class WuNa implements IWuNa{
 		// 初始化参数
 		setScucess(true);
 		setGO(true);
+		setLastClickTime(System.currentTimeMillis());
 		Robot rb = GameUtil.getRb(this.getClass().getName());
 		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion", fileName);
 		String action = PropertiesUtil.getValueFromAutoClickFile("action", fileName);
@@ -160,7 +181,7 @@ public class WuNa implements IWuNa{
 			Random r=new Random();
 			int ri;
 			int[] riArray;
-			do {
+			while ((isGO() && !isForceStop()) || (alwaysGo && !isForceStop())){
 				LOGGER.info("执行检测点击，对应脚本文件名： "+fileName);
 				riArray = getRandomArray(minSize);
 				for (int i = 0; i < minSize; i++) {
@@ -175,17 +196,20 @@ public class WuNa implements IWuNa{
 						flag = !flag;
 					}
 					if (flag) {
+						setLastClickTime(System.currentTimeMillis());
 						LOGGER.info("移动( " + pList.get(ri).getX()+"_"+pList.get(ri).getY()+" )");
 						GameUtil.mouseMoveByDD((int) pList.get(ri).getX(), (int) pList.get(ri).getY());
 						LOGGER.info("左键单击");
 						GameUtil.mousePressAndReleaseByDD();
 						if (clickWait) {
-							GameUtil.delay(2000);
+							GameUtil.delay(1000);
 						}
 					}
 					rb.delay(factor == null ? 200 * getFactor() : factor);
 				}
-			} while (isGO() || alwaysGo);
+//				LOGGER.info(alwaysGo + "__"+ isGO() +"__"+ isForceStop());
+//				LOGGER.info((isGO() && !isForceStop()) || (alwaysGo && !isForceStop()));
+			};
 		}
 		LOGGER.info("Finish auto click scanning!");
 	}
@@ -236,7 +260,7 @@ public class WuNa implements IWuNa{
 	@Override
 	public void falshClick(BaseZButton bt) {
 		BaseZButton[] bts = FgoFrame.instance().getBts();
-		BaseZButton setbt =bts[bts.length-6];
+		BaseZButton setbt =bts[bts.length-8];
 		setbt.setEnabled(true);
 		setbt.setText("点击设置");
 		JIntellitype.getInstance().unregisterHotKey(setbt.getMarkCode());

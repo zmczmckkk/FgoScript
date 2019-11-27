@@ -1,4 +1,4 @@
-package destinyChild;
+package destinychild;
 
 /**
  * @description: raid战斗接口
@@ -20,4 +20,11 @@ public interface IRaid {
      * @Date: 2019/6/3
      */
     public void raidBattleStop();
+    /**
+     * @Description: 切换启动关闭方法
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/15
+     */
+    public void toggle();
 }

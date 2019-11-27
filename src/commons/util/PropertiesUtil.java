@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import fgoScript.entity.Gudazi;
 
 public class PropertiesUtil {
-	private static final Logger LOGGER = LogManager.getLogger(Gudazi.class);
+	private static final Logger LOGGER = LogManager.getLogger(PropertiesUtil.class);
 	/**
 	 * 取出值
 	 * 
@@ -85,6 +85,10 @@ public class PropertiesUtil {
 		String filepath = System.getProperty("user.dir") + "/config/skills.properties";
 		return getValue(filepath, key);
 	}
+	public static String getValueFromSystemFile(String key) {
+		String filepath = System.getProperty("user.dir") + "/config/system"+"_"+ NativeCp.getUserName() +".properties";
+		return getValue(filepath, key);
+	}
 	public static String getValueFromHasDoFile(String key) {
 		String filepath = System.getProperty("user.dir") + "/config/hasDo.properties";
 		return getValue(filepath, key);
@@ -151,6 +155,14 @@ public class PropertiesUtil {
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**
+	 *
+	 * @param map
+	 */
+	public static void setValueForSystem( Map<String, String> map) {
+		String filepath = System.getProperty("user.dir") + "/config/system"+"_"+ NativeCp.getUserName() +".properties";
+		setValueForUpdateAndAdd(map, filepath);
+	}
+	/**
 	 * 
 	 * @param map
 	 */
@@ -190,7 +202,7 @@ public class PropertiesUtil {
 		/// 保存属性到b.properties文件
 		FileOutputStream oFile = null;
 		try {
-			LOGGER.info("加载属性列表");
+			LOGGER.info("从 "+filepath+" 里，加载属性列表");
 			FileInputStream fis = new FileInputStream(filepath);
 			BufferedInputStream in = new BufferedInputStream(fis);
 			prop.load(in); /// 加载属性列表

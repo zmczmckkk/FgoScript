@@ -1,5 +1,9 @@
 package fgoScript.service;
 
+import commons.entity.NativeCp;
+import commons.util.MySpringUtil;
+import destinychild.DaillyMission;
+import fgoScript.constant.PointInfo;
 import fgoScript.entity.panel.FgoFrame;
 import fgoScript.entity.Gudazi;
 import commons.util.GameUtil;
@@ -11,6 +15,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -29,31 +34,37 @@ public class TimerManager {
 	 * @Date: 2019/5/22
 	 */
 	public void startTasks(){
-		String path = GameUtil.getValueFromConfig("EXE_PATH");
-		path = path.replace("^", "");
 		String time = "";
+		Calendar calendar = Calendar.getInstance();
+		int HOUR_OF_DAY = Integer.valueOf(GameUtil.getValueFromConfig("HOUR_OF_DAY"));
+		int MINUTE = Integer.valueOf(GameUtil.getValueFromConfig("MINUTE"));
+		int SECOND = Integer.valueOf(GameUtil.getValueFromConfig("SECOND"));
+		time = HOUR_OF_DAY + " : " + MINUTE + " : " + SECOND;
+		/*** 定制每日3:10执行方法 ***/
+		calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
+		calendar.set(Calendar.MINUTE, MINUTE);
+		calendar.set(Calendar.SECOND, SECOND);
+		Date date = calendar.getTime(); // 第一次执行定时任务的时间
+		// 获取第一次延迟执行时间
+		date = modifyTime(date,new Date(),PERIOD_TIME);
+		long initDelay  = date.getTime() - System.currentTimeMillis();
+		initDelay = initDelay > 0 ? initDelay : PERIOD_TIME + initDelay;
+
 		//使用ScheduledThreadPoolExecutor线程池执行类调度任务
 		ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2,
 				new BasicThreadFactory.Builder().namingPattern("FgoExcute-pool-%d").daemon(false).build());
-		if (!new File(path).exists()) {
-			LOGGER.info("游戏程序不存在,路径错误！,不执行定时任务");
+		if (!"RZH-SERVER".equals(NativeCp.getUserName())) {
+			LOGGER.info("用户名: "+NativeCp.getUserName()+" 执行DC定时任务");
+			executorService.scheduleAtFixedRate(new TimerTask() {
+				@Override
+				public void run() {
+					DaillyMission dm  = (DaillyMission) MySpringUtil.getApplicationContext().getBean("daillyMission");
+					dm.toggle();
+				}
+			}, initDelay, PERIOD_TIME, TimeUnit.MILLISECONDS);
 		}else {
-			Calendar calendar = Calendar.getInstance();
-			int HOUR_OF_DAY = Integer.valueOf(GameUtil.getValueFromConfig("HOUR_OF_DAY"));
-			int MINUTE = Integer.valueOf(GameUtil.getValueFromConfig("MINUTE"));
-			int SECOND = Integer.valueOf(GameUtil.getValueFromConfig("SECOND"));
-			time = HOUR_OF_DAY + " : " + MINUTE + " : " + SECOND;
-			/*** 定制每日3:10执行方法 ***/
-			calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
-			calendar.set(Calendar.MINUTE, MINUTE);
-			calendar.set(Calendar.SECOND, SECOND);
-			Date date = calendar.getTime(); // 第一次执行定时任务的时间
 			// 删除过期图片
 			deletePics();
-			// 获取第一次延迟执行时间
-			date = modifyTime(date,new Date(),PERIOD_TIME);
-			long initDelay  = date.getTime() - System.currentTimeMillis();
-			initDelay = initDelay > 0 ? initDelay : PERIOD_TIME + initDelay;
 			//执行挂机任务
 			executorService.scheduleAtFixedRate(new Gudazi(), initDelay, PERIOD_TIME, TimeUnit.MILLISECONDS);
 			LOGGER.info("定时任务已启动！启动时间：" + time);

@@ -1,9 +1,9 @@
-package destinyChild;
+package destinychild;
 
 import com.alibaba.fastjson.JSON;
 import commons.util.ClipBoardUtil;
 import commons.util.GameUtil;
-import destinyChild.entity.GuestSave;
+import destinychild.entity.GuestSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

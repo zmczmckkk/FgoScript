@@ -18,6 +18,7 @@ public class GameConstant {
 	public static final int BLUE= 0;
 	public static final boolean IF_SET_PRE = Boolean.parseBoolean(GameUtil.getValueFromConfig("IF_SET_PRE"));
 	public static final int APPLE_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("APPLE_COUNT"));
+	public static final int BATTLE_COUNT = Integer.parseInt(GameUtil.getValueFromConfig("BATTLE_COUNT"));
 	public static final String NO_SKILL="0";
 	public static final String GO_SECOD_SKILL_FOR_FIRST="1";
 	public static final String GO_ALL_SKILL_FOR_FIRST="2";

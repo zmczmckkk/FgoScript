@@ -1,4 +1,4 @@
-package destinyChild.entity;
+package destinychild.entity;
 
 import java.awt.*;
 

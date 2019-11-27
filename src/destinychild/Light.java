@@ -1,23 +1,23 @@
-package destinyChild;
+package destinychild;
 
 import com.alibaba.fastjson.JSONObject;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
-import commons.util.MySpringUtil;
-import fgoScript.entity.panel.FgoFrame;
+import fgoScript.entity.PointColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @description: 百鬼夜行实体
  * @author: RENZHEHAO
  * @create: 2019-06-15 08:58
  **/
-public class Light implements ILight{
+public class Light implements IModule {
     private boolean flag = true;
     private boolean tFlag = true;
     private boolean exFlag = true;
@@ -29,7 +29,7 @@ public class Light implements ILight{
 
     private LightData lightData;
     @Override
-    public void startLight() {
+    public void start() {
         reFreshLightData();
         // 线程1： 检测确认按钮
         poolExecutor.execute(new Runnable() {
@@ -60,15 +60,24 @@ public class Light implements ILight{
     private void explore(){
         reFreshLightData();
         int count = 0;
+        int exploreCount = 0;
         Color temp;
-        // 检测button按钮
+        // 检测button按钮和免费灯点
         while(isFlag() && isExFlag()){
             temp = GameUtil.getScreenPixel(lightData.getButtonPoint());
             if (GameUtil.likeEqualColor(temp, lightData.getButtonColor(), 1)){
                 GameUtil.mouseMoveByPoint(lightData.getClickPoint());
+                exploreCount++;
                 break;
             }
+            temp = GameUtil.getScreenPixel(lightData.getFreeFinishPoint());
+            if (GameUtil.likeEqualColor(temp, lightData.getFreeFinishColor(), 1)){
+                LOGGER.info("无免费灯，结束夜行");
+                GameUtil.mouseMoveByPoint(lightData.getClickPoint());
+                setFlag(false);
+            }
             delay(1000);
+
         }
         while(isFlag() && isExFlag()){
             count = checkGreen(count);
@@ -85,10 +94,14 @@ public class Light implements ILight{
      */
     private void checkConfirmButton(){
         // 检测确认按钮
-        Color temp;
+        Color checkColor;
+        List<PointColor> pcList;
+        int size;
+        Point tempPoint;
+        Color tempColor;
         do{
-            temp = GameUtil.getScreenPixel(lightData.getConfirmPoint());
-            if (GameUtil.likeEqualColor(temp, lightData.getConfirmColor(), 1)){
+            checkColor = GameUtil.getScreenPixel(lightData.getConfirmPoint());
+            if (GameUtil.likeEqualColor(checkColor, lightData.getConfirmColor(), 1)){
                 this.setExFlag(false);
                 // 等待线程<=1
                 while(poolExecutor.getActiveCount() > 1){
@@ -106,24 +119,38 @@ public class Light implements ILight{
                     }
                 });
             }
-            delay(2000);
+
+            pcList = new ArrayList<>();
+            pcList.add(new PointColor(lightData.getFinishPoint(),lightData.getFinishColor(), true));
+            pcList.add(new PointColor(lightData.getStartPoint(),lightData.getStartColor(), true));
+            size = pcList.size();
+            for (int i = 0; i < size; i++) {
+                tempPoint = pcList.get(i).getPoint();
+                tempColor = pcList.get(i).getColor();
+                checkColor = GameUtil.getScreenPixel(tempPoint);
+                if (GameUtil.likeEqualColor(checkColor, tempColor, 1)){
+                    GameUtil.mouseMoveByPoint(tempPoint);
+                    GameUtil.mousePressAndReleaseByDD();
+                }
+            }
+            delay(1000);
         }while (isFlag());
     }
     @Override
-    public void stopLight() {
+    public void stop() {
         setFlag(false);
     }
 
     @Override
-    public void toggleLight() {
+    public void toggle() {
         if (tFlag) {
             if ( poolExecutor.getActiveCount() == 0) {
                 setFlag(true);
                 settFlag(false);
-                startLight();
+                start();
             }
         } else {
-            stopLight();
+            stop();
             while (poolExecutor.getActiveCount()!=0){
                 delay(1000);
             }

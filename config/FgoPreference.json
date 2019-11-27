@@ -1,0 +1,31 @@
+{
+  "accelerateLeft": {
+    "x": 1158,
+    "y": 116
+  },
+  "accelerateMiddle": {
+    "x": 1171,
+    "y": 118
+  },
+  "location": {
+    "x": 1233,
+    "y": 259
+  },
+  "colorStyles": [
+   "dark","dark","bright"
+  ],
+  "optionPoints": [
+    {
+      "x": 900,
+      "y": 328
+    },
+    {
+      "x": 1124,
+      "y": 329
+    },
+    {
+      "x": 898,
+      "y": 398
+    }
+  ]
+}

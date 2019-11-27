@@ -1,6 +1,6 @@
 package test;
 
-import destinyChild.DestinyEntrance;
+import destinychild.DestinyEntrance;
 import org.junit.Test;
 
 public class EntranceTest {
