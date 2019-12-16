@@ -1,166 +1,58 @@
 ﻿{
-  "cAppleNeed01": {
-    "r": 252,
-    "g": 239,
-    "b": 14,
-    "alpha": 255
-  },
-  "cAppleNeed02": {
-    "r": 250,
-    "g": 234,
-    "b": 2,
-    "alpha": 255
-  },
-  "cBlueAttack": {
-    "r": 0,
-    "g": 208,
-    "b": 242,
-    "alpha": 255
-  },
-  "cButtonFailBack": {
-    "r": 141,
-    "g": 139,
-    "b": 141,
-    "alpha": 255
-  },
-  "cButtonFailBackNo": {
-    "r": 165,
-    "g": 168,
-    "b": 165,
-    "alpha": 255
-  },
-  "cButtonFailBackYes": {
-    "r": 103,
-    "g": 102,
-    "b": 103,
-    "alpha": 255
-  },
-  "cButtonRestartNo": {
-    "r": 142,
-    "g": 142,
-    "b": 142,
-    "alpha": 255
-  },
-  "cButtonRestartYes": {
-    "r": 100,
-    "g": 99,
-    "b": 100,
-    "alpha": 255
-  },
-  "cCardExit": {
-    "r": 0,
-    "g": 184,
-    "b": 233,
-    "alpha": 255
-  },
+  "cAppleNeed01": {"r" : 255, "g" : 252, "b" : 81},
+  "cAppleNeed02": {"r" : 255, "g" : 255, "b" : 112},
+  "cBlueAttack": {"r" : 2, "g" : 208, "b" : 241},
+  "cButtonFailBack":{"r" : 185, "g" : 185, "b" : 185},
+  "cButtonFailBackNo": {"r" : 152, "g" : 152, "b" : 152},
+  "cButtonFailBackYes": {"r" : 185, "g" : 185, "b" : 185},
+  "cButtonRestartNo": {"r" : 166, "g" : 166, "b" : 166},
+  "cButtonRestartYes": {"r" : 191, "g" : 191, "b" : 191},
+  "cCardExit": {"r" : 1, "g" : 177, "b" : 226},
   "cCloseMd": {
     "r": 79,
     "g": 78,
     "b": 79,
     "alpha": 255
   },
-  "cClothToSkill": {
-    "r": 126,
-    "g": 126,
-    "b": 148,
-    "alpha": 255
-  },
-  "cConfirmRd": {
-    "r": 222,
-    "g": 219,
-    "b": 222,
-    "alpha": 255
-  },
-  "cBattleStart": {
-		"r": 46,
-		"g": 59,
-		"b": 106,
-		"alpha": 255 
-  },
+  "cClothToSkill": {"r" : 123, "g" : 140, "b" : 173},
+  "cConfirmRd": {"r" : 132, "g" : 139, "b" : 145},
+  "cBattleStart": {"r" : 31, "g" : 36, "b" : 72},
   "pBattleStart": {
-		"x": 1256,
-		"y": 729
+    "x": 1256,
+    "y": 729
   },
-  "cSupportSelect": {
-		"r": 66,
-		"g": 67,
-		"b": 74,
-		"alpha": 255
-  },
-  "pSupportSelect": {
-		"x": 193,
-		"y": 179
-  },
+  "cSupportSelect": {"r" : 88, "g" : 92, "b" : 92},
+  "pSupportSelect": {"x" : 190, "y" : 176},
   "cConnectEnd": {
     "r": 84,
     "g": 84,
     "b": 84,
     "alpha": 255
   },
-  "cConnectYes": {
-    "r": 192,
-    "g": 190,
-    "b": 193,
-    "alpha": 255
-  },
+  "cConnectYes": {"r" : 174, "g" : 174, "b" : 174},
   "cDownPanelClose": {
     "r": 49,
     "g": 60,
     "b": 112,
     "alpha": 255
   },
-  "cFetter01": {
-    "r": 245,
-    "g": 196,
-    "b": 39,
-    "alpha": 255
-  },
-  "cFetter02": {
-    "r": 239,
-    "g": 190,
-    "b": 40,
-    "alpha": 255
-  },
-  "cFetter03": {
-    "r": 197,
-    "g": 151,
-    "b": 31,
-    "alpha": 255
-  },
+  "cFetter01": {"r" : 232, "g" : 190, "b" : 34},
+  "cFetter02": {"r" : 238, "g" : 188, "b" : 40},
+  "cFetter03": {"r" : 233, "g" : 188, "b" : 35},
   "cFetterUp": {
     "r": 115,
     "g": 239,
     "b": 124,
     "alpha": 255
   },
-  "cGetFriendNo": {
-    "r": 126,
-    "g": 126,
-    "b": 126,
-    "alpha": 255
-  },
-  "cGuda": {
-    "r": 255,
-    "g": 244,
-    "b": 162,
-    "alpha": 255
-  },
-  "cGudaDark": {
-    "r": 62,
-    "g": 61,
-    "b": 59,
-    "alpha": 255
-  },
-  "cHand": {
-    "r": 165,
-    "g": 227,
-    "b": 82,
-    "alpha": 255
-  },
+  "cGetFriendNo": {"r" : 130, "g" : 130, "b" : 130},
+  "cGuda": {"r" : 254, "g" : 245, "b" : 171},
+  "cGudaDark": {"r" : 74, "g" : 72, "b" : 66},
+  "cHand": {"r" : 164, "g" : 230, "b" : 73},
   "cLeftTop": {
-    "r": 241,
-    "g": 94,
-    "b": 145,
+    "r": 244,
+    "g": 197,
+    "b": 31,
     "alpha": 255
   },
   "cLevelUp": {
@@ -170,9 +62,9 @@
     "alpha": 255
   },
   "cLoading": {
-    "r": 27,
-    "g": 120,
-    "b": 145,
+    "r": 89,
+    "g": 186,
+    "b": 211,
     "alpha": 255
   },
   "cLtApp": {
@@ -181,12 +73,7 @@
     "b": 145,
     "alpha": 255
   },
-  "cMosterDtExit": {
-    "r": 143,
-    "g": 158,
-    "b": 192,
-    "alpha": 255
-  },
+  "cMosterDtExit": {"r" : 42, "g" : 56, "b" : 96},
   "cMygame": {
     "r": 241,
     "g": 94,
@@ -199,42 +86,22 @@
     "b": 85,
     "alpha": 255
   },
-  "cNoticeExit": {
-    "r": 18,
-    "g": 36,
-    "b": 41,
-    "alpha": 255
-  },
+  "cNoticeExit": {"r" : 10, "g" : 35, "b" : 51},
   "cNoticeExitDark": {
     "r": 158,
     "g": 155,
     "b": 158,
     "alpha": 255
   },
-  "cNpDtExit": {
-    "r": 8,
-    "g": 20,
-    "b": 41,
-    "alpha": 255
-  },
+  "cNpDtExit": {"r" : 41, "g" : 49, "b" : 106},
   "cReConnectYes": {
     "r": 159,
     "g": 157,
     "b": 159,
     "alpha": 255
   },
-  "cRewardAction": {
-    "r": 138,
-    "g": 157,
-    "b": 172,
-    "alpha": 255
-  },
-  "cRewardGet": {
-    "r": 64,
-    "g": 91,
-    "b": 107,
-    "alpha": 255
-  },
+  "cRewardAction": {"r" : 141, "g" : 162, "b" : 179},
+  "cRewardGet": {"r" : 147, "g" : 162, "b" : 169},
   "cSupportNoConfirm": {
     "r": 39,
     "g": 39,
@@ -275,10 +142,7 @@
     "x": 979,
     "y": 93
   },
-  "npCheck": {
-    "x": 250,
-    "y": 723
-  },
+  "npCheck": {"x" : 240, "y" : 720},
   "npNp": {
     "x": 452,
     "y": 247
@@ -299,14 +163,8 @@
     "x": 1128,
     "y": 625
   },
-  "pButtonFailBack": {
-    "x": 326,
-    "y": 366
-  },
-  "pButtonFailBackNo": {
-    "x": 412,
-    "y": 417
-  },
+  "pButtonFailBack": {"x" : 326, "y" : 366},
+  "pButtonFailBackNo": {"x" : 409, "y" : 412},
   "pButtonFailBackYes": {
     "x": 909,
     "y": 410
@@ -315,10 +173,7 @@
     "x": 452,
     "y": 598
   },
-  "pButtonRestartYes": {
-    "x": 851,
-    "y": 600
-  },
+  "pButtonRestartYes": {"x" : 851, "y" : 600},
   "pCardClick": {
     "x": 163,
     "y": 535
@@ -327,10 +182,7 @@
     "x": 96,
     "y": 486
   },
-  "pCardExit": {
-    "x": 1201,
-    "y": 733
-  },
+  "pCardExit": {"x" : 1195, "y" : 732},
   "pCardWeak": {
     "x": 243,
     "y": 432
@@ -339,38 +191,17 @@
     "x": 649,
     "y": 606
   },
-  "pCloth": {
-    "x": 1229,
-    "y": 359
-  },
-  "pClothSkill01": {
-    "x": 942,
-    "y": 362
-  },
-  "pClothSkill02": {
-    "x": 1029,
-    "y": 357
-  },
-  "pClothSkill03": {
-    "x": 1115,
-    "y": 360
-  },
-  "pClothToSkill": {
-    "x": 1127,
-    "y": 194
-  },
-  "pConfirmRd": {
-    "x": 1061,
-    "y": 731
-  },
+  "pCloth": {"x" : 1221, "y" : 357},
+  "pClothSkill01":{"x" : 932, "y" : 362},
+  "pClothSkill02": {"x" : 1027, "y" : 359},
+  "pClothSkill03": {"x" : 1113, "y" : 359},
+  "pClothToSkill":{"x" : 1127, "y" : 194},
+  "pConfirmRd": {"x" : 1091, "y" : 728},
   "pConnectEnd": {
     "x": 902,
     "y": 612
   },
-  "pConnectYes": {
-    "x": 906,
-    "y": 620
-  },
+  "pConnectYes": {"x" : 893, "y" : 609},
   "pDailyEntrance": {
     "x": 852,
     "y": 244
@@ -416,48 +247,31 @@
     "y": 729
   },
   "pFetter01": {
-    "x": 126,
+    "x": 135,
     "y": 236
   },
-  "pFetter02": {
-    "x": 715,
-    "y": 255
-  },
-  "pFetter03": {
-    "x": 177,
-    "y": 142
-  },
+  
+  "pFetter02": {"x" : 708, "y" : 253},
+  "pFetter03": {"x" : 170, "y" : 140},
   "pFetterUp": {
     "x": 708,
     "y": 394
   },
-  "pGetFriendNo": {
-    "x": 323,
-    "y": 662
-  },
-  "pGuda": {
-    "x": 198,
-    "y": 739
-  },
-  "pGudaDark": {
-    "x": 200,
-    "y": 742
-  },
-  "pHand": {
-    "x": 708,
-    "y": 95
-  },
+  "pGetFriendNo": {"x" : 309, "y" : 670},
+  "pGuda": {"x" : 188, "y" : 736},
+  "pGudaDark": {"x" : 188, "y" : 736},
+  "pHand": {"x" : 702, "y" : 91},
   "pLeftTop": {
-    "x": 401,
-    "y": 193
+    "x": 341,
+    "y": 158
   },
   "pLevelUp": {
     "x": 762,
     "y": 337
   },
   "pLoading": {
-    "x": 588,
-    "y": 718
+    "x": 495,
+    "y": 721
   },
   "pLtApp": {
     "x": 416,
@@ -475,10 +289,7 @@
     "x": 669,
     "y": 94
   },
-  "pMosterDtExit": {
-    "x": 1096,
-    "y": 167
-  },
+  "pMosterDtExit": {"x" : 1087, "y" : 166},
   "pMygame": {
     "x": 430,
     "y": 378
@@ -487,18 +298,12 @@
     "x": 791,
     "y": 484
   },
-  "pNoticeExit": {
-    "x": 1276,
-    "y": 86
-  },
+  "pNoticeExit": {"x" : 1254, "y" : 84},
   "pNoticeExitDark": {
     "x": 1284,
     "y": 83
   },
-  "pNpDtExit": {
-    "x": 1123,
-    "y": 94
-  },
+  "pNpDtExit": {"x" : 1118, "y" : 101},
   "pQpAll": {
     "x": 1298,
     "y": 509
@@ -527,10 +332,7 @@
     "x": 1237,
     "y": 733
   },
-  "pRewardAction": {
-    "x": 1168,
-    "y": 201
-  },
+  "pRewardAction": {"x" : 1165, "y" : 199},
   "pRewardGet": {
     "x": 1211,
     "y": 269
@@ -697,26 +499,10 @@
     "x": 994,
     "y": 507
   },
-  "cBattleReapeatNo": {
-    "r": 172,
-    "g": 172,
-    "b": 172,
-    "alpha": 255
-  },
-  "cBattleReapeatYes": {
-    "r": 69,
-    "g": 69,
-    "b": 69,
-    "alpha": 255
-  },
-  "pBattleReapeatNo": {
-    "x": 458,
-    "y": 617
-  },
-  "pBattleReapeatYes": {
-    "x": 827,
-    "y": 608
-  },
-  "cSummonStone":{"r":127,"g":209,"b":144,"alpha":255},
-  "pSummonStone":{"x":431,"y":86}
+  "cBattleReapeatNo": {"r" : 158, "g" : 158, "b" : 158},
+  "cBattleReapeatYes": {"r" : 148, "g" : 148, "b" : 148},
+  "pBattleReapeatNo": {"x" : 445, "y" : 608},
+  "pBattleReapeatYes": {"x" : 884, "y" : 611},
+  "cSummonStone": {"r" : 77, "g" : 211, "b" : 189},
+  "pSummonStone": {"x" : 433, "y" : 88}
 }

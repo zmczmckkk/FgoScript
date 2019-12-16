@@ -13,6 +13,7 @@ import fgoScript.entity.GatesInfo;
 import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
+import fgoScript.exception.FgoNeedUpdateException;
 import fgoScript.service.EventFactors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -156,7 +157,7 @@ public class GameUtil {
 	public static void setGO_FLAG(boolean gO_FLAG) {
 		GO_FLAG = gO_FLAG;
 	}
-	private static PointColor waitUntilOneColorInner(List<PointColor> pocoList) throws FgoNeedRestartException, FgoNeedStopException, InterruptedException {
+	private static PointColor waitUntilOneColorInner(List<PointColor> pocoList) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException, InterruptedException {
 		setSTOP_SCRIPT(false);
 		GO_FLAG = true;
 		rb = getRb();
@@ -229,7 +230,7 @@ public class GameUtil {
 	 * @Author: RENZHEHAO
 	 * @Date: 2019/6/5
 	 */
-	public static PointColor waitUntilOneColor(List<PointColor> pocoList) throws FgoNeedRestartException, FgoNeedStopException  {
+	public static PointColor waitUntilOneColor(List<PointColor> pocoList) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException  {
 		PointColor returnPC = null;
 		Callable<PointColor> task = () -> waitUntilOneColorInner(pocoList);
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -259,6 +260,8 @@ public class GameUtil {
 				throw new FgoNeedRestartException();
 			}else if(e.getCause() instanceof FgoNeedStopException) {
 				throw new FgoNeedStopException();
+			}else if(e.getCause() instanceof FgoNeedUpdateException) {
+				throw new FgoNeedUpdateException();
 			}
 		} finally {
 			OUTTIME_COUNT = 0;
@@ -268,7 +271,7 @@ public class GameUtil {
 		return returnPC;
 	}
 
-	public static void waitUntilAllColor(List<PointColor> pocoList, int delay) throws FgoNeedRestartException, FgoNeedStopException{
+	public static void waitUntilAllColor(List<PointColor> pocoList, int delay) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException{
 		Callable<String> task = () -> {
 			waitUntilAllColorInner(pocoList, delay);
 			return null;
@@ -305,7 +308,7 @@ public class GameUtil {
 		}
 	}
 
-	private static void waitUntilAllColorInner(List<PointColor> pocoList, int delay) throws FgoNeedRestartException, FgoNeedStopException, InterruptedException {
+	private static void waitUntilAllColorInner(List<PointColor> pocoList, int delay) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException, InterruptedException {
 		setSTOP_SCRIPT(false);
 		boolean flag;
 		Point p;
@@ -507,7 +510,7 @@ public class GameUtil {
 		}
 		return colorMonitorList;
 	}
-	private static String waitInteruptSolution(int check) throws FgoNeedRestartException {
+	private static String waitInteruptSolution(int check) throws FgoNeedRestartException,FgoNeedUpdateException {
 		if (colorMonitorList == null || check == 0) {
 			colorMonitorList = getColorMonitorList();
 		}
@@ -543,6 +546,10 @@ public class GameUtil {
 				if (cm.isThrowException()){
 					delay(5000);
 					throw new FgoNeedRestartException();
+				}
+				if (cm.isNeedUpdate()){
+					delay(5000);
+					throw new FgoNeedUpdateException();
 				}
 			}
 		}
@@ -850,7 +857,7 @@ public class GameUtil {
 	}
 	public static void moveToLeftTop() {
 		rb = getRb();
-		rb.mouseMove(370, 193);
+		rb.mouseMove(339, 157);
 		rb.delay(GameConstant.DELAY);
 		rb.delay(GameConstant.DELAY);
 		rb.delay(GameConstant.DELAY);
@@ -912,9 +919,13 @@ public class GameUtil {
 		return intArray;
 	}
 	public static void main(String[] args) {
-		String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
-		String jsonString = getJsonString(filepath);
-		GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
+		try {
+			GameUtil.waitInteruptSolution(0);
+		} catch (FgoNeedRestartException e) {
+			e.printStackTrace();
+		} catch (FgoNeedUpdateException e) {
+			e.printStackTrace();
+		}
 	}
 	public static String getValueFromConfig(String key) {
 		String fgoArrayStr =  PropertiesUtil.getValueFromTempConfig(key);
@@ -929,17 +940,4 @@ public class GameUtil {
 		return fgoArrayStr;
 	}
 
-	public static void main2(String[] args) {
-		Robot r = null;
-		try {
-			r = new Robot();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-		Color temp = r.getPixelColor(100,100);
-		Color oColor = new Color(100,100,100);
-		if (temp.equals(oColor)) {
-			//做你要的操作
-		}
-	}
 }

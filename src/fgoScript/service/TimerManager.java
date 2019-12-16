@@ -13,17 +13,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TimerManager {
 	private static final Logger LOGGER = LogManager.getLogger(TimerManager.class);
 	// 定时任务执行间隔 时，分，秒，毫秒
-	private static final long PERIOD_TIME = 12 * 60 * 60 * 1000;
+	private static final long PERIOD_TIME = 24 * 60 * 60 * 1000;
+	//使用ScheduledThreadPoolExecutor线程池执行类调度任务
+	private static ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2,
+			new BasicThreadFactory.Builder().namingPattern("CommonExcute-pool-%d").daemon(false).build());
+	private static Map<String, ScheduledFuture<?>> maps = new HashMap<String, ScheduledFuture<?>>();
 	public TimerManager() {
 	}
 	/**
@@ -54,14 +57,7 @@ public class TimerManager {
 		ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2,
 				new BasicThreadFactory.Builder().namingPattern("FgoExcute-pool-%d").daemon(false).build());
 		if (!"RZH-SERVER".equals(NativeCp.getUserName())) {
-			LOGGER.info("用户名: "+NativeCp.getUserName()+" 执行DC定时任务");
-			executorService.scheduleAtFixedRate(new TimerTask() {
-				@Override
-				public void run() {
-					DaillyMission dm  = (DaillyMission) MySpringUtil.getApplicationContext().getBean("daillyMission");
-					dm.toggle();
-				}
-			}, initDelay, PERIOD_TIME, TimeUnit.MILLISECONDS);
+			LOGGER.info("用户名： " + NativeCp.getUserName() + "不启动fgo任务");
 		}else {
 			// 删除过期图片
 			deletePics();
@@ -88,7 +84,7 @@ public class TimerManager {
 		LOGGER.info("壁纸切换已启动！" + time);
 	}
 	// 增加或减少天数
-	private Date modifyTime(Date date, Date nowDate, long period) {
+	public static Date modifyTime(Date date, Date nowDate, long period) {
 		if (date.before(nowDate)) {
 			date = new Date(date.getTime()+period);
 			if (date.before(nowDate)) {
@@ -168,5 +164,29 @@ public class TimerManager {
 		} catch (Exception e) {
 			LOGGER.error(GameUtil.getStackMsg(e));
 		}
+	}
+	public static void startTaskByTime(String time, Runnable runnable, String taskName){
+		Calendar calendar = Calendar.getInstance();
+		String[] times = time.split(":");
+		int HOUR_OF_DAY = Integer.valueOf(times[0]);
+		int MINUTE = Integer.valueOf(times[1]);
+		time = HOUR_OF_DAY + " : " + MINUTE ;
+
+		calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
+		calendar.set(Calendar.MINUTE, MINUTE);
+		Date date = calendar.getTime(); // 第一次执行定时任务的时间
+		// 获取第一次延迟执行时间
+		date = modifyTime(date,new Date(),PERIOD_TIME);
+		long initDelay  = date.getTime() - System.currentTimeMillis();
+		initDelay = initDelay > 0 ? initDelay : PERIOD_TIME + initDelay;
+
+		LOGGER.info("用户名: "+NativeCp.getUserName()+" 启动任务");
+		ScheduledFuture<?> future = executorService.schedule(runnable, initDelay, TimeUnit.MILLISECONDS);
+		maps.put(taskName,future);
+	}
+	public static void stopTask(String taskName){
+		LOGGER.info("用户名: "+NativeCp.getUserName()+" 关闭任务");
+		ScheduledFuture<?> future = maps.get(taskName);
+		future.cancel(false);
 	}
 }

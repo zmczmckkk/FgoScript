@@ -81,15 +81,13 @@ public class TrainApGudazi extends AbstractApGudazi {
 	private void fightAndBack(int apNum) throws Exception {
 		int THRESHOLD = GameConstant.THRESHOLD;
 		// 1回合数字高亮点
-		Point ps1 = new Point(909, 71);// 颜色：200;200;200 Color c = new Color(200, 200, 200);
-		Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps1 = new Point(903, 79);
+		Point ps2 = new Point(903, 69);
+		Point ps3 = new Point(904, 74);
 		List<Point> pointList = new ArrayList<>();
 		pointList.add(ps1);
 		pointList.add(ps2);
 		pointList.add(ps3);
-		pointList.add(ps4);
 		int eveValue;
 		int battleRounds = 0;
 		int MaxRounds = 20;
@@ -117,18 +115,14 @@ public class TrainApGudazi extends AbstractApGudazi {
 			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 		}
 		// 2回合数字高亮点
-		Point ps5 = new Point(909, 69);// 颜色：209;209;209 Color c = new Color(209, 209, 209);
-		Point ps6 = new Point(917, 70);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps7 = new Point(916, 76);// 颜色：247;247;247 Color c = new Color(247, 247, 247);
-		Point ps8 = new Point(909, 84);// 颜色：248;248;248 Color c = new Color(248, 248, 248);
-		Point ps13 = new Point(915, 78);// 颜色：252;252;252 Color c = new Color(252, 252, 252);
+		Point ps5 = new Point(906, 70);// 颜色：209;209;209 Color c = new Color(209, 209, 209);
+		Point ps6 = new Point(900, 66);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps7 = new Point(899, 81);// 颜色：247;247;247 Color c = new Color(247, 247, 247);
 
 		pointList = new ArrayList<>();
 		pointList.add(ps5);
 		pointList.add(ps6);
 		pointList.add(ps7);
-		pointList.add(ps8);
-		pointList.add(ps13);
 		int mCount = 0;
 		waitToAttack(null);
 		LOGGER.info("第二回合开始：");
@@ -155,10 +149,10 @@ public class TrainApGudazi extends AbstractApGudazi {
 		}
 
 		// 3回合数字高亮点
-		Point ps9 = new Point(917, 69);// 颜色：243;243;243 Color c = new Color(243, 243, 243);
-		Point ps10 = new Point(909, 69);// 颜色：221;221;221 Color c = new Color(221, 221, 221);
-		Point ps11 = new Point(908, 84);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
-		Point ps14 = new Point(918, 80);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps9  = new Point(900, 66);// 颜色：243;243;243 Color c = new Color(243, 243, 243);
+		Point ps10 = new Point(903, 74);// 颜色：221;221;221 Color c = new Color(221, 221, 221);
+		Point ps11 = new Point(907, 79);// 颜色：226;226;226 Color c = new Color(226, 226, 226);
+		Point ps14 = new Point(897, 82);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 
 		pointList = new ArrayList<>();
 		pointList.add(ps9);

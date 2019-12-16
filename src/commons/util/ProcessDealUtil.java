@@ -5,7 +5,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -109,22 +117,32 @@ public class ProcessDealUtil {
 			}
 		}
 		String appName = PropertiesUtil.getValueFromOpenFile("appName");
-		String line = url + "/TianTian.exe  -n " + account + " -t 天天二次元" + account + " -i " + url
-				+ "/apps/" + appName;
-		startTianTain(line);
+		String line = url + "/dnconsole.exe  launchex --index " + account + " --packagename " +appName;
+		startDnPlayer(line);
 
 	}
-	public static void startDesitney(int account) {
-
-		String url = GameUtil.getValueFromConfig("EXE_PATH");
-		String line = url + "/TianTian.exe  -n " + account + " -t 天天二次元" + account + " -i " + url
-				+ "/apps/com.stairs.destinychild.apk";
-		startTianTain(line);
+	public static void installApp(int account) {
+		String urlstring = GameUtil.getValueFromConfig("EXE_PATH");
+		String[] urls = urlstring.split(";");
+		int size = urls.length;
+		File tempFile;
+		String url = "";
+		String tempUrl;
+		for (int i = 0; i < size; i++) {
+			tempUrl = urls[i];
+			tempFile = new File(tempUrl);
+			if(tempFile.exists()){
+				url = tempUrl;
+			}
+		}
+		String appName = PropertiesUtil.getValueFromOpenFile("appName");
+		String line = url + "/dnconsole.exe  installapp --index " + account + " --filename " + NativeCp.getUserDir()+"/apk/GO.apk";
+		startDnPlayer(line);
 
 	}
-	public static void startTianTain(String line) {
-		killAllTianTian();
-		String procName = "TianTian.exe";
+	public static void startDnPlayer(String line) {
+		killAllDnPlayer();
+		String procName = "dnplayer.exe";
 		boolean exist = findProcess(procName);
 		try {
 			if (exist) {
@@ -147,6 +165,11 @@ public class ProcessDealUtil {
 		} catch (IOException e) {
 			LOGGER.error("关机失败");
 		}
+		try {
+			killProc("java.exe");
+			LOGGER.info("关闭虚拟器");
+		} catch (IOException e) {
+		}
 	}
 	public static void closeComputerInTime(int minutes) {
 		int seconds = 60 * minutes;
@@ -156,6 +179,11 @@ public class ProcessDealUtil {
 			LOGGER.info(minutes + "分钟后关机《《》《》《》》");
 		} catch (IOException e) {
 			LOGGER.error("关机失败");
+		}
+		try {
+			killProc("java.exe");
+			LOGGER.info("关闭虚拟器");
+		} catch (IOException e) {
 		}
 	}
 	public static void abordCloseComputer() {
@@ -167,8 +195,8 @@ public class ProcessDealUtil {
 		}
 	}
 
-	public static void killAllTianTian() {
-		String procName = "TianTian.exe";
+	public static void killAllDnPlayer() {
+		String procName = "dnplayer.exe";
 		boolean exist = findProcess(procName);
 		try {
 			if (exist) {
@@ -179,24 +207,17 @@ public class ProcessDealUtil {
 			// TODO: handle exception
 			LOGGER.error("重启/杀死提取程序失败。。。");
 		}
-		killAllWerFault();
 	}
 
-	public static void killAllWerFault() {
-		String procName = "WerFault.exe";
-		boolean exist = findProcess(procName);
-		try {
-			if (exist) {
-				// 存在，那么就先杀死该进程
-				killProc(procName);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			LOGGER.error("重启/杀死提取程序失败。。。");
-		}
-	}
 
 	public static void main(String[] args) {
-		abordCloseComputer();
+		FileTime t = null;
+		try {
+			t = Files.readAttributes(Paths.get("C:\\Users\\RENZHEHAO\\OneDrive\\Code\\apk\\com.aniplex.fategrandorder3.apk"),
+					BasicFileAttributes.class).creationTime();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(t);
 	}
 }

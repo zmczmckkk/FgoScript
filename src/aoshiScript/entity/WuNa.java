@@ -153,12 +153,24 @@ public class WuNa implements IWuNa{
 //				LOGGER.info("配置不成对，忽略最后一次点击");
 			}
 			List<PointColor> pcList = new ArrayList<>();
+			List<Boolean> onceList = new ArrayList<>();
 			String pointStr;
 			String colorStr;
+			String onceStr;
+			int conditionSize;
+			String[] tempArray;
 
 			for (int i = 0; i < minSize; i++) {
-				pointStr = pcStr[i].split("_")[0];
-				colorStr = pcStr[i].split("_")[1];
+				tempArray = pcStr[i].split("_");
+				conditionSize = tempArray.length;
+				pointStr = tempArray[0];
+				colorStr = tempArray[1];
+				if (conditionSize > 2) {
+					onceStr = tempArray[2];
+				}else {
+					onceStr = "false";
+				}
+				onceList.add(Boolean.parseBoolean(onceStr));
 				pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
 						Integer.parseInt(pointStr.split(",")[1])),
 						new Color(Integer.parseInt(colorStr.split(",")[0]),
@@ -182,8 +194,13 @@ public class WuNa implements IWuNa{
 			int ri;
 			int[] riArray;
 			while ((isGO() && !isForceStop()) || (alwaysGo && !isForceStop())){
+				minSize = pcList.size();
 				LOGGER.info("执行检测点击，对应脚本文件名： "+fileName);
 				riArray = getRandomArray(minSize);
+				if(minSize==0){
+					LOGGER.info("NO POINTS");
+					break;
+				}
 				for (int i = 0; i < minSize; i++) {
 					ri = riArray[i];
 					pointColor = pcList.get(ri);
@@ -203,6 +220,13 @@ public class WuNa implements IWuNa{
 						GameUtil.mousePressAndReleaseByDD();
 						if (clickWait) {
 							GameUtil.delay(1000);
+						}
+						if(onceList.get(ri)){
+							pcList.remove(ri);
+							pList.remove(ri);
+                            onceList.remove(ri);
+							GameUtil.delay(1000);
+							break;
 						}
 					}
 					rb.delay(factor == null ? 200 * getFactor() : factor);
@@ -298,6 +322,10 @@ public class WuNa implements IWuNa{
 	}
 
 	public static void main(String[] args) {
+		String s = "true";
+		String b = "false";
+		System.out.println(s.length()+"__"+b.length());
+
 	}
 }
 class Cts {

@@ -91,42 +91,8 @@
 	  "smallReturn": true,
       "enable": true
     },
-    {
+	{
       "taskId": 4,
-      "taskName": "skin",
-      "startModleName": "",
-      "taskClickPoints": [
-        {
-          "x": 1225,
-          "y": 293
-        }
-      ],
-	  "taskClickColors": [],
-      "taskPointRepetitions": 1,
-      "taskAutoClickDelaySeconds": 60,
-      "taskInToDelaySeconds": 10,
-	  "smallReturn": true,
-      "enable": true
-    },
-    {
-      "taskId": 5,
-      "taskName": "subway",
-      "startModleName": "",
-      "taskClickPoints": [
-        {
-          "x": 641,
-          "y": 744
-        }
-      ],
-	  "taskClickColors": [],
-      "taskPointRepetitions": 1,
-      "taskAutoClickDelaySeconds": 60,
-      "taskInToDelaySeconds": 10,
-	  "smallReturn": true,
-      "enable": true
-    },
-    {
-      "taskId": 6,
       "taskName": "threeOne",
       "startModleName": "",
       "taskClickPoints": [
@@ -169,6 +135,70 @@
 		{
           "x": 571,
           "y": 561
+        },
+		{
+          "x": 509,
+          "y": 362
+        },
+		{
+          "x": 576,
+          "y": 554
+        },
+		{
+          "x": 569,
+          "y": 376
+        },
+		{
+          "x": 470,
+          "y": 560
+        },
+		{
+          "x": 523,
+          "y": 251
+        },
+		{
+          "x": 502,
+          "y": 362
+        },
+		{
+          "x": 537,
+          "y": 506
+        },
+		{
+          "x": 455,
+          "y": 680
+        },
+		{
+          "x": 614,
+          "y": 252
+        },
+		{
+          "x": 588,
+          "y": 446
+        },
+		{
+          "x": 613,
+          "y": 246
+        },
+		{
+          "x": 597,
+          "y": 482
+        },
+		{
+          "x": 614,
+          "y": 245
+        },
+		{
+          "x": 608,
+          "y": 424
+        },
+		{
+          "x": 616,
+          "y": 245
+        },
+		{
+          "x": 645,
+          "y": 452
         }
       ],
 	  "taskClickColors": [
@@ -231,6 +261,102 @@
 		  "g": 2,
 		  "b": 7,
 		  "alpha": 255
+		},
+		{
+		  "r": 24,
+		  "g": 171,
+		  "b": 247,
+		  "alpha": 255
+		},
+		{
+		  "r": 9,
+		  "g": 143,
+		  "b": 255,
+		  "alpha": 255
+		},
+		{
+		  "r": 29,
+		  "g": 231,
+		  "b": 45,
+		  "alpha": 255
+		},
+		{
+		  "r": 63,
+		  "g": 214,
+		  "b": 45,
+		  "alpha": 255
+		},
+		{
+		  "r": 237,
+		  "g": 68,
+		  "b": 236,
+		  "alpha": 255
+		},
+		{
+		  "r": 249,
+		  "g": 235,
+		  "b": 52,
+		  "alpha": 255
+		},
+		{
+		  "r": 66,
+		  "g": 41,
+		  "b": 130,
+		  "alpha": 255
+		},
+		{
+		  "r": 170,
+		  "g": 102,
+		  "b": 40,
+		  "alpha": 255
+		},
+		{
+		  "r": 243,
+		  "g": 210,
+		  "b": 8,
+		  "alpha": 255
+		},
+		{
+		  "r": 209,
+		  "g": 140,
+		  "b": 103,
+		  "alpha": 255
+		},
+		{
+		  "r": 249,
+		  "g": 40,
+		  "b": 11,
+		  "alpha": 255
+		},
+		{
+		  "r": 228,
+		  "g": 43,
+		  "b": 9,
+		  "alpha": 255
+		},
+		{
+		  "r": 0,
+		  "g": 232,
+		  "b": 255,
+		  "alpha": 255
+		},
+		{
+		  "r": 4,
+		  "g": 151,
+		  "b": 255,
+		  "alpha": 255
+		},
+		{
+		  "r": 159,
+		  "g": 252,
+		  "b": 23,
+		  "alpha": 255
+		},
+		{
+		  "r": 40,
+		  "g": 117,
+		  "b": 86,
+		  "alpha": 255
 		}
 	  ],
       "taskPointRepetitions": 1,
@@ -238,6 +364,57 @@
       "taskInToDelaySeconds": 3,
       "smallReturn": false,
 	  "enable": true
+    },
+    {
+      "taskId": 5,
+      "taskName": "skin",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 1225,
+          "y": 293
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 6,
+      "taskName": "subway",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 658,
+          "y": 745
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 20,
+	  "smallReturn": true,
+      "enable": true
+    },
+    {
+      "taskId": 7,
+      "taskName": "wb",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 653,
+          "y": 423
+        }
+      ],
+	  "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+	  "smallReturn": true,
+      "enable": false
     }
   ],
   "taskPagePoint": {

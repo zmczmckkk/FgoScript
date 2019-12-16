@@ -14,6 +14,7 @@ import fgoScript.entity.guda.EventGudazi;
 import fgoScript.entity.panel.FgoFrame;
 import fgoScript.exception.FgoNeedNextException;
 import fgoScript.exception.FgoNeedRestartException;
+import fgoScript.exception.FgoNeedUpdateException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -231,6 +232,26 @@ public class Gudazi extends TimerTask {
 				signOneFGO(tip);
 			} catch (FgoNeedNextException e) {
 				LOGGER.info(e.getMessage());
+			} catch (FgoNeedUpdateException e) {
+				LOGGER.info(e.getMessage());
+				installAllFGO();
+				break;
+			}
+		}
+	}
+	public void installAllFGO() throws Exception {
+		int[] array = getFgoRewardArray();
+		int tip;
+		int size = array.length;
+		for (int i = 0; i < size; i++) {
+			reNewRobot();
+			tip = array[i];
+			countNum = tip;
+			// 单个账号行动开启
+			try {
+				updateAndSignOneFGO(tip);
+			} catch (FgoNeedNextException e) {
+				LOGGER.info(e.getMessage());
 			}
 		}
 	}
@@ -301,6 +322,7 @@ public class Gudazi extends TimerTask {
 		GameUtil.mouseMoveByPoint(p1);
 		GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 		List<PointColor> pcList = new ArrayList<>();
+
 		// 点击周常按钮
 		Point p4 = new Point(702, 194);// 周常按钮坐标
 //		Point p5 = new Point(1060, 195);// 限定按钮坐标
@@ -315,17 +337,15 @@ public class Gudazi extends TimerTask {
 		int missionNum = 10;
 		int statusMum = 5;
 
-		Point p3 = new Point(757, 323);// 可获取奖励状态坐标
-		Color c3 = new Color(198, 154, 57);
-		Point p6 = new Point(923, 392);// 领取任务坐标
+		Point pCompleteLabel = new Point(733, 325);// 完成标签
+		Color cCompleteLabel = new Color(199, 148, 46);
 
-		Point p7 = new Point(650, 580);// 颜色：30;30;30 也是关闭按钮
-		Color c7 = new Color(30, 30, 30);
-		Point p8 = new Point(722, 579);// 颜色：45;45;45
-		Color c8 = new Color(45, 45, 45);
+		Point pGetRewardClick = new Point(923, 392);// 领取任务点击
 
-		PointColor pc7 = new PointColor(p7, c7, true);
-		PointColor pc8 = new PointColor(p8, c8, true);
+		Point pStoneGetAndClose = new Point(641, 582);// 石头领取关闭
+		Color cStoneGetAndClose = new Color(115, 115, 115);
+
+		PointColor pcStoneGetAndClose = new PointColor(pStoneGetAndClose, cStoneGetAndClose, true);
 		for (int i = 0; i < missionNum; i++) {
 			// 循环4次点击获取按钮，直到可获取状态，判断是否可以获取奖励
 			for (int j = 0; j < statusMum; j++) {
@@ -338,16 +358,15 @@ public class Gudazi extends TimerTask {
 					break;
 				}
 			}
-			temp = GameUtil.getScreenPixel(p3);
-			if (GameUtil.likeEqualColor(c3, temp)) {
-				GameUtil.mouseMoveByPoint(p6);
-				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pc7);
+			temp = GameUtil.getScreenPixel(pCompleteLabel);
+			if (GameUtil.likeEqualColor(cCompleteLabel, temp)) {
+				GameUtil.mouseMoveByPoint(pGetRewardClick);
+				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pcStoneGetAndClose);
 				pcList = new ArrayList<>();
-				pcList.add(pc7);
-				pcList.add(pc8);
+				pcList.add(pcStoneGetAndClose);
 				GameUtil.waitUntilAllColor(pcList, DELAY);
 				// 关闭领取弹窗
-				GameUtil.mouseMoveByPoint(p7);
+				GameUtil.mouseMoveByPoint(pStoneGetAndClose);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
 			}else {
 				break;
@@ -410,6 +429,28 @@ public class Gudazi extends TimerTask {
 		try {
 			// 打开窗口
 			openWindow(tip);
+			// 检测loading
+			beforeNotice();
+			// 检测公告
+			CommonMethods.open2GudaOrRestart();
+			waitForHomePage();
+			// 关闭游戏
+			closeFgoByForce();
+		} catch (FgoNeedRestartException e) {
+			closeFgoByForce();
+			reNewRobot();
+			signOneFGO(tip);
+		}
+	}
+	/***
+	 * 签到一个FGO
+	 *
+	 * @throws Exception 异常
+	 */
+	private void updateAndSignOneFGO(int tip) throws Exception {
+		try {
+			// 打开窗口
+			ProcessDealUtil.installApp(tip);
 			// 检测loading
 			beforeNotice();
 			// 检测公告
@@ -668,7 +709,7 @@ public class Gudazi extends TimerTask {
 	 * 强制关闭fgo
 	 */
 	private void closeFgoByForce() {
-		ProcessDealUtil.killAllTianTian();
+		ProcessDealUtil.killAllDnPlayer();
 	}
 	private void closeComputer() {
 		ProcessDealUtil.closeComputer();
@@ -797,6 +838,14 @@ public class Gudazi extends TimerTask {
 				closeComputer();
 				LOGGER.info(">>>>>>>>>>  关机中，请勿操作电脑     <<<<<<<<<<<");
 			}
+		}
+	}
+
+	public static void main(String[] args) {
+		try {
+			new Gudazi().getRewords();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

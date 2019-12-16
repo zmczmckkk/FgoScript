@@ -1,19 +1,38 @@
 {
-		"point" : {"x" : 611, "y" : 361},
-		"color" : {"r" : 239, "g" : 213, "b" : 9}
+		"point" : {"x" : 616, "y" : 245},
+		"color" : {"r" : 159, "g" : 252, "b" : 23}
 }
 {
-		"point" : {"x" : 485, "y" : 473},
-		"color" : {"r" : 161, "g" : 56, "b" : 15}
+		"point" : {"x" : 645, "y" : 452},
+		"color" : {"r" : 40, "g" : 117, "b" : 86}
 }
-{
-		"point" : {"x" : 531, "y" : 587},
-		"color" : {"r" : 95, "g" : 62, "b" : 63}
-}
-action=962,766;
-condiTion=788,239_166,243,12;
+
+C:\Windows\System32>"Z:\ChangZhi\dnplayer2\dnconsole.exe" launchex --index 1 --p
+ackagename com.aniplex.fategrandorder
+C:\Windows\System32>"Z:\ChangZhi\dnplayer2\dnconsole.exe" pull --index 1 --remot
+e /data/com.aniplex.fategrandorder --local C:\Users\RENZHEHAO\Desktop
+C:\Windows\System32>"Z:\ChangZhi\dnplayer2\dnconsole.exe" installapp --index 2 -
+-filename C:\Users\RENZHEHAO\OneDrive\附件\Tools\com.aniplex.fategrandorder.apk
+
+mTmQJeex5E sdfjkl
+
+
+"J:\RRFGO\dnplayer2\dnconsole.exe" installapp --index 7 --filename C:\Users\RZH-SERVER\OneDrive\Code\apk\com.aniplex.fategrandorder.apk
+
 
 {
-		"point" : {"x" : 571, "y" : 561},
-		"color" : {"r" : 211, "g" : 2, "b" : 7}
+		"point" : {"x" : 510, "y" : 287},
+		"color" : {"r" : 167, "g" : 172, "b" : 175}
+}
+{
+		"point" : {"x" : 410, "y" : 365},
+		"color" : {"r" : 166, "g" : 190, "b" : 204}
+} 
+{
+		"point" : {"x" : 710, "y" : 367},
+		"color" : {"r" : 183, "g" : 183, "b" : 184}
+}
+{
+		"point" : {"x" : 709, "y" : 367},
+		"color" : {"r" : 233, "g" : 233, "b" : 233}
 }

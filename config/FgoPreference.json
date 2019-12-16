@@ -1,12 +1,6 @@
 {
-  "accelerateLeft": {
-    "x": 1158,
-    "y": 116
-  },
-  "accelerateMiddle": {
-    "x": 1171,
-    "y": 118
-  },
+  "accelerateLeft": {"x" : 1147, "y" : 106},
+  "accelerateMiddle": {"x" : 1158, "y" : 110},
   "location": {
     "x": 1233,
     "y": 259
@@ -15,17 +9,8 @@
    "dark","dark","bright"
   ],
   "optionPoints": [
-    {
-      "x": 900,
-      "y": 328
-    },
-    {
-      "x": 1124,
-      "y": 329
-    },
-    {
-      "x": 898,
-      "y": 398
-    }
+    {"x" : 892, "y" : 329},
+    {"x" : 1116, "y" : 327},
+    {"x" : 890, "y" : 398}
   ]
 }

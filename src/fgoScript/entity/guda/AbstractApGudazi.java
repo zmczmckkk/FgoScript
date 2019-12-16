@@ -71,7 +71,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             try {
                 startOneFgo(accountNum, apArray);
                 // 关闭所有相关应用
-                ProcessDealUtil.killAllTianTian();
+                ProcessDealUtil.killAllDnPlayer();
             } catch (FgoNeedNextException e) {
                 LOGGER.info(e.getMessage());
                 GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_体力不足页面.");
@@ -81,7 +81,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             	throw e;
 			}finally {
 				if (ifClose) {
-					ProcessDealUtil.killAllTianTian();
+					ProcessDealUtil.killAllDnPlayer();
 				}
 			}
 
@@ -177,7 +177,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         } catch (FgoNeedRestartException e) {
             LOGGER.info("进入房间异常！");
             LOGGER.info(e.getMessage());
-            ProcessDealUtil.killAllTianTian();
+            ProcessDealUtil.killAllDnPlayer();
             startFight(accountNum, apNum, true, count, apLen, appleCost);
             continueGo = false;
         }
@@ -192,7 +192,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("战斗异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDealUtil.killAllTianTian();
+                ProcessDealUtil.killAllDnPlayer();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
                 continueGo = false;
             }
@@ -211,7 +211,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             } catch (FgoNeedRestartException e) {
                 LOGGER.info("结算，返回异常！");
                 LOGGER.info(e.getMessage());
-                ProcessDealUtil.killAllTianTian();
+                ProcessDealUtil.killAllDnPlayer();
                 startFight(accountNum, apNum, true, count, apLen, appleCost);
             }
         }

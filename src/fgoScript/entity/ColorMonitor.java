@@ -13,6 +13,8 @@ public class ColorMonitor {
     private boolean throwException;
     /** 是否延长超时 **/
     private boolean extendOutTime;
+    /** 是否延长超时 **/
+    private boolean needUpdate;
 
     public List<PointColor> getCheckPointList() {
         return checkPointList;
@@ -52,5 +54,13 @@ public class ColorMonitor {
 
     public void setExtendOutTime(boolean extendOutTime) {
         this.extendOutTime = extendOutTime;
+    }
+
+    public boolean isNeedUpdate() {
+        return needUpdate;
+    }
+
+    public void setNeedUpdate(boolean needUpdate) {
+        this.needUpdate = needUpdate;
     }
 }

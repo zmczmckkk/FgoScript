@@ -24,7 +24,7 @@ public class CommonMethods {
 		Color c_guda = POINT_INFO.getcGuda();
 		// 引继页面
 		Point p_transfer = new Point(911, 670);// 颜色：0;60;165
-		Color c_transfer = new Color(0, 60, 165);
+		Color c_transfer = new Color(6, 64, 163);
 		// 再开按钮（是）
 		Point p_button_restart_yes = POINT_INFO.getpButtonRestartYes();
 		Color c_button_restart_yes = POINT_INFO.getcButtonRestartYes();

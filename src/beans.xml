@@ -6,13 +6,16 @@
 
     <bean id="fgoFrame" class="fgoScript.entity.panel.FgoFrame" lazy-init="true">
         <property name="wuna" ref="wuna"/>
-        <property name="light" ref="light"/>
-        <property name="raid" ref="raid"/>
-        <property name="daillyMission" ref="daillyMission"/>
+        <property name="destinyPanel" ref="destinyPanel"/>
     </bean>
     <bean id="raid" class="destinychild.Raid" lazy-init="true">
         <property name="wuna" ref="wuna"/>
         <property name="threadPoolTaskExecutor" ref="poolExecutor"/>
+    </bean>
+    <bean id="destinyPanel" class="fgoScript.entity.panel.DestinyPanel" lazy-init="true">
+        <property name="light" ref="light"/>
+        <property name="raid" ref="raid"/>
+        <property name="daillyMission" ref="daillyMission"/>
     </bean>
     <bean id="daillyMission" class="destinychild.DaillyMission" lazy-init="true">
         <property name="wuna" ref="wuna"/>

@@ -70,15 +70,13 @@ public class EventGudazi extends AbstractApGudazi {
 	
 	private void fightAndBackForEvent(boolean rebootFlag) throws Exception {
 		// 1回合数字高亮点
-		Point ps1 = new Point(909, 71);// 颜色：200;200;200 Color c = new Color(200, 200, 200);
-		Point ps2 = new Point(915, 68);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps3 = new Point(914, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
-		Point ps4 = new Point(914, 79);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps1 = new Point(903, 79);// 颜色：200;200;200 Color c = new Color(200, 200, 200);
+		Point ps2 = new Point(903, 69);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps3 = new Point(904, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
 		List<Point> pointList = new ArrayList<>();
 		pointList.add(ps1);
 		pointList.add(ps2);
 		pointList.add(ps3);
-		pointList.add(ps4);
 		int eveValue;
 		int battleRounds = 0;
 		int MaxRounds = 20;
@@ -128,11 +126,9 @@ public class EventGudazi extends AbstractApGudazi {
 		// 第二回合
 		// 2回合数字高亮点
 		pointList = new ArrayList<>();
-		pointList.add(new Point(909, 69));
-		pointList.add(new Point(917, 70));
-		pointList.add(new Point(916, 76));
-		pointList.add(new Point(909, 84));
-		pointList.add(new Point(915, 78));
+		pointList.add(new Point(906, 70));
+		pointList.add(new Point(900, 66));
+		pointList.add(new Point(899, 81));
 		waitToAttack(null);
 		LOGGER.info("第二回合开始：");
 		eveValue = GameUtil.getColorEveValue(pointList);
@@ -181,10 +177,10 @@ public class EventGudazi extends AbstractApGudazi {
 		if (rounds==3) {
 			// 3回合数字高亮点
 			pointList = new ArrayList<>();
-			pointList.add(new Point(917, 69));
-			pointList.add(new Point(909, 69));
-			pointList.add(new Point(908, 84));
-			pointList.add(new Point(918, 80));
+			pointList.add(new Point(900, 66));
+			pointList.add(new Point(903, 74));
+			pointList.add(new Point(907, 79));
+			pointList.add(new Point(897, 82));
 			// 第三回合
 			// 等待
 			waitToAttack(null);
@@ -343,5 +339,17 @@ public class EventGudazi extends AbstractApGudazi {
 		// 选择人物
 		GameUtil.mouseMoveByPoint(POINT_INFO.getSkillPerson01());
 		GameUtil.mousePressAndReleaseQuick(KeyEvent.BUTTON1_DOWN_MASK);
+	}
+
+	public static void main(String[] args) {
+		// 1回合数字高亮点
+		Point ps1 = new Point(903, 79);// 颜色：200;200;200 Color c = new Color(200, 200, 200);
+		Point ps2 = new Point(903, 69);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		Point ps3 = new Point(904, 74);// 颜色：255;255;255 Color c = new Color(255, 255, 255);
+		List<Point> pointList = new ArrayList<>();
+		pointList.add(ps1);
+		pointList.add(ps2);
+		pointList.add(ps3);
+		System.out.println(GameUtil.getColorEveValue(pointList));
 	}
 }

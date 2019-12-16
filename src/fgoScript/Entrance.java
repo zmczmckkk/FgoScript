@@ -15,7 +15,7 @@ public class Entrance {
 
         ClassPathXmlApplicationContext applicationContext = MySpringUtil.getApplicationContext();
         FgoFrame f = (FgoFrame) applicationContext.getBean("fgoFrame");
-        f.setVisible(true);
+        f.init();
         // 启动定时任务
         new TimerManager().startTasks();
     }

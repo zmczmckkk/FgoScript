@@ -19,7 +19,8 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import commons.entity.NativeCp;
+import com.melloware.jintellitype.HotkeyListener;
+import commons.entity.UniqueNumber;
 import fgoScript.entity.Vo.ButtonVo;
 import fgoScript.entity.guda.MyButton;
 import fgoScript.entity.panel.FgoPanelActionListener;
@@ -117,8 +118,16 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
     public BaseZButton(String name, int style) {
         super.setText(name);
         setColor(style);
+        this.setMarkCode(UniqueNumber.getOneUniqueNumber());
         //添加按钮点击监听
         this.addActionListener(getListener());
+        // 添加热键监听器
+        HotkeyListener hotkeyListener = markCode -> {
+            if (this.getMarkCode() == markCode) {
+                new Thread(this).start();
+            }
+        };
+        JIntellitype.getInstance().addHotKeyListener(hotkeyListener);
     }
     static final Object LOCK = new MyLock();
     public int shortcunt01;
@@ -770,5 +779,12 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
             }
         }
         this.lightForAwhile();
+    }
+
+    public static void main(String[] args) {
+        long ss = System.currentTimeMillis();
+        int sss = (int) ss;
+        System.out.println(ss);
+        System.out.println(sss);
     }
 }

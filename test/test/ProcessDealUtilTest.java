@@ -7,6 +7,5 @@ public class ProcessDealUtilTest {
 
     @Test
     public void startDesitney() {
-        ProcessDealUtil.startDesitney(1);
     }
 }

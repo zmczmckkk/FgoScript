@@ -13,6 +13,7 @@ import destinychild.entity.RaidStartPage;
 import fgoScript.entity.PointColor;
 import fgoScript.exception.FgoNeedRestartException;
 import fgoScript.exception.FgoNeedStopException;
+import fgoScript.exception.FgoNeedUpdateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -68,7 +69,8 @@ public class Raid implements IRaid{
     public void setThreadPoolTaskExecutor(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
-    public void setWuna(WuNa wuna) {
+
+    public void setWuna(IWuNa wuna) {
         this.wuna = wuna;
     }
 
@@ -181,6 +183,8 @@ public class Raid implements IRaid{
                 setFilterOptions();
             } catch (FgoNeedRestartException e) {
                 e.printStackTrace();
+            } catch (FgoNeedUpdateException e) {
+                e.printStackTrace();
             } catch (FgoNeedStopException e) {
                 break;
             }
@@ -216,7 +220,7 @@ public class Raid implements IRaid{
         GameUtil.setSTOP_SCRIPT(true);
     }
 
-    private void setFilterOptions() throws FgoNeedRestartException, FgoNeedStopException {
+    private void setFilterOptions() throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException {
         // 最大循环次数
         int maxCicle = 999;
         getMenu();
