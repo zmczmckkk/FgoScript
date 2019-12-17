@@ -103,25 +103,19 @@ public class ProcessDealUtil {
 	}
 
 	public static void startApp(int account) {
-		String urlstring = GameUtil.getValueFromConfig("EXE_PATH");
-		String[] urls = urlstring.split(";");
-		int size = urls.length;
-		File tempFile;
-		String url = "";
-		String tempUrl;
-		for (int i = 0; i < size; i++) {
-			tempUrl = urls[i];
-			tempFile = new File(tempUrl);
-			if(tempFile.exists()){
-				url = tempUrl;
-			}
-		}
+		String url = getClientBaseUrl();
 		String appName = PropertiesUtil.getValueFromOpenFile("appName");
 		String line = url + "/dnconsole.exe  launchex --index " + account + " --packagename " +appName;
 		startDnPlayer(line);
 
 	}
-	public static void installApp(int account) {
+	public static void startLd(int account) {
+		String url = getClientBaseUrl();
+		String line = url + "/dnconsole.exe  launch --index " + account;
+		startDnPlayer(line);
+
+	}
+	private static String getClientBaseUrl(){
 		String urlstring = GameUtil.getValueFromConfig("EXE_PATH");
 		String[] urls = urlstring.split(";");
 		int size = urls.length;
@@ -135,9 +129,25 @@ public class ProcessDealUtil {
 				url = tempUrl;
 			}
 		}
+		return url;
+	}
+	public static void installApp(int account) {
+		String url = getClientBaseUrl();
 		String appName = PropertiesUtil.getValueFromOpenFile("appName");
-		String line = url + "/dnconsole.exe  installapp --index " + account + " --filename " + NativeCp.getUserDir()+"/apk/GO.apk";
-		startDnPlayer(line);
+		String line = url + "/dnconsole.exe  installapp --index " + account + " --filename " + NativeCp.getUserProfile()+"\\OneDrive\\Code\\apk\\com.aniplex.fategrandorder.apk";
+		try {
+			GameUtil.delay(10000);
+			executeCmd(line,false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		line = url + "/dnconsole.exe  runapp --index " + account + " --packagename " +appName;
+		try {
+			GameUtil.delay(10000);
+			executeCmd(line,false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 	public static void startDnPlayer(String line) {

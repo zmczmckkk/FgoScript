@@ -1,316 +1,279 @@
 ﻿[
   {
     "name": "更新进度",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "872,610",
-        "color": "83, 83, 83"
+        "point": {"x": 872, "y": 610},
+        "color": {"r": 83, "g": 83, "b": 83},
+        "equal": true
       },
       {
-        "point": "939,614",
-        "color": "110, 110, 111"
+        "point": {"x": 939, "y": 614},
+        "color": {"r": 110, "g": 110, "b": 111},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "882,612"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "true"
+    "clickPointList": [{"x": 882, "y": 612}],
+    "throwException": false,
+    "extendOutTime": true,
+    "needUpdate": false
   },
   {
     "name": "通信直连",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "890,615",
-        "color": "121, 121, 121"
+        "point": {"x": 890, "y": 615},
+        "color": {"r": 121, "g": 121, "b": 121},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "890,615"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 890, "y": 615}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "通信终了",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "658,616",
-        "color": "128, 128, 128"
+        "point": {"x": 658, "y": 616},
+        "color": {"r": 128, "g": 128, "b": 128},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "658,616"
-      }
-    ],
-    "throwException": "true",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 658, "y": 616}],
+    "throwException": true,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "通信再连",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "907,612",
-        "color": "159, 157, 159"
+        "point": {"x": 907, "y": 612},
+        "color": {"r": 159, "g": 157, "b": 159},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "907,612"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 907, "y": 612}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "通信失败",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "907,612",
-        "color": "159, 157, 159"
+        "point": {"x": 907, "y": 612},
+        "color": {"r": 159, "g": 157, "b": 159},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "907,612"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 907, "y": 612}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "正常启动剔除时间",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "467, 452",
-        "color": "146, 146, 146"
+        "point": {"x": 467, "y": 452},
+        "color": {"r": 146, "g": 146, "b": 146},
+        "equal": true
       },
       {
-        "point": "782, 385",
-        "color": "164, 164, 164"
+        "point": {"x": 782, "y": 385},
+        "color": {"r": 164, "g": 164, "b": 164},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "512, 613"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 512, "y": 613}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
-  
   {
     "name": "人物卡回退",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "570, 165",
-        "color": "200, 104, 21"
+        "point": {"x": 570, "y": 165},
+        "color": {"r": 200, "g": 104, "b": 21},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "71, 84"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 71, "y": 84}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "选择人物",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1238, 287",
-        "color": "239, 186, 16"
+        "point": {"x": 1238, "y": 287},
+        "color": {"r": 239, "g": 186, "b": 16},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1238, 287"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1238, "y": 287}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "异常重启点异常",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "651, 603",
-        "color": "28, 28, 28"
+        "point": {"x": 651, "y": 603},
+        "color": {"r": 28, "g": 28, "b": 28},
+        "equal": true
       },
       {
-        "point": "701, 612",
-        "color": "155, 156, 155"
+        "point": {"x": 701, "y": 612},
+        "color": {"r": 155, "g": 156, "b": 155},
+        "equal": true
       },
       {
-        "point": "666, 628",
-        "color": "201, 199, 202"
+        "point": {"x": 666, "y": 628},
+        "color": {"r": 201, "g": 199, "b": 202},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "651, 603"
-      }
-    ],
-    "throwException": "true",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 651, "y": 603}],
+    "throwException": true,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "战败处理异常",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "326, 366",
-        "color": "185, 185, 185"
-      }
-    ],	
-    "clickPointArray": [
-      {
-        "point": "326, 366"
-      },
-      {
-        "point": "909, 410"
-      },
-      {
-        "point": "649, 606"
+        "point": {"x": 326, "y": 366},
+        "color": {"r": 185, "g": 185, "b": 185},
+        "equal": true
       }
     ],
-    "throwException": "true",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 326, "y": 366},{"x": 909, "y": 410},{"x": 649, "y": 606}],
+    "throwException": true,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "奖励处理",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1165, 179",
-        "color": "227, 232, 236"
+        "point": {"x": 1165, "y": 179},
+        "color": {"r": 227, "g": 232, "b": 236},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1168, 201"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1168, "y": 201}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "技能关闭",
-
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "649, 606",
-        "color": "79, 78, 79"
+        "point": {"x": 649, "y": 606},
+        "color": {"r": 79, "g": 78, "b": 79},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "649, 606"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 649, "y": 606}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "宝具详情关闭",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1116,99",
-        "color": "102, 119, 170"
+        "point": {"x": 1116, "y": 99},
+        "color": {"r": 102, "g": 119, "b": 170},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1116,99"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1116, "y": 99}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "对象选取关闭",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1128,202",
-        "color": "42, 51, 108"
+        "point": {"x": 1128, "y": 202},
+        "color": {"r": 42, "g": 51, "b": 108},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1128,202"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1128, "y": 202}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "怪物详情关闭",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1089,164",
-        "color": "43, 51, 108"
+        "point": {"x": 1089, "y": 164},
+        "color": {"r": 43, "g": 51, "b": 108},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1089,164"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1089, "y": 164}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "羁绊升级",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "725,394",
-        "color": "243, 192, 36"
+        "point": {"x": 725, "y": 394},
+        "color": {"r": 243, "g": 192, "b": 36},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "725,394"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 725, "y": 394}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   },
   {
     "name": "版本升级",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "510,287",
-        "color": "167, 172, 175"
+        "point": {"x": 510, "y": 287},
+        "color": {"r": 167, "g": 172, "b": 175},
+        "equal": true
       },
-	  {
-        "point": "410,365",
-        "color": "166, 190, 204"
+      {
+        "point": {"x": 410, "y": 365},
+        "color": {"r": 166, "g": 190, "b": 204},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-    ],
-    "throwException": "false",
-    "extendOutTime": "false",
-	"needUpdate": true
+    "clickPointList": [],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": true
   },
   {
     "name": "技能选择异常",
-    "checkPointArray": [
+    "checkPointList": [
       {
-        "point": "1121,199",
-        "color": "214, 215, 214"
+        "point": {"x": 1121, "y": 199},
+        "color": {"r": 214, "g": 215, "b": 214},
+        "equal": true
       }
     ],
-    "clickPointArray": [
-      {
-        "point": "1121,199"
-      }
-    ],
-    "throwException": "false",
-    "extendOutTime": "false"
+    "clickPointList": [{"x": 1121, "y": 199}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
   }
 ]

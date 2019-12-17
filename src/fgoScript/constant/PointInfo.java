@@ -18,6 +18,12 @@ public class PointInfo {
 	public static PointInfo getSpringBean(){
 		return (PointInfo) MySpringUtil.getApplicationContext().getBean("pointInfo");
 	}
+	//雷电启动完成点
+	private Point pLdIsOpen;
+	private Color cLdIsOpen;
+	//雷电安装完成点
+	private Point pLdIsInstalled;
+	private Color cLdIsInstalled;
 	//重复战斗
 	private Point pBattleReapeatYes;
 	private Color cBattleReapeatYes;
@@ -1543,6 +1549,38 @@ public class PointInfo {
 
 	public void setcSupportSelect(Color cSupportSelect) {
 		this.cSupportSelect = cSupportSelect;
+	}
+
+	public Point getpLdIsOpen() {
+		return pLdIsOpen;
+	}
+
+	public void setpLdIsOpen(Point pLdIsOpen) {
+		this.pLdIsOpen = pLdIsOpen;
+	}
+
+	public Color getcLdIsOpen() {
+		return cLdIsOpen;
+	}
+
+	public void setcLdIsOpen(Color cLdIsOpen) {
+		this.cLdIsOpen = cLdIsOpen;
+	}
+
+	public Point getpLdIsInstalled() {
+		return pLdIsInstalled;
+	}
+
+	public void setpLdIsInstalled(Point pLdIsInstalled) {
+		this.pLdIsInstalled = pLdIsInstalled;
+	}
+
+	public Color getcLdIsInstalled() {
+		return cLdIsInstalled;
+	}
+
+	public void setcLdIsInstalled(Color cLdIsInstalled) {
+		this.cLdIsInstalled = cLdIsInstalled;
 	}
 
 	public static void main(String[] args) {

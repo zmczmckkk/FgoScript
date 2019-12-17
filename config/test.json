@@ -1,0 +1,38 @@
+{
+  "needUpdate": false,
+  "name": "更新进度",
+  "clickPointList": [
+    {
+        "x": 882,
+        "y": 612
+      }
+  ],
+  "throwException": false,
+  "extendOutTime": true,
+  "checkPointList": [
+    {
+      "equal": true,
+      "color": {
+        "r": 83,
+        "b": 83,
+        "g": 83
+      },
+      "point": {
+        "x": 872,
+        "y": 610
+      }
+    },
+    {
+      "equal": true,
+      "color": {
+        "r": 110,
+        "b": 111,
+        "g": 110
+      },
+      "point": {
+        "x": 939,
+        "y": 614
+      }
+    }
+  ]
+}

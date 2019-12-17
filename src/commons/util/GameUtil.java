@@ -439,73 +439,12 @@ public class GameUtil {
 	private static List<ColorMonitor> getColorMonitorList(){
 		String filepath = System.getProperty("user.dir") + "/config/monitor.json";
 		JSONArray monitorJsonArray = ConvertToJsonArray(filepath);
-		int size = monitorJsonArray.size();
-		JSONArray monitorJSONArray; 			//monitorJSONArray数组
 
-		JSONObject monitorJSONObject;			//monitorJSONObject
-		JSONArray checkPointJSONArray;
-		int checkPointArraySize;				//checkPointJSONArray数组大小
-		JSONArray clickPointJSONArray;
-		int clickPointArraySize;				//clickPointJSONArray数组大小
-		List<PointColor> checkPcList;
-		List<Point> clickPointList;
-		String[] xyCoordinate;
-		String[] colorRGB;
+		int size = monitorJsonArray.size();
 		ColorMonitor colorMonitor;
-		Point tempPoint;
-		Color tempColor;
-		boolean equal;
-		boolean confirm;
-		boolean throwException;
-		boolean extendOutTime;
-		String name;
-		JSONObject tempJsonObject;
-		PointColor tempPointColor;
 		List<ColorMonitor> colorMonitorList= new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			colorMonitor = new ColorMonitor();
-			monitorJSONObject = monitorJsonArray.getJSONObject(i);
-			//检查点坐标 Json数组
-			checkPointJSONArray = monitorJSONObject.getJSONArray("checkPointArray");
-			checkPointArraySize = checkPointJSONArray.size();
-			checkPcList = new ArrayList<>();
-			for (int j = 0; j < checkPointArraySize; j++) {
-
-				tempJsonObject = checkPointJSONArray.getJSONObject(j);
-				xyCoordinate = tempJsonObject.getString("point").split(",");
-				tempPoint = new Point(Integer.parseInt(xyCoordinate[0].trim()), Integer.parseInt(xyCoordinate[1].trim()));
-				colorRGB = tempJsonObject.getString("color").split(",");
-				tempColor = new Color(Integer.parseInt(colorRGB[0].trim()),
-						Integer.parseInt(colorRGB[1].trim()),
-						Integer.parseInt(colorRGB[2].trim())
-				);
-
-				tempPointColor = new PointColor();
-				tempPointColor.setPoint(tempPoint);
-				tempPointColor.setColor(tempColor);
-				tempPointColor.setEqual(true);
-				checkPcList.add(tempPointColor);
-			}
-			//点击点坐标 Json数组
-			clickPointJSONArray =  monitorJSONObject.getJSONArray("clickPointArray");
-			clickPointArraySize = clickPointJSONArray.size();
-			clickPointList = new ArrayList<>();
-			for (int j = 0; j < clickPointArraySize; j++) {
-				tempJsonObject = clickPointJSONArray.getJSONObject(j);
-				xyCoordinate = tempJsonObject.getString("point").split(",");
-				tempPoint = new Point(Integer.parseInt(xyCoordinate[0].trim()), Integer.parseInt(xyCoordinate[1].trim()));
-				clickPointList.add(tempPoint);
-			}
-			// 是否抛异常
-			throwException = Boolean.parseBoolean(monitorJSONObject.getString("throwException"));
-			// 是否延长超时
-			extendOutTime = Boolean.parseBoolean(monitorJSONObject.getString("extendOutTime"));
-			name = monitorJSONObject.getString("name");
-			colorMonitor.setCheckPointList(checkPcList);
-			colorMonitor.setClickPointList(clickPointList);
-			colorMonitor.setThrowException(throwException);
-			colorMonitor.setExtendOutTime(extendOutTime);
-			colorMonitor.setName(name);
+			colorMonitor = JSONArray.parseObject(monitorJsonArray.getJSONObject(i).toJSONString(), ColorMonitor.class);
 			colorMonitorList.add(colorMonitor);
 		}
 		return colorMonitorList;
@@ -919,13 +858,8 @@ public class GameUtil {
 		return intArray;
 	}
 	public static void main(String[] args) {
-		try {
-			GameUtil.waitInteruptSolution(0);
-		} catch (FgoNeedRestartException e) {
-			e.printStackTrace();
-		} catch (FgoNeedUpdateException e) {
-			e.printStackTrace();
-		}
+		List<ColorMonitor> list = GameUtil.getColorMonitorList();
+		System.out.println();
 	}
 	public static String getValueFromConfig(String key) {
 		String fgoArrayStr =  PropertiesUtil.getValueFromTempConfig(key);

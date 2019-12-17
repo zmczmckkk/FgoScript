@@ -504,5 +504,9 @@
   "pBattleReapeatNo": {"x" : 445, "y" : 608},
   "pBattleReapeatYes": {"x" : 884, "y" : 611},
   "cSummonStone": {"r" : 77, "g" : 211, "b" : 189},
-  "pSummonStone": {"x" : 433, "y" : 88}
+  "pSummonStone": {"x" : 433, "y" : 88},
+  "cLdIsOpen": {"r" : 244, "g" : 197, "b" : 31},
+  "pLdIsOpen": {"x" : 344, "y" : 246},
+  "cLdIsInstalled": {"r" : 77, "g" : 211, "b" : 189},
+  "pLdIsInstalled": {"x" : 433, "y" : 88}
 }

@@ -209,8 +209,9 @@ public class Gudazi extends TimerTask {
 			reNewRobot();
 			// 打开窗口
 			ProcessDealUtil.startApp(countNum);
+			moveWindowToLeftTop();
 			// 检测loading
-			beforeNotice();
+			checkLoading();
 			// 检测公告
 			CommonMethods.open2GudaOrRestart();
 			// 等待咕哒子(加号)页面
@@ -285,7 +286,8 @@ public class Gudazi extends TimerTask {
 			// 打开窗口
 			openWindow(tip);
 			// 检测loading
-			beforeNotice();
+			moveWindowToLeftTop();
+			checkLoading();
 			// 检测公告
 			CommonMethods.open2GudaOrRestart();
 			// 等待咕哒子(加号)页面
@@ -430,7 +432,8 @@ public class Gudazi extends TimerTask {
 			// 打开窗口
 			openWindow(tip);
 			// 检测loading
-			beforeNotice();
+			moveWindowToLeftTop();
+			checkLoading();
 			// 检测公告
 			CommonMethods.open2GudaOrRestart();
 			waitForHomePage();
@@ -447,12 +450,15 @@ public class Gudazi extends TimerTask {
 	 *
 	 * @throws Exception 异常
 	 */
-	private void updateAndSignOneFGO(int tip) throws Exception {
+	private void updateAndSignOneFGO(int index) throws Exception {
 		try {
 			// 打开窗口
-			ProcessDealUtil.installApp(tip);
+			ProcessDealUtil.startLd(index);
+			moveWindowToLeftTop();
+			// 安装更新好的apk
+			readyUpdateApk(index);
 			// 检测loading
-			beforeNotice();
+			checkLoading();
 			// 检测公告
 			CommonMethods.open2GudaOrRestart();
 			waitForHomePage();
@@ -461,20 +467,26 @@ public class Gudazi extends TimerTask {
 		} catch (FgoNeedRestartException e) {
 			closeFgoByForce();
 			reNewRobot();
-			signOneFGO(tip);
+			signOneFGO(index);
 		}
 	}
-	private void beforeNotice() throws Exception {
-		// 检测异动前的FGO游戏图标
+	private void moveWindowToLeftTop() throws Exception {
+		// 移动窗口至左上角
 		Point pLeftTop = POINT_INFO.getpLeftTop();
 		Color cLeftTop = POINT_INFO.getcLeftTop();
 		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(pLeftTop, cLeftTop, true));
 		GameUtil.waitUntilAllColor(pocoList, DELAY);
-
-		// 移动窗口至左上角
 		GameUtil.moveToLeftTop();
-
+	}
+	private void readyUpdateApk(int index) throws Exception {
+		List<PointColor> pocoList = new ArrayList<>();
+		pocoList = new ArrayList<>();
+		pocoList.add(new PointColor(POINT_INFO.getpLdIsOpen(), POINT_INFO.getcLdIsOpen(), true, "install"));
+		GameUtil.waitUntilOneColor(pocoList);
+		ProcessDealUtil.installApp(index);
+	}
+	private void checkLoading() throws Exception {
 		// 检测loading是否完毕
 		Point pLoading = POINT_INFO.getpLoading();
 		Color cLoading = POINT_INFO.getcLoading();
@@ -498,9 +510,6 @@ public class Gudazi extends TimerTask {
 		};
 		ac.autoAct();
 	}
-
-
-
 	private void reNewRobot() {
 		GameUtil.reNewRobot();
 		r= GameUtil.getRb();
