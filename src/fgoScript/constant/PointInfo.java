@@ -186,11 +186,11 @@ public class PointInfo {
 	// 卡牌支援判断点
 	private Point pSupport;
 	private Point[] pSupports = {
-			new Point(266,479),
-			new Point(520,479),
-			new Point(777,479),
-			new Point(1034,479),
-			new Point(1294,473)
+			new Point(259,478),
+			new Point(513,476),
+			new Point(770,473),
+			new Point(1027,480),
+			new Point(1287,476)
 	};
 	private Point pCardColor;
 	private Point pCardWeak;
