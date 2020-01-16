@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -56,23 +57,23 @@ public class PropertiesUtil {
 		return "";
 	}
 	public static String getValueFromConfig(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/init.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/init.properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromTempConfig(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/initTemp.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/initTemp.properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromColorFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/colors.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/colors.properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromCommandCardFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/commandCard.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/commandCard.properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromOpenFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/open_"+ NativeCp.getUserName() +".properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/open_"+ NativeCp.getUserName() +".properties";
 		String value = getValue(filepath, key);
 		if (StringUtils.isBlank(value)) {
 			Map<String,String> tempMap = new HashMap<>();
@@ -82,7 +83,7 @@ public class PropertiesUtil {
 		return getValue(filepath, key);
 	}
 	public static String getValueFromSkillsFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/skills.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/skills.properties";
 		return getValue(filepath, key);
 	}
 	public static String getValueFromSystemFile(String key) {
@@ -90,22 +91,22 @@ public class PropertiesUtil {
 		return getValue(filepath, key);
 	}
 	public static String getValueFromHasDoFile(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/hasDo.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/hasDo.properties";
 		return getValue(filepath, key);
 	}
-	public static String getValueFromAutoClickFile(String key, String fileName) {
-		String filepath = System.getProperty("user.dir") + "/config/"+ fileName +"_"+ NativeCp.getUserName() +".properties";
+	public static String getValueFromAutoClickFile(String key, String fileName, String relativePath) {
+		String filepath = System.getProperty("user.dir") + "/config/"+ relativePath + fileName +"_"+ NativeCp.getUserName() +".properties";
 		return getValue(filepath, key);
 	}
-	public static String getValueFromAutoClickFile(String key) {
-		return getValueFromAutoClickFile(key,"clicks");
+	public static String getValueFromAutoClickFile(String key, String relativePath) {
+		return getValueFromAutoClickFile(key,"clicks", relativePath);
 	}
 	public static String getValueFromspecialHasDo(String key) {
-		String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/specialHasDo.properties";
 		return getValue(filepath, key);
 	}
-	public static String getValueFromFileNameAndKey(String key, String fileName){
-		String filepath = System.getProperty("user.dir") + "/config/" + fileName + ".properties";
+	public static String getValueFromFileNameAndKey(String key, String fileName, String relativePath){
+		String filepath = System.getProperty("user.dir") + "/config/"+ relativePath + fileName + ".properties";
 		return getValue(filepath, key);
 	}
 	/**
@@ -114,7 +115,7 @@ public class PropertiesUtil {
 	 */
 	public static void setValue( Map<String, String> map) {
 		Properties prop = new Properties();
-		String filepath = System.getProperty("user.dir") + "/config/colors.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/colors.properties";
 		/// 保存属性到b.properties文件
 		FileOutputStream oFile = null;
 		try {
@@ -139,19 +140,19 @@ public class PropertiesUtil {
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForInitTemp( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/initTemp.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/initTemp.properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForSkills( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/skills.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/skills.properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**
@@ -163,15 +164,15 @@ public class PropertiesUtil {
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForOpen( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/open_"+ NativeCp.getUserName() +".properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/open_"+ NativeCp.getUserName() +".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForAutoClick( Map<String, String> map) {
@@ -179,11 +180,11 @@ public class PropertiesUtil {
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void setValueForspecialHasDo( Map<String, String> map) {
-		String filepath = System.getProperty("user.dir") + "/config/specialHasDo.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/specialHasDo.properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
-	public static void setValueByFileName( Map<String, String> map, String saveFileString) {
-		String filepath = System.getProperty("user.dir") + "/config/" +saveFileString+".properties";
+	public static void setValueByFileName( Map<String, String> map, String saveFileString, String relativePath) {
+		String filepath = System.getProperty("user.dir") + "/config/"+ relativePath +saveFileString+".properties";
 		setValueForUpdateAndAdd(map, filepath);
 	}
 	public static void deleteAutoClickFile() {
@@ -194,7 +195,7 @@ public class PropertiesUtil {
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForUpdateAndAdd( Map<String, String> map, String filepath) {
@@ -231,12 +232,12 @@ public class PropertiesUtil {
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param map
 	 */
 	public static void setValueForHasDo( Map<String, String> map) {
 		Properties prop = new Properties();
-		String filepath = System.getProperty("user.dir") + "/config/hasDo.properties";
+		String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/hasDo.properties";
 		/// 保存属性到b.properties文件
 		FileOutputStream oFile = null;
 		try {
@@ -259,8 +260,5 @@ public class PropertiesUtil {
 				LOGGER.error(GameUtil.getStackMsg(e));
 			}
 		}
-	}
-	public static void main(String[] asrgs) {
-		getValueFromConfig("EXE_PATH");
 	}
 }

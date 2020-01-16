@@ -20,6 +20,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import com.melloware.jintellitype.HotkeyListener;
+import commons.entity.Constant;
 import commons.entity.UniqueNumber;
 import fgoScript.entity.Vo.ButtonVo;
 import fgoScript.entity.guda.MyButton;
@@ -30,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import com.melloware.jintellitype.JIntellitype;
 
 import fgoScript.constant.GameConstant;
-import fgoScript.exception.FgoNeedStopException;
+import fgoScript.exception.AppNeedStopException;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 import sun.swing.SwingUtilities2;
@@ -67,14 +68,15 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
      * @param enableStatus      是否需要启动状态
      * @param style             颜色样式
      */
-    public BaseZButton(List<String> changeList, String saveFileString, String changeListKeyName,
+    public BaseZButton(List<String> changeList, String saveFileString, String relativePath,String changeListKeyName,
                        boolean excuteble, boolean enableStatus, int style) {
         this.changeList = changeList;
         this.saveFileString = saveFileString;
+        this.relativePath = relativePath;
         this.changeListKeyName = changeListKeyName;
         this.excuteble = excuteble;
         this.enableStatus = enableStatus;
-        String text = PropertiesUtil.getValueFromFileNameAndKey(changeListKeyName, saveFileString);
+        String text = PropertiesUtil.getValueFromFileNameAndKey(changeListKeyName, saveFileString, relativePath);
         try {
             super.setText("".equals(text) ? changeList.get(0) : text);
         } catch (NullPointerException e) {
@@ -170,6 +172,7 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
     //自定义切换按钮
     private List<String> changeList;
     private String saveFileString;
+    private String relativePath;
     private String changeListKeyName;
 
     /**
@@ -215,12 +218,12 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
         }
         Map<String, String> map = new HashMap<>();
         map.put(this.getChangeListKeyName(), changeList.get(loc));
-        PropertiesUtil.setValueByFileName(map, this.saveFileString);
+        PropertiesUtil.setValueByFileName(map, this.saveFileString, this.relativePath);
     }
 
-    public static BaseZButton getChangeListButton(List<String> changeList, String saveFileString, String changeListKeyName,
+    public static BaseZButton getChangeListButton(List<String> changeList, String saveFileString, String relativePath, String changeListKeyName,
                                                   boolean excuteble, boolean enableStatus, int style) {
-        return new BaseZButton(changeList, saveFileString,
+        return new BaseZButton(changeList, saveFileString, relativePath,
                 changeListKeyName,
                 excuteble,
                 enableStatus, style) {
@@ -740,6 +743,14 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
         this.saveFileString = saveFileString;
     }
 
+    public String getRelativePath() {
+        return relativePath;
+    }
+
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
+    }
+
     public String getChangeListKeyName() {
         return changeListKeyName;
     }
@@ -756,7 +767,7 @@ public class BaseZButton extends JButton implements Runnable, MyButton {
                 JIntellitype.getInstance().unregisterHotKey(this.getMarkCode());
             }
             runMethod();
-        } catch (FgoNeedStopException e) {
+        } catch (AppNeedStopException e) {
             LOGGER.info(e.getMessage());
         } catch (Exception e) {
             LOGGER.error(GameUtil.getStackMsg(e));

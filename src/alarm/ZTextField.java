@@ -46,10 +46,10 @@ public class ZTextField extends JTextField {
      * @Author: RENZHEHAO
      * @Date: 2019/6/19
      */
-    public ZTextField(String firstString, String saveFileString, String KeyName) {
+    public ZTextField(String firstString, String saveFileString, String relativePath, String KeyName) {
         this();
-        addWriterFactorListener(firstString, saveFileString, KeyName, this);
-        String text = PropertiesUtil.getValueFromFileNameAndKey(KeyName, saveFileString);
+        addWriterFactorListener(firstString, saveFileString, relativePath, KeyName, this);
+        String text = PropertiesUtil.getValueFromFileNameAndKey(KeyName, saveFileString, relativePath);
         super.setText("".equals(text) ? "0" : text);
     }
     private void init(){
@@ -150,27 +150,30 @@ public class ZTextField extends JTextField {
         g2d.dispose();
         return g;
     }
-    private void addWriterFactorListener(String firstString, String saveFileString, String KeyName, ZTextField zf){
+    private void addWriterFactorListener(String firstString, String saveFileString, String relativePath, String KeyName, ZTextField zf){
        Document dc =  this.getDocument();
        dc.addDocumentListener(new DocumentListener() {
            @Override
            public void insertUpdate(DocumentEvent e) {
-               doChange(firstString, saveFileString, KeyName, zf);
+               doChange(firstString, saveFileString, relativePath, KeyName, zf);
            }
            @Override
            public void removeUpdate(DocumentEvent e) {
-               doChange(firstString, saveFileString, KeyName, zf);
+               doChange(firstString, saveFileString, relativePath, KeyName, zf);
            }
            @Override
            public void changedUpdate(DocumentEvent e) {
                LOGGER.info("What?");
            }
+
        });
 
     }
-    private void doChange(String firstString, String saveFileString, String KeyName, ZTextField zf){
+
+
+    private void doChange(String firstString, String saveFileString, String relativePath, String KeyName, ZTextField zf){
         Map<String, String> map = new HashMap<>();
         map.put(KeyName,zf.getText());
-        PropertiesUtil.setValueByFileName(map, saveFileString);
+        PropertiesUtil.setValueByFileName(map, saveFileString, relativePath);
     }
 }

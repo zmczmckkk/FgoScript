@@ -34,6 +34,10 @@ public class LightData {
     private Point freeFinishPoint;
     /** 免费灯色（无） */
     private Color freeFinishColor;
+    /** 免费灯返回按钮点 */
+    private Point freeReturnPoint;
+    /** 免费灯返回按钮色 */
+    private Color freeReturnColor;
     /** 起始毫秒步长 */
     private int smStep;
     /** 毫秒加速步长 */
@@ -167,5 +171,21 @@ public class LightData {
 
     public void setFreeFinishColor(Color freeFinishColor) {
         this.freeFinishColor = freeFinishColor;
+    }
+
+    public Point getFreeReturnPoint() {
+        return freeReturnPoint;
+    }
+
+    public void setFreeReturnPoint(Point freeReturnPoint) {
+        this.freeReturnPoint = freeReturnPoint;
+    }
+
+    public Color getFreeReturnColor() {
+        return freeReturnColor;
+    }
+
+    public void setFreeReturnColor(Color freeReturnColor) {
+        this.freeReturnColor = freeReturnColor;
     }
 }

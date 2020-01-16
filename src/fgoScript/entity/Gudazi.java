@@ -3,18 +3,17 @@ package fgoScript.entity;
 import aoshiScript.entity.WuNa;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import commons.util.ClipBoardUtil;
-import commons.util.GameUtil;
-import commons.util.ProcessDealUtil;
-import commons.util.PropertiesUtil;
+import commons.entity.Constant;
+import commons.util.*;
+import destinychild.DaillyMission;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.guda.ApGudaziFactory;
 import fgoScript.entity.guda.EventGudazi;
 import fgoScript.entity.panel.FgoFrame;
 import fgoScript.exception.FgoNeedNextException;
-import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.exception.FgoNeedUpdateException;
+import fgoScript.exception.AppNeedRestartException;
+import fgoScript.exception.AppNeedUpdateException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.CommonMethods;
 import org.apache.commons.lang3.StringUtils;
@@ -115,7 +114,7 @@ public class Gudazi extends TimerTask {
                 new EventGudazi().fightAndStop(i == 0 ? false : true, 0);
 				LOGGER.info("进入下一个循环！");
 			}
-		} catch (FgoNeedNextException | FgoNeedRestartException e) {
+		} catch (FgoNeedNextException | AppNeedRestartException e) {
 			setIfRestart(true);
 			onlyFight();
 		}
@@ -157,6 +156,8 @@ public class Gudazi extends TimerTask {
 		ApGudaziFactory.getInstance(qts[1],"big", null).startAllFgo();
 		//抽奖
 		allRewardAndRoll();
+		//执行DC挂机任务
+		DaillyMission.getSpringBean().toggle();
 		//是否关机
 		if (IF_CLOSE) {
 			closeComputer();
@@ -216,7 +217,7 @@ public class Gudazi extends TimerTask {
 			CommonMethods.open2GudaOrRestart();
 			// 等待咕哒子(加号)页面
 			waitForHomePage();
-		} catch (FgoNeedNextException | FgoNeedRestartException e) {
+		} catch (FgoNeedNextException | AppNeedRestartException e) {
 			openEvent();
 		}
 	}
@@ -233,7 +234,7 @@ public class Gudazi extends TimerTask {
 				signOneFGO(tip);
 			} catch (FgoNeedNextException e) {
 				LOGGER.info(e.getMessage());
-			} catch (FgoNeedUpdateException e) {
+			} catch (AppNeedUpdateException e) {
 				LOGGER.info(e.getMessage());
 				installAllFGO();
 				break;
@@ -305,7 +306,7 @@ public class Gudazi extends TimerTask {
 			// 关闭游戏
 			LOGGER.info("关闭当前游戏");
 			closeFgoByForce();
-		} catch (FgoNeedRestartException e) {
+		} catch (AppNeedRestartException e) {
 			LOGGER.info(e.getMessage());
 			closeFgoByForce();
 			reNewRobot();
@@ -366,7 +367,7 @@ public class Gudazi extends TimerTask {
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK,pcStoneGetAndClose);
 				pcList = new ArrayList<>();
 				pcList.add(pcStoneGetAndClose);
-				GameUtil.waitUntilAllColor(pcList, DELAY);
+				GameUtil.waitUntilAllColor(pcList, DELAY, Constant.FGOMonitor);
 				// 关闭领取弹窗
 				GameUtil.mouseMoveByPoint(pStoneGetAndClose);
 				GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
@@ -398,7 +399,7 @@ public class Gudazi extends TimerTask {
 		// 等待石头图标
 		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(POINT_INFO.getpSummonStone(), POINT_INFO.getcSummonStone(), true));
-		GameUtil.waitUntilAllColor(pocoList, DELAY);
+		GameUtil.waitUntilAllColor(pocoList, DELAY, Constant.FGOMonitor);
 		// 切换左箭头
 		Point p3 = new Point(85, 410);// 颜色：248;244;248 Color c = new Color(248, 244, 248);
 		GameUtil.mouseMoveByPoint(p3);
@@ -406,7 +407,7 @@ public class Gudazi extends TimerTask {
 		// 等待小手图标
 		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(POINT_INFO.getpHand(), POINT_INFO.getcHand(), true));
-		GameUtil.waitUntilAllColor(pocoList, DELAY);
+		GameUtil.waitUntilAllColor(pocoList, DELAY, Constant.FGOMonitor);
 		try {
 			// 点击确定按钮抽取
 			Point p5 = new Point(677, 603);// 颜色：31;167;202
@@ -415,7 +416,7 @@ public class Gudazi extends TimerTask {
 			Point p6 = new Point(886, 609);
 			GameUtil.mouseMoveByPoint(p6);
 			GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
-		} catch (FgoNeedRestartException e) {
+		} catch (AppNeedRestartException e) {
 			LOGGER.info("没有免费池，跳过！");
 		}
 		// 等待3秒
@@ -439,7 +440,7 @@ public class Gudazi extends TimerTask {
 			waitForHomePage();
 			// 关闭游戏
 			closeFgoByForce();
-		} catch (FgoNeedRestartException e) {
+		} catch (AppNeedRestartException e) {
 			closeFgoByForce();
 			reNewRobot();
 			signOneFGO(tip);
@@ -464,7 +465,7 @@ public class Gudazi extends TimerTask {
 			waitForHomePage();
 			// 关闭游戏
 			closeFgoByForce();
-		} catch (FgoNeedRestartException e) {
+		} catch (AppNeedRestartException e) {
 			closeFgoByForce();
 			reNewRobot();
 			signOneFGO(index);
@@ -476,14 +477,14 @@ public class Gudazi extends TimerTask {
 		Color cLeftTop = POINT_INFO.getcLeftTop();
 		List<PointColor> pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(pLeftTop, cLeftTop, true));
-		GameUtil.waitUntilAllColor(pocoList, DELAY);
+		GameUtil.waitUntilAllColor(pocoList, DELAY, Constant.FGOMonitor);
 		GameUtil.moveToLeftTop();
 	}
 	private void readyUpdateApk(int index) throws Exception {
 		List<PointColor> pocoList = new ArrayList<>();
 		pocoList = new ArrayList<>();
 		pocoList.add(new PointColor(POINT_INFO.getpLdIsOpen(), POINT_INFO.getcLdIsOpen(), true, "install"));
-		GameUtil.waitUntilOneColor(pocoList);
+		GameUtil.waitUntilOneColor(pocoList, Constant.FGOMonitor);
 		ProcessDealUtil.installApp(index);
 	}
 	private void checkLoading() throws Exception {

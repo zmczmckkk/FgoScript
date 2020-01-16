@@ -1,6 +1,5 @@
 package commons.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -9,11 +8,10 @@ import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.BaseZButton;
 import fgoScript.entity.ColorMonitor;
-import fgoScript.entity.GatesInfo;
 import fgoScript.entity.PointColor;
-import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.exception.FgoNeedStopException;
-import fgoScript.exception.FgoNeedUpdateException;
+import fgoScript.exception.AppNeedRestartException;
+import fgoScript.exception.AppNeedStopException;
+import fgoScript.exception.AppNeedUpdateException;
 import fgoScript.service.EventFactors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -157,7 +155,7 @@ public class GameUtil {
 	public static void setGO_FLAG(boolean gO_FLAG) {
 		GO_FLAG = gO_FLAG;
 	}
-	private static PointColor waitUntilOneColorInner(List<PointColor> pocoList) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException, InterruptedException {
+	private static PointColor waitUntilOneColorInner(List<PointColor> pocoList, String monitorName) throws AppNeedUpdateException, AppNeedRestartException, AppNeedStopException, InterruptedException {
 		setSTOP_SCRIPT(false);
 		GO_FLAG = true;
 		rb = getRb();
@@ -198,7 +196,7 @@ public class GameUtil {
 			}
 			// 意外检查
 			if (check != 0 && (count == 0) && (check % EROOR_ROUND == 0)) {
-				waitInteruptSolution(check);
+				waitInteruptSolution(check, monitorName);
 			}
 			check++;
 			Thread.sleep(GameConstant.DELAY*CHECK_TIMES);
@@ -206,11 +204,11 @@ public class GameUtil {
 				return null;
 			}
 			if (STOP_SCRIPT) {
-				throw new FgoNeedStopException();
+				throw new AppNeedStopException();
 			}
 			if (FORCE_OUTTIME) {
 				setFORCE_OUTTIME(false);
-				throw new FgoNeedRestartException();
+				throw new AppNeedRestartException();
 			}
 			if (isWAIT_FLAG()) {
 				synchronized (getLock()) {
@@ -230,9 +228,9 @@ public class GameUtil {
 	 * @Author: RENZHEHAO
 	 * @Date: 2019/6/5
 	 */
-	public static PointColor waitUntilOneColor(List<PointColor> pocoList) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException  {
+	public static PointColor waitUntilOneColor(List<PointColor> pocoList, String monitorName) throws AppNeedUpdateException, AppNeedRestartException, AppNeedStopException {
 		PointColor returnPC = null;
-		Callable<PointColor> task = () -> waitUntilOneColorInner(pocoList);
+		Callable<PointColor> task = () -> waitUntilOneColorInner(pocoList, monitorName);
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		Future<PointColor> future = executorService.submit(task);
 		
@@ -249,19 +247,19 @@ public class GameUtil {
 				}else {
 					LOGGER.info("延长超时！原因：线程需要继续运行");
 				}
-				returnPC = waitUntilOneColor(pocoList);
+				returnPC = waitUntilOneColor(pocoList, monitorName);
 			}else {
-				throw new FgoNeedRestartException();
+				throw new AppNeedRestartException();
 			}
 		} catch (InterruptedException e) {
 			LOGGER.info("终止了颜色检测程序！");
 		} catch (ExecutionException e) {
-			if (e.getCause() instanceof FgoNeedRestartException) {
-				throw new FgoNeedRestartException();
-			}else if(e.getCause() instanceof FgoNeedStopException) {
-				throw new FgoNeedStopException();
-			}else if(e.getCause() instanceof FgoNeedUpdateException) {
-				throw new FgoNeedUpdateException();
+			if (e.getCause() instanceof AppNeedRestartException) {
+				throw new AppNeedRestartException();
+			}else if(e.getCause() instanceof AppNeedStopException) {
+				throw new AppNeedStopException();
+			}else if(e.getCause() instanceof AppNeedUpdateException) {
+				throw new AppNeedUpdateException();
 			}
 		} finally {
 			OUTTIME_COUNT = 0;
@@ -271,9 +269,9 @@ public class GameUtil {
 		return returnPC;
 	}
 
-	public static void waitUntilAllColor(List<PointColor> pocoList, int delay) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException{
+	public static void waitUntilAllColor(List<PointColor> pocoList, int delay, String monitorName) throws AppNeedUpdateException, AppNeedRestartException, AppNeedStopException {
 		Callable<String> task = () -> {
-			waitUntilAllColorInner(pocoList, delay);
+			waitUntilAllColorInner(pocoList, delay, monitorName);
 			return null;
 		};
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -290,17 +288,17 @@ public class GameUtil {
 				}else {
 					LOGGER.info("延长超时！原因：线程需要继续运行");
 				}
-				waitUntilOneColor(pocoList);
+				waitUntilAllColor(pocoList, delay, monitorName);
 			}else {
-				throw new FgoNeedRestartException();
+				throw new AppNeedRestartException();
 			}
 		} catch (InterruptedException e) {
 			LOGGER.info("终止了颜色检测程序！");
 		} catch (ExecutionException e) {
-			if (e.getCause() instanceof FgoNeedRestartException) {
-				throw new FgoNeedRestartException();
-			}else if(e.getCause() instanceof FgoNeedStopException) {
-				throw new FgoNeedStopException();
+			if (e.getCause() instanceof AppNeedRestartException) {
+				throw new AppNeedRestartException();
+			}else if(e.getCause() instanceof AppNeedStopException) {
+				throw new AppNeedStopException();
 			}
 		} finally {
 			OUTTIME_COUNT = 0;
@@ -308,7 +306,7 @@ public class GameUtil {
 		}
 	}
 
-	private static void waitUntilAllColorInner(List<PointColor> pocoList, int delay) throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException, InterruptedException {
+	private static void waitUntilAllColorInner(List<PointColor> pocoList, int delay, String monitorName) throws AppNeedUpdateException, AppNeedRestartException, AppNeedStopException, InterruptedException {
 		setSTOP_SCRIPT(false);
 		boolean flag;
 		Point p;
@@ -347,16 +345,16 @@ public class GameUtil {
 			toCheck = (count == pocoList.size());
 			// 异常检查
 			if ((!toCheck) && (check % EROOR_ROUND == 0)) {
-				waitInteruptSolution(check);
+				waitInteruptSolution(check, monitorName);
 			}
 			check++;
 			Thread.sleep(delay*CHECK_TIMES);
 			if (STOP_SCRIPT) {
-				throw new FgoNeedStopException();
+				throw new AppNeedStopException();
 			}
 			if (FORCE_OUTTIME) {
 				setFORCE_OUTTIME(false);
-				throw new FgoNeedRestartException();
+				throw new AppNeedRestartException();
 			}
 			if (isWAIT_FLAG()) {
 				if (lock != null) {
@@ -436,8 +434,8 @@ public class GameUtil {
 		}
 		return jSONObject;
 	}
-	private static List<ColorMonitor> getColorMonitorList(){
-		String filepath = System.getProperty("user.dir") + "/config/monitor.json";
+	private static List<ColorMonitor> getColorMonitorList(String monitorName){
+		String filepath = System.getProperty("user.dir") + "/config/"+ monitorName +".json";
 		JSONArray monitorJsonArray = ConvertToJsonArray(filepath);
 
 		int size = monitorJsonArray.size();
@@ -449,9 +447,9 @@ public class GameUtil {
 		}
 		return colorMonitorList;
 	}
-	private static String waitInteruptSolution(int check) throws FgoNeedRestartException,FgoNeedUpdateException {
+	public static String waitInteruptSolution(int check, String monitorName) throws AppNeedRestartException, AppNeedUpdateException {
 		if (colorMonitorList == null || check == 0) {
-			colorMonitorList = getColorMonitorList();
+			colorMonitorList = getColorMonitorList(monitorName);
 		}
 		int size = colorMonitorList.size();
 		ColorMonitor cm;
@@ -475,7 +473,7 @@ public class GameUtil {
 					if ("选择人物".equals(cm.getName())) {
 						mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 					}else {
-						mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
+						mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
 					}
 					LOGGER.info(cm.getName());
 				}
@@ -484,11 +482,11 @@ public class GameUtil {
 				}
 				if (cm.isThrowException()){
 					delay(5000);
-					throw new FgoNeedRestartException();
+					throw new AppNeedRestartException();
 				}
 				if (cm.isNeedUpdate()){
 					delay(5000);
-					throw new FgoNeedUpdateException();
+					throw new AppNeedUpdateException();
 				}
 			}
 		}
@@ -621,10 +619,10 @@ public class GameUtil {
 			rb.delay(GameConstant.DELAY);
 
 	}
-	public static void mousePressAndReleaseForConfirm(int key) throws FgoNeedRestartException {
+	public static void mousePressAndReleaseForConfirm(int key) throws AppNeedRestartException {
 		mousePressAndReleaseForConfirm(key, null);
 	}
-	public static void mousePressAndReleaseForConfirm(int key, PointColor pc) throws FgoNeedRestartException {
+	public static void mousePressAndReleaseForConfirm(int key, PointColor pc) throws AppNeedRestartException {
 		rb = getRb();
 		Point p;
 		Color c;
@@ -661,7 +659,7 @@ public class GameUtil {
 				}
 			}
 			if (count-- < 0) {
-				throw new FgoNeedRestartException();
+				throw new AppNeedRestartException();
 			}
 		} while (flag);
 		
@@ -806,6 +804,18 @@ public class GameUtil {
 		rb.delay(GameConstant.DELAY);
 		rb.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);
 	}
+	public static void moveToDestinyPoint(Point from , Point to) {
+		rb = getRb();
+		rb.mouseMove((int) from.getX(), (int) from.getY());
+		rb.delay(GameConstant.DELAY);
+		rb.delay(GameConstant.DELAY);
+		rb.delay(GameConstant.DELAY);
+		rb.mousePress(KeyEvent.BUTTON1_DOWN_MASK);
+		rb.delay(GameConstant.DELAY);
+		rb.mouseMove((int) to.getX(), (int) to.getY());
+		rb.delay(GameConstant.DELAY);
+		rb.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);
+	}
 	public static void ctrlV() {
 		rb.keyPress(KeyEvent.VK_CONTROL);
 		rb.keyPress(KeyEvent.VK_Z);
@@ -858,7 +868,6 @@ public class GameUtil {
 		return intArray;
 	}
 	public static void main(String[] args) {
-		List<ColorMonitor> list = GameUtil.getColorMonitorList();
 		System.out.println();
 	}
 	public static String getValueFromConfig(String key) {

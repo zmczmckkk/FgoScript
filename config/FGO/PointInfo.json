@@ -1,0 +1,519 @@
+﻿{
+  "cBlueAttack": {"r" : 2, "g" : 208, "b" : 241},
+  "cButtonFailBack":{"r" : 185, "g" : 185, "b" : 185},
+  "cButtonFailBackNo": {"r" : 152, "g" : 152, "b" : 152},
+  "cButtonFailBackYes": {"r" : 185, "g" : 185, "b" : 185},
+  "cButtonRestartNo": {"r" : 166, "g" : 166, "b" : 166},
+  "cButtonRestartYes": {"r" : 191, "g" : 191, "b" : 191},
+  "cCardExit": {"r" : 1, "g" : 177, "b" : 226},
+  "cCloseMd": {
+    "r": 79,
+    "g": 78,
+    "b": 79,
+    "alpha": 255
+  },
+  "cClothToSkill": {"r" : 123, "g" : 140, "b" : 173},
+  "cConfirmRd": {"r" : 132, "g" : 139, "b" : 145},
+  "cBattleStart": {"r" : 31, "g" : 36, "b" : 72},
+  "pBattleStart": {
+    "x": 1256,
+    "y": 729
+  },
+  "cSupportSelect": {"r" : 88, "g" : 92, "b" : 92},
+  "pSupportSelect": {"x" : 190, "y" : 176},
+  "cConnectEnd": {
+    "r": 84,
+    "g": 84,
+    "b": 84,
+    "alpha": 255
+  },
+  "cConnectYes": {"r" : 174, "g" : 174, "b" : 174},
+  "cDownPanelClose": {
+    "r": 49,
+    "g": 60,
+    "b": 112,
+    "alpha": 255
+  },
+  "cFetter01": {"r" : 232, "g" : 190, "b" : 34},
+  "cFetter02": {"r" : 238, "g" : 188, "b" : 40},
+  "cFetter03": {"r" : 233, "g" : 188, "b" : 35},
+  "cFetterUp": {
+    "r": 115,
+    "g": 239,
+    "b": 124,
+    "alpha": 255
+  },
+  "cGetFriendNo": {"r" : 130, "g" : 130, "b" : 130},
+  "cGuda": {"r" : 254, "g" : 245, "b" : 171},
+  "cGudaDark": {"r" : 74, "g" : 72, "b" : 66},
+  "cHand": {"r" : 164, "g" : 230, "b" : 73},
+  "cLeftTop": {
+    "r": 244,
+    "g": 197,
+    "b": 31,
+    "alpha": 255
+  },
+  "cLevelUp": {
+    "r": 239,
+    "g": 190,
+    "b": 41,
+    "alpha": 255
+  },
+  "cLoading": {
+    "r": 89,
+    "g": 186,
+    "b": 211,
+    "alpha": 255
+  },
+  "cLtApp": {
+    "r": 241,
+    "g": 94,
+    "b": 145,
+    "alpha": 255
+  },
+  "cMosterDtExit": {"r" : 42, "g" : 56, "b" : 96},
+  "cMygame": {
+    "r": 241,
+    "g": 94,
+    "b": 145,
+    "alpha": 255
+  },
+  "cNoSupport": {
+    "r": 70,
+    "g": 84,
+    "b": 85,
+    "alpha": 255
+  },
+  "cNoticeExit": {"r" : 10, "g" : 35, "b" : 51},
+  "cNoticeExitDark": {
+    "r": 158,
+    "g": 155,
+    "b": 158,
+    "alpha": 255
+  },
+  "cNpDtExit": {"r" : 41, "g" : 49, "b" : 106},
+  "cReConnectYes": {
+    "r": 159,
+    "g": 157,
+    "b": 159,
+    "alpha": 255
+  },
+  "cRewardAction": {"r" : 141, "g" : 162, "b" : 179},
+  "cRewardGet": {"r" : 147, "g" : 162, "b" : 169},
+  "cSupportNoConfirm": {
+    "r": 39,
+    "g": 39,
+    "b": 39,
+    "alpha": 255
+  },
+  "cSupportUpdate": {
+    "r": 4,
+    "g": 56,
+    "b": 95,
+    "alpha": 255
+  },
+  "cSupportUpdateYes": {
+    "r": 222,
+    "g": 219,
+    "b": 222,
+    "alpha": 255
+  },
+  "cTransfer": {
+    "r": 7,
+    "g": 69,
+    "b": 165,
+    "alpha": 255
+  },
+  "cUpdate": {
+    "r": 33,
+    "g": 33,
+    "b": 33,
+    "alpha": 255
+  },
+  "cUpdateNo": {
+    "r": 154,
+    "g": 152,
+    "b": 154,
+    "alpha": 255
+  },
+  "deadPoint": {
+    "x": 979,
+    "y": 93
+  },
+  "npCheck": {"x" : 240, "y" : 720},
+  "npNp": {
+    "x": 452,
+    "y": 247
+  },
+  "pAppleNeed01": {
+    "x": 397,
+    "y": 372
+  },
+  "pAppleNeed02": {
+    "x": 398,
+    "y": 376
+  },
+  "cAppleNeed01": {"r" : 255, "g" : 255, "b" : 69},
+  "cAppleNeed02": {"r" : 255, "g" : 255, "b" : 101},
+  "pBack": {
+    "x": 139,
+    "y": 95
+  },
+  "pBlueAttack": {
+    "x": 1128,
+    "y": 625
+  },
+  "pButtonFailBack": {"x" : 326, "y" : 366},
+  "pButtonFailBackNo": {"x" : 409, "y" : 412},
+  "pButtonFailBackYes": {
+    "x": 909,
+    "y": 410
+  },
+  "pButtonRestartNo": {
+    "x": 452,
+    "y": 598
+  },
+  "pButtonRestartYes": {"x" : 851, "y" : 600},
+  "pCardClick": {
+    "x": 163,
+    "y": 535
+  },
+  "pCardColor": {
+    "x": 96,
+    "y": 486
+  },
+  "pCardExit": {"x" : 1195, "y" : 732},
+  "pCardWeak": {
+    "x": 243,
+    "y": 432
+  },
+  "pCloseMd": {
+    "x": 649,
+    "y": 606
+  },
+  "pCloth": {"x" : 1221, "y" : 357},
+  "pClothSkill01":{"x" : 932, "y" : 362},
+  "pClothSkill02": {"x" : 1027, "y" : 359},
+  "pClothSkill03": {"x" : 1113, "y" : 359},
+  "pClothToSkill":{"x" : 1127, "y" : 194},
+  "pConfirmRd": {"x" : 1091, "y" : 728},
+  "pConnectEnd": {
+    "x": 902,
+    "y": 612
+  },
+  "pConnectYes": {"x" : 893, "y" : 609},
+  "pDailyEntrance": {
+    "x": 852,
+    "y": 244
+  },
+  "pDailySliceEnd": {
+    "x": 810,
+    "y": 647
+  },
+  "pDailySliceStrat": {
+    "x": 810,
+    "y": 175
+  },
+  "pDownPanelClose": {
+    "x": 1237,
+    "y": 580
+  },
+  "pEventBattleLocate01": {
+    "x": 941,
+    "y": 315
+  },
+  "pEventScrollLocate01": {
+    "x": 1293,
+    "y": 418
+  },
+  "pExpAll": {
+    "x": 1298,
+    "y": 237
+  },
+  "pExpAp10": {
+    "x": 930,
+    "y": 192
+  },
+  "pExpAp20": {
+    "x": 930,
+    "y": 370
+  },
+  "pExpAp30": {
+    "x": 930,
+    "y": 557
+  },
+  "pExpAp40": {
+    "x": 930,
+    "y": 729
+  },
+  "pFetter01": {
+    "x": 135,
+    "y": 236
+  },
+  
+  "pFetter02": {"x" : 708, "y" : 253},
+  "pFetter03": {"x" : 170, "y" : 140},
+  "pFetterUp": {
+    "x": 708,
+    "y": 394
+  },
+  "pGetFriendNo": {"x" : 309, "y" : 670},
+  "pGuda": {"x" : 188, "y" : 736},
+  "pGudaDark": {"x" : 188, "y" : 736},
+  "pHand": {"x" : 702, "y" : 91},
+  "pLeftTop": {
+    "x": 341,
+    "y": 158
+  },
+  "pLevelUp": {
+    "x": 762,
+    "y": 337
+  },
+  "pLoading": {
+    "x": 495,
+    "y": 721
+  },
+  "pLtApp": {
+    "x": 416,
+    "y": 145
+  },
+  "pMoster01": {
+    "x": 167,
+    "y": 94
+  },
+  "pMoster02": {
+    "x": 407,
+    "y": 94
+  },
+  "pMoster03": {
+    "x": 669,
+    "y": 94
+  },
+  "pMosterDtExit": {"x" : 1087, "y" : 166},
+  "pMygame": {
+    "x": 430,
+    "y": 378
+  },
+  "pNoSupport": {
+    "x": 791,
+    "y": 484
+  },
+  "pNoticeExit": {"x" : 1254, "y" : 84},
+  "pNoticeExitDark": {
+    "x": 1284,
+    "y": 83
+  },
+  "pNpDtExit": {"x" : 1118, "y" : 101},
+  "pQpAll": {
+    "x": 1298,
+    "y": 509
+  },
+  "pQpAp10": {
+    "x": 930,
+    "y": 195
+  },
+  "pQpAp20": {
+    "x": 930,
+    "y": 376
+  },
+  "pQpAp30": {
+    "x": 930,
+    "y": 565
+  },
+  "pQpAp40": {
+    "x": 930,
+    "y": 740
+  },
+  "pReConnectYes": {
+    "x": 907,
+    "y": 612
+  },
+  "pReset": {
+    "x": 1237,
+    "y": 733
+  },
+  "pRewardAction": {"x" : 1165, "y" : 199},
+  "pRewardGet": {
+    "x": 1211,
+    "y": 269
+  },
+  "pRoomSelect01": {
+    "x": 939,
+    "y": 241
+  },
+  "pScrollRestDown": {
+    "x": 1295,
+    "y": 677
+  },
+  "pScrollRestTop": {
+    "x": 1296,
+    "y": 156
+  },
+  "pServantAll": {
+    "x": 131,
+    "y": 176
+  },
+  "pServantArcher": {
+    "x": 264,
+    "y": 180
+  },
+  "pServantAssasin": {
+    "x": 535,
+    "y": 178
+  },
+  "pServantBasker": {
+    "x": 598,
+    "y": 180
+  },
+  "pServantCaster": {
+    "x": 468,
+    "y": 179
+  },
+  "pServantFour": {
+    "x": 669,
+    "y": 186
+  },
+  "pServantLancer": {
+    "x": 334,
+    "y": 177
+  },
+  "pServantMix": {
+    "x": 736,
+    "y": 176
+  },
+  "pServantRider": {
+    "x": 400,
+    "y": 180
+  },
+  "pServantSaber": {
+    "x": 196,
+    "y": 176
+  },
+  "pSkill01": {
+    "x": 111,
+    "y": 627
+  },
+  "pSkill02": {
+    "x": 204,
+    "y": 627
+  },
+  "pSkill03": {
+    "x": 295,
+    "y": 623
+  },
+  "pSupport": {
+    "x": 265,
+    "y": 481
+  },
+  "pSupportNoConfirm": {
+    "x": 652,
+    "y": 608
+  },
+  "pSupportUpdate": {
+    "x": 887,
+    "y": 183
+  },
+  "pSupportUpdateYes": {
+    "x": 875,
+    "y": 615
+  },
+  "pSupports": [
+    {
+      "x": 266,
+      "y": 479
+    },
+    {
+      "x": 520,
+      "y": 479
+    },
+    {
+      "x": 777,
+      "y": 479
+    },
+    {
+      "x": 1034,
+      "y": 479
+    },
+    {
+      "x": 1294,
+      "y": 473
+    }
+  ],
+  "pTrainAll": {
+    "x": 1296,
+    "y": 374
+  },
+  "pTrainAp10": {
+    "x": 930,
+    "y": 187
+  },
+  "pTrainAp20": {
+    "x": 930,
+    "y": 374
+  },
+  "pTrainAp30": {
+    "x": 930,
+    "y": 560
+  },
+  "pTrainAp40": {
+    "x": 930,
+    "y": 736
+  },
+  "pTransfer": {
+    "x": 911,
+    "y": 670
+  },
+  "pUpdate": {
+    "x": 882,
+    "y": 612
+  },
+  "pUpdateNo": {
+    "x": 438,
+    "y": 612
+  },
+  "pWeekEntrance01": {
+    "x": 969,
+    "y": 440
+  },
+  "pWeekEntrance02": {
+    "x": 884,
+    "y": 589
+  },
+  "pWeekEntrance03": {
+    "x": 884,
+    "y": 739
+  },
+  "p_WEEK_ENTRANCE": {
+    "x": 937,
+    "y": 422
+  },
+  "skillPerson01": {
+    "x": 359,
+    "y": 507
+  },
+  "skillPerson02": {
+    "x": 677,
+    "y": 507
+  },
+  "skillPerson03": {
+    "x": 994,
+    "y": 507
+  },
+  "cBattleReapeatNo": {"r" : 158, "g" : 158, "b" : 158},
+  "cBattleReapeatYes": {"r" : 148, "g" : 148, "b" : 148},
+  "pBattleReapeatNo": {"x" : 445, "y" : 608},
+  "pBattleReapeatYes": {"x" : 884, "y" : 611},
+  "cSummonStone": {"r" : 77, "g" : 211, "b" : 189},
+  "pSummonStone": {"x" : 433, "y" : 88},
+  "cLdIsOpen": {"r" : 40, "g" : 48, "b" : 62},
+  "pLdIsOpen": {"x" : 695, "y" : 117},
+  "cLdIsInstalled": {"r" : 77, "g" : 211, "b" : 189},
+  "pLdIsInstalled": {"x" : 433, "y" : 88},
+  "pSupports": [
+    {"x" : 204, "y" : 480},
+    {"x" : 460, "y" : 480},
+    {"x" : 715, "y" : 480},
+    {"x" : 970, "y" : 480},
+    {"x" : 1233, "y" : 480}
+  ]
+}

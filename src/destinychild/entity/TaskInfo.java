@@ -29,6 +29,8 @@ public class TaskInfo {
     private int taskInToDelaySeconds;
     /** 是否启用 **/
     private boolean enable;
+    /** 是否返回任务首页 **/
+    private boolean returnTop;
     /** 小任务是否点击返回按钮 **/
     private boolean smallReturn;
 
@@ -110,5 +112,13 @@ public class TaskInfo {
 
     public void setSmallReturn(boolean smallReturn) {
         this.smallReturn = smallReturn;
+    }
+
+    public boolean isReturnTop() {
+        return returnTop;
+    }
+
+    public void setReturnTop(boolean returnTop) {
+        this.returnTop = returnTop;
     }
 }

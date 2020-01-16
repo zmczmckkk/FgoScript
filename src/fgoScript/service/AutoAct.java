@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import commons.entity.Constant;
 import fgoScript.entity.PointColor;
 import commons.util.GameUtil;
 
@@ -65,7 +66,7 @@ public abstract class AutoAct {
 		int size = pcList.size() * 10;
 		Point clickPoint;
 		for (int i = 0; i < size; i++) {
-			pcWait = GameUtil.waitUntilOneColor(pcList);
+			pcWait = GameUtil.waitUntilOneColor(pcList, Constant.FGOMonitor);
 			if (pcWait!=null) {
 				doSomeThing();
 				clickPoint = pcWait.getClickPoint();

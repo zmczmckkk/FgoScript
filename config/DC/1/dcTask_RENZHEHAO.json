@@ -1,0 +1,149 @@
+{
+  "taskPagePoint": {"x" : 23, "y" : 120},
+  "taskPageColor": {"r" : 171, "g" : 103, "b" : 36},
+  "taskReturnPoint": {"x" : 515, "y" : 77},
+  "tasklist": [
+    {
+      "taskId": 0,
+      "taskName": "gameInto",
+      "startModleName": "",
+      "taskClickPoints": [],
+      "taskClickColors": [],
+      "taskPointRepetitions": 0,
+      "taskAutoClickDelaySeconds": 3,
+      "taskInToDelaySeconds": 240,
+      "smallReturn": false,
+      "enable": true,
+      "returnTop": true
+    },
+    {
+      "taskId": 1,
+      "taskName": "explore",
+      "startModleName": "",
+      "taskClickPoints": [
+        {"x" : 120, "y" : 394},
+        {"x" : 274, "y" : 319},
+        {"x" : 427, "y" : 384}
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 2,
+      "taskAutoClickDelaySeconds": 3,
+      "taskInToDelaySeconds": 3,
+      "smallReturn": true,
+      "enable": true,
+      "returnTop": true
+    },
+    {
+      "taskId": 2,
+      "taskName": "spring",
+      "startModleName": "",
+      "taskClickPoints": [
+        {"x" : 294, "y" : 784}
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 10,
+      "taskInToDelaySeconds": 3,
+      "smallReturn": true,
+      "enable": true,
+      "returnTop": true
+    },
+    {
+      "taskId": 3,
+      "taskName": "ghost",
+      "startModleName": "light",
+      "taskClickPoints": [
+        {"x" : 280, "y" : 854}
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 20,
+      "taskInToDelaySeconds": 6,
+      "smallReturn": true,
+      "enable": true,
+      "returnTop": true
+    },
+    {
+      "taskId": 4,
+      "taskName": "threeOne",
+      "startModleName": "",
+      "taskClickPoints": [
+        {"x" : 256, "y" : 462},
+        {"x" : 230, "y" : 609},
+        {"x" : 136, "y" : 711}
+      ],
+      "taskClickColors": [
+        {"r" : 0, "g" : 217, "b" : 255},
+        {"r" : 244, "g" : 192, "b" : 58},
+        {"r" : 252, "g" : 214, "b" : 198}
+      ],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 12,
+      "taskInToDelaySeconds": 3,
+      "smallReturn": false,
+      "enable": true,
+      "returnTop": true
+    },
+    {
+      "taskId": 5,
+      "taskName": "skin",
+      "startModleName": "",
+      "taskClickPoints": [
+        {"x" : 504, "y" : 363}
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+      "smallReturn": true,
+      "enable": false,
+      "returnTop": true
+    },
+    {
+      "taskId": 6,
+      "taskName": "skinGet",
+      "startModleName": "",
+      "taskClickPoints": [],
+      "taskClickColors": [],
+      "taskPointRepetitions": 0,
+      "taskAutoClickDelaySeconds": 3,
+      "taskInToDelaySeconds": 10,
+      "smallReturn": false,
+      "enable": false,
+      "returnTop": true
+    },
+    {
+      "taskId": 7,
+      "taskName": "subway",
+      "startModleName": "",
+      "taskClickPoints": [
+        {"x" : 277, "y" : 955}
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 20,
+      "smallReturn": true,
+      "enable": false,
+      "returnTop": true
+    },
+    {
+      "taskId": 8,
+      "taskName": "wb",
+      "startModleName": "",
+      "taskClickPoints": [
+        {
+          "x": 653,
+          "y": 423
+        }
+      ],
+      "taskClickColors": [],
+      "taskPointRepetitions": 1,
+      "taskAutoClickDelaySeconds": 60,
+      "taskInToDelaySeconds": 10,
+      "smallReturn": true,
+      "enable": false
+    }
+  ]
+
+}

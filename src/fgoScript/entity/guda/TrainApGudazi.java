@@ -5,7 +5,7 @@ import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.PointColor;
 import fgoScript.entity.ServantSelect;
-import fgoScript.exception.FgoNeedRestartException;
+import fgoScript.exception.AppNeedRestartException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -184,9 +184,9 @@ public class TrainApGudazi extends AbstractApGudazi {
 
 	/**
 	 * 平a攻击
-	 * @throws FgoNeedRestartException 
+	 * @throws AppNeedRestartException
 	 */
-	private void attackAAA() throws FgoNeedRestartException {
+	private void attackAAA() throws AppNeedRestartException {
 		// 蓝色圆板选择
         blueAttackSelect();
         // 开始点击卡片
@@ -206,13 +206,13 @@ public class TrainApGudazi extends AbstractApGudazi {
 	}
 	private List<Point> getCommondCards() {
 		GameUtil.delay(GameConstant.DELAY*2);
-		Point[]  p_supports = POINT_INFO.getpSupports();
+		List<Point> p_supports = POINT_INFO.getpSupports();
 		Color color;
 		Point point;
 		PointColor pc;
 		List<PointColor> pcList = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
-			point = p_supports[i];
+			point = p_supports.get(i);
 			color = GameUtil.getScreenPixel(point);
 			pc = new PointColor(point, color, true);
 			pcList.add(pc);
@@ -385,9 +385,9 @@ public class TrainApGudazi extends AbstractApGudazi {
 	}
 	/**
 	 * 平a攻击
-	 * @throws FgoNeedRestartException 
+	 * @throws AppNeedRestartException
 	 */
-	private void attackAAAC() throws FgoNeedRestartException {
+	private void attackAAAC() throws AppNeedRestartException {
 		// 蓝色圆板选择
         blueAttackSelect();
         // 开始点击卡片

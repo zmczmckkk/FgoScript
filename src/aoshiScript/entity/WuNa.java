@@ -5,7 +5,9 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.util.*;
 
+import commons.entity.Constant;
 import commons.entity.NativeCp;
+import fgoScript.exception.AppNeedRestartException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +29,7 @@ public class WuNa implements IWuNa{
 	private boolean forceStop = false;
 	private Long lastClickTime;
 	boolean scucess = true;
+	boolean ifThrowException = false;
 
 	@Override
 	public boolean isScucess() {
@@ -107,10 +110,14 @@ public class WuNa implements IWuNa{
         if (isGO()){
             Robot rb = GameUtil.getRb(this.getClass().getName());
             int factor = getFactor();
-            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName());
+            String startegy = PropertiesUtil.getValueFromFileNameAndKey("clickStrategy" , "changeButton_" + NativeCp.getUserName(), "");
             if (startegy.equals("判断")) {
-				alwaysClickForStrategy("clicks", null, false, false);
-            }else {
+				try {
+					alwaysClickForStrategy("clicks", null, false, false, "");
+				} catch (AppNeedRestartException e) {
+					e.printStackTrace();
+				}
+			}else {
                 while (isGO()) {
                     rb.delay(600 * factor);
                     GameUtil.mousePressAndReleaseByDD();
@@ -120,19 +127,19 @@ public class WuNa implements IWuNa{
 
 	}
 	private int getFactor(){
-		String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
+		String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName(),"");
 		int factor = Integer.parseInt(multiFactor.trim());
 		return factor;
 	}
 	@Override
-	public void alwaysClickForStrategy(String fileName,Integer factor,boolean alwaysGo, boolean clickWait) {
+	public void alwaysClickForStrategy(String fileName,Integer factor,boolean alwaysGo, boolean clickWait, String relativePath) throws AppNeedRestartException {
 		// 初始化参数
 		setScucess(true);
 		setGO(true);
 		setLastClickTime(System.currentTimeMillis());
 		Robot rb = GameUtil.getRb(this.getClass().getName());
-		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion", fileName);
-		String action = PropertiesUtil.getValueFromAutoClickFile("action", fileName);
+		String condiTion = PropertiesUtil.getValueFromAutoClickFile("condiTion", fileName, relativePath);
+		String action = PropertiesUtil.getValueFromAutoClickFile("action", fileName, relativePath);
 		condiTion = StringUtils.isBlank(condiTion) ? "" : condiTion.substring(0, condiTion.length()-1);
 		action = StringUtils.isBlank(action) ? "" : action.substring(0, action.length()-1);
 		String[] pcStr = condiTion.split(";");
@@ -202,6 +209,9 @@ public class WuNa implements IWuNa{
 					break;
 				}
 				for (int i = 0; i < minSize; i++) {
+					if (ifThrowException) {
+						throw new AppNeedRestartException();
+					}
 					ri = riArray[i];
 					pointColor = pcList.get(ri);
 					p = pointColor.getPoint();
@@ -284,7 +294,7 @@ public class WuNa implements IWuNa{
 	@Override
 	public void falshClick(BaseZButton bt) {
 		BaseZButton[] bts = FgoFrame.instance().getBts();
-		BaseZButton setbt =bts[bts.length-8];
+		BaseZButton setbt =bts[bts.length-5];
 		setbt.setEnabled(true);
 		setbt.setText("点击设置");
 		JIntellitype.getInstance().unregisterHotKey(setbt.getMarkCode());
@@ -297,7 +307,7 @@ public class WuNa implements IWuNa{
 		String condiTion = (int) p.getX()+"," + (int) p.getY()
 		+ "_" + c.getRed() + "," +c.getGreen()	+ "," +c.getBlue()		
 		+ ";";
-		String temp = PropertiesUtil.getValueFromAutoClickFile("condiTion");
+		String temp = PropertiesUtil.getValueFromAutoClickFile("condiTion", "");
 		condiTion = (StringUtils.isBlank(temp)?"":temp) + condiTion;
 		Map<String, String> map = new HashMap<>();
 		map.put("condiTion", condiTion);
@@ -307,7 +317,7 @@ public class WuNa implements IWuNa{
 		Point p = GameUtil.getMousePosition();
 		String action = (int) p.getX()+"," + (int) p.getY()
 		+ ";";
-		String temp = PropertiesUtil.getValueFromAutoClickFile("action");
+		String temp = PropertiesUtil.getValueFromAutoClickFile("action", "");
 		action = (StringUtils.isBlank(temp)?"":temp) + action;
 		Map<String, String> map = new HashMap<>();
 		map.put("action", action);
@@ -319,6 +329,15 @@ public class WuNa implements IWuNa{
 		rb.delay(GameConstant.DELAY/10);
 		rb.mouseRelease(key);
 
+	}
+
+	public boolean isIfThrowException() {
+		return ifThrowException;
+	}
+
+	@Override
+	public void setIfThrowException(boolean ifThrowException) {
+		this.ifThrowException = ifThrowException;
 	}
 
 	public static void main(String[] args) {

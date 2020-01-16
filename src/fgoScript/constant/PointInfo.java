@@ -2,16 +2,18 @@ package fgoScript.constant;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import commons.util.MySpringUtil;
 
 import java.awt.*;
+import java.util.List;
 
 public class PointInfo {
 	public static PointInfo getInstance(){
 		PointInfo pi;
-		String filepath = NativeCp.getUserDir() + "/config/PointInfo.json";
+		String filepath = NativeCp.getUserDir() + "/config/"+ Constant.FGO +"/PointInfo.json";
 		pi = JSONObject.parseObject(GameUtil.getJsonString(filepath), PointInfo.class);
 		return pi;
 	}
@@ -185,13 +187,7 @@ public class PointInfo {
 	private Color cSummonStone;
 	// 卡牌支援判断点
 	private Point pSupport;
-	private Point[] pSupports = {
-			new Point(259,478),
-			new Point(513,476),
-			new Point(770,473),
-			new Point(1027,480),
-			new Point(1287,476)
-	};
+	private List<Point> pSupports;
 	private Point pCardColor;
 	private Point pCardWeak;
 	private Point pCardClick;
@@ -1119,11 +1115,11 @@ public class PointInfo {
 		this.pSupport = pSupport;
 	}
 
-	public Point[] getpSupports() {
+	public List<Point> getpSupports() {
 		return pSupports;
 	}
 
-	public void setpSupports(Point[] pSupports) {
+	public void setpSupports(List<Point> pSupports) {
 		this.pSupports = pSupports;
 	}
 

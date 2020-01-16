@@ -1,9 +1,9 @@
 package destinychild;
 
 import aoshiScript.entity.IWuNa;
-import aoshiScript.entity.WuNa;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
@@ -11,9 +11,9 @@ import commons.util.ThreadUtil;
 import destinychild.entity.RaidFilterMenu;
 import destinychild.entity.RaidStartPage;
 import fgoScript.entity.PointColor;
-import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.exception.FgoNeedStopException;
-import fgoScript.exception.FgoNeedUpdateException;
+import fgoScript.exception.AppNeedRestartException;
+import fgoScript.exception.AppNeedStopException;
+import fgoScript.exception.AppNeedUpdateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -152,7 +152,7 @@ public class Raid implements IRaid{
         });
     }
     private int getFactor(){
-        String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName());
+        String multiFactor = PropertiesUtil.getValueFromFileNameAndKey("multiFactor" , "changeButton_" + NativeCp.getUserName(), "");
         int factor = Integer.parseInt(multiFactor.trim());
         return factor;
     }
@@ -169,7 +169,11 @@ public class Raid implements IRaid{
         //单启动一个线程:实时点色教程操作。用来处理断线，重启，升级，补票等操作(脚本文件)
         singleThreadPool.execute(()-> {
             LOGGER.info("开始处理断线，重启，升级，补票!");
-            wuna.alwaysClickForStrategy("optionClick", 2000, true, false);
+            try {
+                wuna.alwaysClickForStrategy("optionClick", 2000, true, false, Constant.DC + "/");
+            } catch (AppNeedRestartException e) {
+                e.printStackTrace();
+            }
             LOGGER.info("结束处理断线，重启，升级，补票!");
         });
         //单启动一个线程:检测并处理战斗条件（逻辑判断）
@@ -181,11 +185,11 @@ public class Raid implements IRaid{
             // 设置列表过滤项为：未参加，参加人数（降序）
             try {
                 setFilterOptions();
-            } catch (FgoNeedRestartException e) {
+            } catch (AppNeedRestartException e) {
                 e.printStackTrace();
-            } catch (FgoNeedUpdateException e) {
+            } catch (AppNeedUpdateException e) {
                 e.printStackTrace();
-            } catch (FgoNeedStopException e) {
+            } catch (AppNeedStopException e) {
                 break;
             }
             ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
@@ -209,7 +213,11 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("runClick", null, false,true);
+                try {
+                    wuna.alwaysClickForStrategy("runClick", null, false,true, Constant.DC + "/");
+                } catch (AppNeedRestartException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -220,7 +228,7 @@ public class Raid implements IRaid{
         GameUtil.setSTOP_SCRIPT(true);
     }
 
-    private void setFilterOptions() throws FgoNeedUpdateException,FgoNeedRestartException, FgoNeedStopException {
+    private void setFilterOptions() throws AppNeedUpdateException, AppNeedRestartException, AppNeedStopException {
         // 最大循环次数
         int maxCicle = 999;
         getMenu();
@@ -228,7 +236,7 @@ public class Raid implements IRaid{
         LOGGER.info("等待菜单按钮");
         List<PointColor> pocoList = new ArrayList<PointColor>();
         pocoList.add(new PointColor(menu.getMenuPoint(), menu.getMenuColor(), true));
-        GameUtil.waitUntilAllColor(pocoList,500);
+        GameUtil.waitUntilAllColor(pocoList,500, Constant.FGOMonitor);
         //如果未出现“确认按钮”，点击“菜单按钮”，
         Color tempColor;
         for (int i = 0; i < maxCicle; i++) {
@@ -249,7 +257,11 @@ public class Raid implements IRaid{
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                wuna.alwaysClickForStrategy("filterClick", null, false, true);
+                try {
+                    wuna.alwaysClickForStrategy("filterClick", null, false, true, Constant.DC + "/");
+                } catch (AppNeedRestartException e) {
+                    e.printStackTrace();
+                }
             }
         });
         //如果两个颜色符合条件，点击确认。

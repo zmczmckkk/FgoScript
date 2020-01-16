@@ -1,6 +1,7 @@
 package destinychild;
 
 import com.alibaba.fastjson.JSONObject;
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import fgoScript.entity.PointColor;
@@ -30,6 +31,8 @@ public class Light implements IModule {
     private LightData lightData;
     @Override
     public void start() {
+        setFlag(true);
+        settFlag(false);
         reFreshLightData();
         // 线程1： 检测确认按钮
         poolExecutor.execute(new Runnable() {
@@ -123,6 +126,7 @@ public class Light implements IModule {
             pcList = new ArrayList<>();
             pcList.add(new PointColor(lightData.getFinishPoint(),lightData.getFinishColor(), true));
             pcList.add(new PointColor(lightData.getStartPoint(),lightData.getStartColor(), true));
+            pcList.add(new PointColor(lightData.getFreeReturnPoint(),lightData.getFreeReturnColor(), true));
             size = pcList.size();
             for (int i = 0; i < size; i++) {
                 tempPoint = pcList.get(i).getPoint();
@@ -139,22 +143,20 @@ public class Light implements IModule {
     @Override
     public void stop() {
         setFlag(false);
+        while (poolExecutor.getActiveCount()!=0){
+            delay(1000);
+        }
+        settFlag(true);
     }
 
     @Override
     public void toggle() {
         if (tFlag) {
             if ( poolExecutor.getActiveCount() == 0) {
-                setFlag(true);
-                settFlag(false);
                 start();
             }
         } else {
             stop();
-            while (poolExecutor.getActiveCount()!=0){
-                delay(1000);
-            }
-            settFlag(true);
         }
     }
 
@@ -201,7 +203,7 @@ public class Light implements IModule {
         return lightData;
     }
     public void reFreshLightData() {
-        String filepath = NativeCp.getUserDir() + "/config/LightData.json";
+        String filepath = NativeCp.getUserDir() + "/config/"+ Constant.DC +"/LightData.json";
         lightData = JSONObject.parseObject(GameUtil.getJsonString(filepath), LightData.class);
     }
     private static final Logger LOGGER = LogManager.getLogger(Light.class);

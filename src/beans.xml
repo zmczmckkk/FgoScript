@@ -7,6 +7,7 @@
     <bean id="fgoFrame" class="fgoScript.entity.panel.FgoFrame" lazy-init="true">
         <property name="wuna" ref="wuna"/>
         <property name="destinyPanel" ref="destinyPanel"/>
+        <property name="systemPanel" ref="systemPanel"/>
     </bean>
     <bean id="raid" class="destinychild.Raid" lazy-init="true">
         <property name="wuna" ref="wuna"/>
@@ -17,6 +18,8 @@
         <property name="raid" ref="raid"/>
         <property name="daillyMission" ref="daillyMission"/>
     </bean>
+    <bean id="systemPanel" class="fgoScript.entity.panel.SystemPanel" lazy-init="true">
+    </bean>
     <bean id="daillyMission" class="destinychild.DaillyMission" lazy-init="true">
         <property name="wuna" ref="wuna"/>
         <property name="light" ref="light"/>
@@ -26,6 +29,8 @@
         <constructor-arg value="wuna007"/>
     </bean>
     <bean id="pointInfo" class="fgoScript.constant.PointInfo" factory-method="getInstance"  >
+    </bean>
+    <bean id="dcPointInfo" class="destinychild.entity.DcPointInfo" factory-method="getInstance"  >
     </bean>
     <bean id="fgoPreference" class="fgoScript.constant.FgoPreference" factory-method="getInstance"  >
     </bean>

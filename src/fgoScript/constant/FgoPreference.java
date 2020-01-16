@@ -2,6 +2,7 @@ package fgoScript.constant;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import commons.util.MySpringUtil;
@@ -13,7 +14,7 @@ import java.util.List;
 public class FgoPreference {
     public static FgoPreference getInstance(){
         FgoPreference fp;
-        String filepath = NativeCp.getUserDir() + "/config/FgoPreference.json";
+        String filepath = NativeCp.getUserDir() + "/config/"+ Constant.FGO +"/FgoPreference.json";
         fp = JSONObject.parseObject(GameUtil.getJsonString(filepath), FgoPreference.class);
         return fp;
     }

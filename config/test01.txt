@@ -1,2 +1,0 @@
-J:\RRFGO\ecyttmnq\TianTian.exe  -n 1 -t 天天二次元1 -i J:/RRFGO/ecyttmnq/apps/com.netease.uu.apk
-com.aniplex.fategrandorder

@@ -1,0 +1,16 @@
+﻿[
+  {
+    "name": "再连接",
+    "checkPointList": [
+      {
+        "point": {"x" : 1000, "y" : 606},
+        "color": {"r" : 38, "g" : 41, "b" : 56},
+        "equal": true
+      }
+    ],
+    "clickPointList": [{"x": 1000, "y": 606}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
+  }
+]

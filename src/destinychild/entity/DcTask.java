@@ -51,4 +51,5 @@ public class DcTask {
     public void setTasklist(List<TaskInfo> tasklist) {
         this.tasklist = tasklist;
     }
+
 }

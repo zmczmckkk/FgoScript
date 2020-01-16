@@ -1,12 +1,19 @@
 package test;
 
 import aoshiScript.entity.WuNa;
+import commons.entity.Constant;
 import commons.util.MySpringUtil;
+import destinychild.DaillyMission;
 import destinychild.Raid;
+import destinychild.entity.DcTask;
+import destinychild.entity.TaskInfo;
+import fgoScript.exception.AppNeedRestartException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 public class RaidTest extends Raid {
     private ClassPathXmlApplicationContext applicationContext;
@@ -21,13 +28,24 @@ public class RaidTest extends Raid {
 
     @Test
     public void raidBattleStartTest() {
-        Raid r = (Raid) applicationContext.getBean("raid");
-        r.raidBattleStart();
+        DaillyMission ds = (DaillyMission) applicationContext.getBean("daillyMission");
+        DcTask dcTask = ds.getDcTask(true, 2);
+        List<TaskInfo> taskInfoList = dcTask.getTasklist();
+        try {
+            ds.startOneMission(2,2,false);
+        } catch (AppNeedRestartException e) {
+            e.printStackTrace();
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void raidBattleStopTest() {
-        new WuNa("").alwaysClickForStrategy("filterClick", null, false, true);
+        try {
+            new WuNa("").alwaysClickForStrategy("filterClick", null, false, true, Constant.DC + "/");
+        } catch (AppNeedRestartException e) {
+            e.printStackTrace();
+        }
     }
 
     @Before

@@ -1,0 +1,21 @@
+﻿{
+  "clickPoint": {"x" : 258, "y" : 791},
+  "leftPoint": {"x" : 238, "y" : 285},
+  "rightPoint": {"x" : 248, "y" : 285},
+  "buttonPoint": {"x" : 258, "y" : 791},
+  "buttonColor": {"r" : 104, "g" : 2, "b" : 2},
+  "confirmPoint":  {"x" : 329, "y" : 866},
+  "confirmColor": {"r" : 244, "g" : 169, "b" : 0},
+  "finishPoint": {"x" : 341, "y" : 900},
+  "finishColor": {"r" : 154, "g" : 98, "b" : 59},
+  "startPoint": {"x" : 312, "y" : 425},
+  "startColor": {"r" : 58, "g" : 118, "b" : 137},
+  "freeFinishPoint": {"x" : 328, "y" : 847},
+  "freeFinishColor": {"r" : 49, "g" : 26, "b" : 14},
+  "freeReturnPoint": {"x" : 390, "y" : 915},
+  "freeReturnColor": {"r" : 196, "g" : 170, "b" : 152},
+  "smStep": 60,
+  "amStep": 2,
+  "clickDelay" : 75
+
+}

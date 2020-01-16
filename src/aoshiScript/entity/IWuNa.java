@@ -4,6 +4,7 @@ import com.melloware.jintellitype.JIntellitype;
 import commons.util.PropertiesUtil;
 import fgoScript.entity.BaseZButton;
 import fgoScript.entity.panel.FgoFrame;
+import fgoScript.exception.AppNeedRestartException;
 import org.checkerframework.checker.units.qual.A;
 
 /**
@@ -25,11 +26,12 @@ public interface IWuNa {
      * @param fileName properties文件名
      * @param factor 点击频率系数
      * @param clickWait 是否点击后等待
+     * @param relativePath 相对config路径 eg : fgo/
      * @return: void
      * @Author: RENZHEHAO
      * @Date: 2019/6/3
      */
-    public void alwaysClickForStrategy(String fileName, Integer factor, boolean alwaysGo, boolean clickWait);
+    public void alwaysClickForStrategy(String fileName, Integer factor, boolean alwaysGo, boolean clickWait, String relativePath) throws AppNeedRestartException;
     /**
      * @Description: 配置鼠标点色操作
      * @param bt
@@ -105,4 +107,11 @@ public interface IWuNa {
      * @Date: 2019/6/4
      */
     public void setLastClickTime(Long lastClickTime);
+    /**
+     * @Description: 设置是否抛异常
+     * @return: void
+     * @Author: RENZHEHAO
+     * @Date: 2019/6/4
+     */
+    public void setIfThrowException(boolean ifThrowException);
 }

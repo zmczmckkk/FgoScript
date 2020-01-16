@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
+import commons.entity.Constant;
 import commons.util.MySpringUtil;
 import fgoScript.constant.FgoPreference;
 import fgoScript.entity.*;
@@ -19,8 +20,8 @@ import org.apache.logging.log4j.Logger;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.exception.FgoNeedNextException;
-import fgoScript.exception.FgoNeedRestartException;
-import fgoScript.exception.FgoNeedStopException;
+import fgoScript.exception.AppNeedRestartException;
+import fgoScript.exception.AppNeedStopException;
 import fgoScript.service.AutoAct;
 import fgoScript.service.EventFactors;
 import commons.util.ProcessDealUtil;
@@ -76,7 +77,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 LOGGER.info(e.getMessage());
                 GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_体力不足页面.");
                 continue;
-            } catch (FgoNeedStopException e) {
+            } catch (AppNeedStopException e) {
             	ifClose = false;
             	throw e;
 			}finally {
@@ -151,7 +152,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 LOGGER.info("选本选人");
                 try {
                     intoAndSelect(apNum, accountNum);
-                } catch (FgoNeedRestartException e) {
+                } catch (AppNeedRestartException e) {
                     if (GameUtil.likeEqualColor(POINT_INFO.getcAppleNeed01(), GameUtil.getScreenPixel(POINT_INFO.getpAppleNeed01())) ||
                             GameUtil.likeEqualColor(POINT_INFO.getcAppleNeed02(), GameUtil.getScreenPixel(POINT_INFO.getpAppleNeed02()))) {
                         if (appleCost == GameConstant.APPLE_COUNT) {
@@ -174,7 +175,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 selectRoomPressFightForQp(accountNum, appleCost, apNum);
                 waitToAttack(null);
             }
-        } catch (FgoNeedRestartException e) {
+        } catch (AppNeedRestartException e) {
             LOGGER.info("进入房间异常！");
             LOGGER.info(e.getMessage());
             ProcessDealUtil.killAllDnPlayer();
@@ -189,7 +190,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 }
                 // 战斗并且返回
                 fightAndStop(rebootFlag, apNum);
-            } catch (FgoNeedRestartException e) {
+            } catch (AppNeedRestartException e) {
                 LOGGER.info("战斗异常！");
                 LOGGER.info(e.getMessage());
                 ProcessDealUtil.killAllDnPlayer();
@@ -208,7 +209,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 } else {
                     LOGGER.info("最后一页：" + count);
                 }
-            } catch (FgoNeedRestartException e) {
+            } catch (AppNeedRestartException e) {
                 LOGGER.info("结算，返回异常！");
                 LOGGER.info(e.getMessage());
                 ProcessDealUtil.killAllDnPlayer();
@@ -270,7 +271,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   		if (!flag) {
   			if (++retunTimes == 2) {
   				retunTimes = 0;
-  				throw new FgoNeedRestartException();
+  				throw new AppNeedRestartException();
 			}
   			returnTopPage();
   			waitForHomePage();
@@ -280,7 +281,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   			// 等待进入选人界面
   			pocoList = new ArrayList<PointColor>();
   			pocoList.add(new PointColor(p_wait, c_wait, true));
-  			GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY);
+  			GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY, Constant.FGOMonitor);
   			// 选职介
   	        GameUtil.mouseMoveByPoint(EventFactors.supportServant);
   	        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
@@ -292,7 +293,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   			// 等待进入队伍配置界面
             pocoList = new ArrayList<PointColor>();
   			pocoList.add(new PointColor(POINT_INFO.getpBattleStart(), POINT_INFO.getcBattleStart(), true));
-  			GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY);
+  			GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY, Constant.FGOMonitor);
   			// 点击开始战斗按钮
   			GameUtil.mouseMoveByPoint(POINT_INFO.getpBattleStart());
   			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
@@ -310,7 +311,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         Color c_left_top = POINT_INFO.getcLeftTop();
         java.util.List<PointColor> pocoList = new ArrayList<PointColor>();
         pocoList.add(new PointColor(p_left_top, c_left_top, true));
-        GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY);
+        GameUtil.waitUntilAllColor(pocoList, GameConstant.DELAY, Constant.FGOMonitor);
 
         // 移动窗口至左上角
         GameUtil.moveToLeftTop();
@@ -386,7 +387,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
         pocoList.add(new PointColor(POINT_INFO.getpFetterUp(), POINT_INFO.getcFetterUp(), true, ""));
         pocoList.add(new PointColor(POINT_INFO.getpLevelUp(), POINT_INFO.getcLevelUp(), true, ""));
         pocoList.add(new PointColor(POINT_INFO.getpConfirmRd(), POINT_INFO.getcConfirmRd(), true, ""));
-        PointColor pc = GameUtil.waitUntilOneColor(pocoList);
+        PointColor pc = GameUtil.waitUntilOneColor(pocoList, Constant.FGOMonitor);
         return pc;
     }
 
@@ -879,7 +880,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 		}
 		return false;
 	}
-    protected final  void checkExitCardSelect() throws FgoNeedRestartException {
+    protected final  void checkExitCardSelect() throws AppNeedRestartException {
         GameUtil.delay(GameConstant.DELAY * 5);
         Point p = POINT_INFO.getpCardExit();
         Color c = POINT_INFO.getcCardExit();
@@ -890,7 +891,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
             GameUtil.mousePressAndReleaseForConfirm(KeyEvent.BUTTON1_DOWN_MASK);
         }
     }
-    protected final  void blueAttackSelect() throws FgoNeedRestartException {
+    protected final  void blueAttackSelect() throws AppNeedRestartException {
     	 Point p_card_exit = POINT_INFO.getpCardExit();
          Color c_card_exit = POINT_INFO.getcCardExit();
          PointColor pc = new PointColor(p_card_exit, c_card_exit, true);

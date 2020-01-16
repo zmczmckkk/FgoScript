@@ -8,6 +8,7 @@ import aoshiScript.entity.WuNa;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.MySpringUtil;
 import commons.util.ProcessDealUtil;
@@ -49,10 +50,15 @@ public class FgoFrame extends JFrame {
 	}
 	private List<Component> cpList = new ArrayList<>();;
 	private DestinyPanel destinyPanel;
+	private SystemPanel systemPanel;
 	private final Zpanel centerPanel = new Zpanel();
 
 	public void setDestinyPanel(DestinyPanel destinyPanel) {
 		this.destinyPanel = destinyPanel;
+	}
+
+	public void setSystemPanel(SystemPanel systemPanel) {
+		this.systemPanel = systemPanel;
 	}
 
 	private IWuNa wuna;
@@ -316,7 +322,6 @@ public class FgoFrame extends JFrame {
 	private final Zpanel southPanel04 = new Zpanel();
 	private final Zpanel northPanel = new Zpanel();
 	private final Zpanel toolPanel = new Zpanel();
-	private final Zpanel systemPanel = new Zpanel();
 	private final Zpanel alarmPanel = Alarm.instance().getAlarmPanel();
 	// 初始化
 	public void init() {
@@ -324,7 +329,6 @@ public class FgoFrame extends JFrame {
 		backPanel01.setLayout(new BorderLayout());
 		centerPanel.setLayout(null);
 		toolPanel.setLayout(null);
-		systemPanel.setLayout(null);
 		buttonPanel.setLayout(new GridLayout(2, 1));
 		pagePanel.setLayout(new GridLayout(1, 1));
 		southPanel01.setLayout(new GridLayout(1, 9));
@@ -409,11 +413,11 @@ public class FgoFrame extends JFrame {
 			}
 		}
 		//选择账号按钮
-		ZTextField zf1 = new ZTextField("0", "open_" + NativeCp.getUserName(), "openAccount");
+		ZTextField zf1 = new ZTextField("0", "open_" + NativeCp.getUserName(), Constant.FGO + "/","openAccount");
 		zf1.setBounds(90, 5 + (7 * (30+len)), 30, 25+len);
 		centerPanel.add(zf1);
 		//app文件名设置
-		ZTextField appNameZtext = new ZTextField("0", "open_" + NativeCp.getUserName(), "appName");
+		ZTextField appNameZtext = new ZTextField("0", "open_" + NativeCp.getUserName(), Constant.FGO + "/", "appName");
 		appNameZtext.setBounds(125, 5 + (7 * (30+len)), 200, 25+len);
 		centerPanel.add(appNameZtext);
 		//选择战斗策略按钮
@@ -431,11 +435,11 @@ public class FgoFrame extends JFrame {
 		List<String> changeList = new ArrayList<>();
 		changeList.add("左键");
 		changeList.add("判断");
-		jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(), "clickStrategy", true, true, BaseZButton.pink);
+		jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(),"", "clickStrategy", true, true, BaseZButton.pink);
 		jbTemp.setBounds(220, 5 + (12 * (30+len)), 50, 25+len);
 		toolPanel.add(jbTemp);
 		//按键倍率按钮
-		ZTextField zf2 = new ZTextField("0", "changeButton_" + NativeCp.getUserName(), "multiFactor");
+		ZTextField zf2 = new ZTextField("0", "changeButton_" + NativeCp.getUserName(),"", "multiFactor");
 		zf2.setBounds(275, 5 + (12 * (30+len)), 50, 25+len);
 		toolPanel.add(zf2);
 		//显示背景按钮
@@ -499,30 +503,9 @@ public class FgoFrame extends JFrame {
                 fd.setFile(fd.getDirectory()+ "\\" + fd.getFile());
 			}
 		};
-		//自动关机按钮
-		BaseZButton ShutdownButton = new BaseZButton(null, 0,"定时关机",JIntellitype.MOD_SHIFT, (int) 'S',true, false, BaseZButton.pink) {
-			private static final long serialVersionUID = 53933841194261802L;
-			@Override
-			public void runMethod() throws Exception {
-				int minutes = Integer.valueOf(PropertiesUtil.getValueFromSystemFile("minutes"));
-				ProcessDealUtil.closeComputerInTime(minutes);
-				this.setText("定时关机");
-			}
-		};
-		//取消自动关机按钮
-		BaseZButton abortShutdownButton = new BaseZButton(null, 0,"取消",JIntellitype.MOD_SHIFT, (int) 'S',true, false, BaseZButton.pink) {
-			private static final long serialVersionUID = 53933841194261802L;
-			@Override
-			public void runMethod() throws Exception {
-				ProcessDealUtil.abordCloseComputer();
-				this.setText("取消");
-			}
-		};
-		ShutdownButton.setBounds(5, 5, 80, 25+len);
-		abortShutdownButton.setBounds(90, 5, 40, 25+len);
-		//关机时间设置
-		ZTextField closeTimeZt = new ZTextField("0", "system_" + NativeCp.getUserName(), "minutes");
-		closeTimeZt.setBounds(135, 5, 190, 25+len);
+
+
+
 		//添加分页按钮
 		BaseZButton pageBt01 = new BaseZButton(null, 0,"首页", JIntellitype.MOD_ALT, KeyEvent.VK_0, true, true, BaseZButton.pink) {
 			private static final long serialVersionUID = -7491221341872701498L;
@@ -578,11 +561,11 @@ public class FgoFrame extends JFrame {
 		alarmPanel.setOpaque(false);
 		northPanel.setOpaque(false);
 		pagePanel.setOpaque(false);
-		systemPanel.setOpaque(false);
+
 		toolPanel.setOpaque(false);
-		systemPanel.setVisible(false);
+
 		alarmPanel.setVisible(true);
-		systemPanel.setBounds(0, 0, 335, 518);
+
 		toolPanel.setBounds(0, 0, 335, 518);
 		buttonPanel.setBounds(5, 8 + (9 * (30+len)), 320, 55+len);
 		northPanel.setBounds(5, 5 + (13 * (30+len)), 320, 25+len);
@@ -595,9 +578,7 @@ public class FgoFrame extends JFrame {
 		pagePanel.add(pageBt03);
 		pagePanel.add(pageBt04);
 		pagePanel.add(pageBt05);
-		systemPanel.add(ShutdownButton);
-		systemPanel.add(abortShutdownButton);
-		systemPanel.add(closeTimeZt);
+
 		buttonPanel.add(southPanel01);
 		buttonPanel.add(southPanel04);
 		buttonPanel.add(southPanel02);
