@@ -1,5 +1,6 @@
 package fgoScript.entity.guda;
 
+import commons.entity.Constant;
 import commons.util.GameUtil;
 import commons.util.PropertiesUtil;
 import fgoScript.constant.GameConstant;
@@ -136,6 +137,6 @@ public class TrainApGudaziForLittleSpecial extends TrainApGudazi{
 
     @Override
     public String getSpecialGatesFilePath() {
-        return System.getProperty("user.dir") + "/config/special_all_train.json";
+        return System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/special_all_train.json";
     }
 }

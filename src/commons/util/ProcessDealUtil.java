@@ -113,16 +113,24 @@ public class ProcessDealUtil {
 		String url = getClientBaseUrl();
 		String appName = "com.stairs.destinychild";
 		String line = url + "/dnconsole.exe  launchex --index " + account + " --packagename " +appName;
-		String closeLine = url + "/dnconsole.exe  quit --index " + account;
+		closeDC(account);
 		try {
-			executeCmd(closeLine,true);
 			GameUtil.delay(3000);
 			executeCmd(line,false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
+	public static void closeDC(int account) {
+		String url = getClientBaseUrl();
+		String closeLine = url + "/dnconsole.exe  quit --index " + account;
+		try {
+			executeCmd(closeLine,true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void startLd(int account) {
 		String url = getClientBaseUrl();
 		String line = url + "/dnconsole.exe  launch --index " + account;

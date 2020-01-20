@@ -10,6 +10,7 @@ import java.util.*;
 import com.alibaba.fastjson.JSON;
 import commons.entity.Constant;
 import commons.util.MySpringUtil;
+import destinychild.entity.PointAndColor;
 import fgoScript.constant.FgoPreference;
 import fgoScript.entity.*;
 import fgoScript.service.CommonMethods;
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
-import fgoScript.exception.FgoNeedNextException;
+import fgoScript.exception.AppNeedNextException;
 import fgoScript.exception.AppNeedRestartException;
 import fgoScript.exception.AppNeedStopException;
 import fgoScript.service.AutoAct;
@@ -73,7 +74,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                 startOneFgo(accountNum, apArray);
                 // 关闭所有相关应用
                 ProcessDealUtil.killAllDnPlayer();
-            } catch (FgoNeedNextException e) {
+            } catch (AppNeedNextException e) {
                 LOGGER.info(e.getMessage());
                 GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_体力不足页面.");
                 continue;
@@ -157,7 +158,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
                             GameUtil.likeEqualColor(POINT_INFO.getcAppleNeed02(), GameUtil.getScreenPixel(POINT_INFO.getpAppleNeed02()))) {
                         if (appleCost == GameConstant.APPLE_COUNT) {
                             LOGGER.info("已达到苹果消耗量，停止更新苹果。");
-                            throw new FgoNeedNextException();
+                            throw new AppNeedNextException();
                         }else {
                             GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + accountNum + "_使用第"+(appleCost+1)+"个苹果.");
                             GameUtil.mouseMoveByPoint(POINT_INFO.getpAppleNeed01());
@@ -243,7 +244,7 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
 						GameUtil.likeEqualColor(c_apple_need02, cWait)) {
                     if (appleCost == GameConstant.APPLE_COUNT) {
                         LOGGER.info("已达到苹果消耗量，停止更新苹果。");
-                        throw new FgoNeedNextException();
+                        throw new AppNeedNextException();
                     }else {
                         GameUtil.img2file(GameConstant.IMG_EXTEND, PREFIX + "\\账号" + acountNum + "_使用第"+(appleCost+1)+"个苹果.");
                         GameUtil.mouseMoveByPoint(POINT_INFO.getpAppleNeed01());
@@ -286,8 +287,22 @@ public abstract class AbstractApGudazi implements InterfaceApGudazi{
   	        GameUtil.mouseMoveByPoint(EventFactors.supportServant);
   	        GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
   			// 选人
-  			Point p10 = new Point(300, 319);// 颜色：255;255;219 Color c = new Color(255, 255, 219);
-  			GameUtil.mouseMoveByPoint(p10);
+            List<PointAndColor> pacList = POINT_INFO.getPersonNotSelects();
+            int size = pacList.size();
+            PointAndColor tempPac;
+            Point tempPoint;
+            Color tempColor;
+            Point supportLoc = null;
+            for (int i = 0; i < size; i++) {
+                tempPac = pacList.get(i);
+                tempPoint = tempPac.getPoint();
+                tempColor = tempPac.getColor();
+                if(!GameUtil.likeEqualColor(tempColor,GameUtil.getScreenPixel(tempPoint),10)){
+                    supportLoc = tempPoint;
+                    break;
+                }
+            }
+  			GameUtil.mouseMoveByPoint(supportLoc);
   			GameUtil.mousePressAndRelease(KeyEvent.BUTTON1_DOWN_MASK);
             LOGGER.info("等待进入队伍配置界面!");
   			// 等待进入队伍配置界面

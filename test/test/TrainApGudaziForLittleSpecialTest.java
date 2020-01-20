@@ -1,6 +1,7 @@
 package test;
 
 import com.alibaba.fastjson.JSON;
+import commons.entity.Constant;
 import fgoScript.entity.Gates;
 import fgoScript.entity.GatesInfo;
 import commons.util.GameUtil;
@@ -44,7 +45,7 @@ public class TrainApGudaziForLittleSpecialTest {
     }
     private void insertIntoTrainingRoomForSpecialInner(int acountNum, int apNum){
         //获取入口信息
-        String filepath = System.getProperty("user.dir") + "/config/special_all_train.json";
+        String filepath = System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/special_all_train.json";
         String jsonString = GameUtil.getJsonString(filepath);
         GatesInfo gi = JSON.parseObject(jsonString, GatesInfo.class);
 

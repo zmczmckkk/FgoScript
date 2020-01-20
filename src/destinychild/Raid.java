@@ -44,7 +44,11 @@ public class Raid implements IRaid{
         }else{
             LOGGER.info("关闭raid脚本");
             raidBattleStop();
-            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            try {
+                ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            } catch (AppNeedRestartException e) {
+                e.printStackTrace();
+            }
             setFlag(false);
 
         }
@@ -192,12 +196,20 @@ public class Raid implements IRaid{
             } catch (AppNeedStopException e) {
                 break;
             }
-            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            try {
+                ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            } catch (AppNeedRestartException e) {
+                e.printStackTrace();
+            }
             // 执行点击脚本。当完成一场战斗后，点解结束按钮。结束所有线程
             runClick(threadPoolTaskExecutor.getActiveCount());
             // 当完成一场战斗后，点结束按钮。结束所有线程
             stopOneBattle();
-            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            try {
+                ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            } catch (AppNeedRestartException e) {
+                e.printStackTrace();
+            }
             setFlag(true);
         }
     }

@@ -1,6 +1,7 @@
 package commons.util;
 
 import destinychild.Raid;
+import fgoScript.exception.AppNeedRestartException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -21,10 +22,14 @@ public class ThreadUtil {
      * @Author: RENZHEHAO
      * @Date: 2019/6/7
      */
-    public static void waitUntilNoneThread(ThreadPoolTaskExecutor threadPoolTaskExecutor){
+    public static void waitUntilNoneThread(ThreadPoolTaskExecutor threadPoolTaskExecutor) throws AppNeedRestartException {
+        int count = 0;
         do{
             GameUtil.delay(3000);
             LOGGER.info("线程个数: " + threadPoolTaskExecutor.getActiveCount());
+            if(count++ > 10){
+                throw new AppNeedRestartException();
+            }
         } while (threadPoolTaskExecutor.getActiveCount() != 0);
     }
 }

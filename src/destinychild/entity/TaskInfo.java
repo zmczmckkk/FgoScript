@@ -1,5 +1,7 @@
 package destinychild.entity;
 
+import fgoScript.entity.PointColor;
+
 import java.awt.*;
 import java.util.List;
 
@@ -33,6 +35,10 @@ public class TaskInfo {
     private boolean returnTop;
     /** 小任务是否点击返回按钮 **/
     private boolean smallReturn;
+    /** 是否检测小任务首页 **/
+    private boolean checkSmallHome;
+    /** 任务页面标志点色 **/
+    private PointAndColor missionPc;
 
     public int getTaskId() {
         return taskId;
@@ -120,5 +126,21 @@ public class TaskInfo {
 
     public void setReturnTop(boolean returnTop) {
         this.returnTop = returnTop;
+    }
+
+    public PointAndColor getMissionPc() {
+        return missionPc;
+    }
+
+    public void setMissionPc(PointAndColor missionPc) {
+        this.missionPc = missionPc;
+    }
+
+    public boolean isCheckSmallHome() {
+        return checkSmallHome;
+    }
+
+    public void setCheckSmallHome(boolean checkSmallHome) {
+        this.checkSmallHome = checkSmallHome;
     }
 }

@@ -14,11 +14,11 @@ import fgoScript.entity.PointColor;
 import fgoScript.exception.AppNeedRestartException;
 import fgoScript.exception.AppNeedStopException;
 import fgoScript.exception.AppNeedUpdateException;
+import fgoScript.exception.AppNeedNextException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.swing.plaf.TreeUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +78,7 @@ public class DaillyMission {
         });
         // main线程：执行主要日常任务。
         goMainMission(account);
+        ProcessDealUtil.closeDC(account);
     }
     private void goMainMission(int account) {
         getDcTask(true, account);
@@ -92,11 +93,17 @@ public class DaillyMission {
                 i--;
                 setIfrestart(true);
                 openDC(account);
+                wuna.setLastClickTime(System.currentTimeMillis());
+                continue;
+            } catch (AppNeedNextException e) {
+                setIfrestart(true);
+                openDC(account);
+                wuna.setLastClickTime(System.currentTimeMillis());
                 continue;
             }
         }
     }
-    public void startOneMission(int index, int account, boolean ifRestart) throws AppNeedRestartException {
+    public void startOneMission(int index, int account, boolean ifRestart) throws AppNeedRestartException, AppNeedNextException {
         if (ifRestart && index != 0){
             startOneMission(0,account,false);
             setIfrestart(false);
@@ -138,9 +145,23 @@ public class DaillyMission {
             /** 进入任务场景 **/
             LOGGER.info("进入任务场景");
             wuna.alwaysClickForStrategy("" + tempTaskInfo.getTaskName()+"_into", 0, false, false, Constant.DC + "/" + account + "/");
-            GameUtil.delay(5000);
+            if (!GameUtil.likeEqualColor(
+                                            tempTaskInfo.getMissionPc().getColor(),
+                                            GameUtil.getScreenPixel(tempTaskInfo.getMissionPc().getPoint())
+                                        )
+                ){
+                if (tempTaskInfo.isCheckSmallHome()){
+                    LOGGER.info("未到达任务页面位置，重新启动！");
+                    throw new AppNeedRestartException();
+                }else{
+                    LOGGER.info("未到达任务页面位置，该任务忽略，直接跳到下一任务！");
+                    throw new AppNeedNextException();
+                }
+
+            }
             /** 设定自动点击最大延时 **/
             setDelaySeconds(tempTaskInfo.getTaskAutoClickDelaySeconds());
+            /** 便利单任务 点击点，执行点击 **/
             for (int k = 0; k < repeat && isFlag(); k++) {
                 for (int j = 0; j < clickPointsSize && isFlag(); j++) {
                     temPoint = tempTaskClickPoints.get(j);
@@ -218,6 +239,7 @@ public class DaillyMission {
             if(tempTaskInfo!=null && tempTaskInfo.getTaskName().equals("gameInto") && GameUtil.likeEqualColor(GameUtil.getScreenPixel(dcTask.getTaskPagePoint()),dcTask.getTaskPageColor())){
                 LOGGER.info("已经到达了任务首页！");
                 wuna.setGO(false);
+                GameUtil.delay(3000);
             }
             GameUtil.delay(1000);
             check++;
@@ -233,8 +255,7 @@ public class DaillyMission {
         } catch (AppNeedUpdateException e) {
             e.printStackTrace();
         } catch (AppNeedRestartException e) {
-            ProcessDealUtil.startDC(account);
-            simoLocation.moveToDestinyPoint();
+            openDC(account);
             e.printStackTrace();
             return;
         } catch (AppNeedStopException e) {
@@ -256,7 +277,11 @@ public class DaillyMission {
         }else{
             LOGGER.info("关闭每日脚本");
             daillyMissionStop();
-            ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            try {
+                ThreadUtil.waitUntilNoneThread(threadPoolTaskExecutor);
+            } catch (AppNeedRestartException e) {
+                e.printStackTrace();
+            }
             setFlag(false);
         }
     }

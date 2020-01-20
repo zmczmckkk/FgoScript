@@ -1,5 +1,6 @@
 package fgoScript.entity.guda;
 
+import commons.entity.Constant;
 import fgoScript.constant.GameConstant;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.Gates;
@@ -93,7 +94,7 @@ public class ExpApGudaziForMainSpecial extends ExpApGudazi{
     @Override
     public String getSpecialGatesFilePath() {
         if (gatesDirPath == null) {
-            setGatesDirPath(System.getProperty("user.dir") + "/config/special_all_exp.json");
+            setGatesDirPath(System.getProperty("user.dir") + "/config/"+ Constant.FGO +"/special_all_exp.json");
         }
         return getGatesDirPath();
     }

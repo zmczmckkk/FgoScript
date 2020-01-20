@@ -9,6 +9,10 @@
       "startModleName": "",
       "taskClickPoints": [],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 23, "y" : 122},
+        "color" : {"r" : 192, "g" : 116, "b" : 43}
+      },
       "taskPointRepetitions": 0,
       "taskAutoClickDelaySeconds": 3,
       "taskInToDelaySeconds": 240,
@@ -28,6 +32,10 @@
         {"x" : 148, "y" : 710}
       ],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 430, "y" : 177},
+        "color" : {"r" : 180, "g" : 108, "b" : 39}
+      },
       "taskPointRepetitions": 2,
       "taskAutoClickDelaySeconds": 3,
       "taskInToDelaySeconds": 3,
@@ -46,6 +54,10 @@
         {"x" : 429, "y" : 633}
       ],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 49, "y" : 119},
+        "color" : {"r" : 97, "g" : 60, "b" : 40}
+      },
       "taskPointRepetitions": 1,
       "taskAutoClickDelaySeconds": 10,
       "taskInToDelaySeconds": 3,
@@ -60,12 +72,16 @@
       "taskClickPoints": [
         {"x" : 280, "y" : 854}
       ],
+      "missionPc": {
+        "point" : {"x" : 355, "y" : 730},
+        "color" : {"r" : 156, "g" : 98, "b" : 61}
+      },
       "taskClickColors": [],
       "taskPointRepetitions": 1,
       "taskAutoClickDelaySeconds": 20,
       "taskInToDelaySeconds": 6,
       "smallReturn": true,
-      "enable": false,
+      "enable": true,
       "returnTop": true
     },
     {
@@ -75,13 +91,25 @@
       "taskClickPoints": [
         {"x" : 256, "y" : 462},
         {"x" : 230, "y" : 609},
-        {"x" : 136, "y" : 711}
+        {"x" : 136, "y" : 711},
+        {"x" : 244, "y" : 437},
+        {"x" : 249, "y" : 705},
+        {"x" : 264, "y" : 440},
+        {"x" : 358, "y" : 664}
       ],
       "taskClickColors": [
         {"r" : 0, "g" : 217, "b" : 255},
         {"r" : 244, "g" : 192, "b" : 58},
-        {"r" : 252, "g" : 214, "b" : 198}
+        {"r" : 252, "g" : 214, "b" : 198},
+        {"r" : 163, "g" : 252, "b" : 26},
+        {"r" : 76, "g" : 123, "b" : 75},
+        {"r" : 226, "g" : 81, "b" : 238},
+        {"r" : 81, "g" : 46, "b" : 75}
       ],
+      "missionPc": {
+        "point" : {"x" : 457, "y" : 189},
+        "color" : {"r" : 195, "g" : 118, "b" : 44}
+      },
       "taskPointRepetitions": 1,
       "taskAutoClickDelaySeconds": 12,
       "taskInToDelaySeconds": 3,
@@ -97,6 +125,10 @@
         {"x" : 504, "y" : 363}
       ],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 498, "y" : 360},
+        "color" : {"r" : 255, "g" : 179, "b" : 0}
+      },
       "taskPointRepetitions": 1,
       "taskAutoClickDelaySeconds": 60,
       "taskInToDelaySeconds": 10,
@@ -110,6 +142,10 @@
       "startModleName": "",
       "taskClickPoints": [],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 431, "y" : 826},
+        "color" : {"r" : 197, "g" : 32, "b" : 32}
+      },
       "taskPointRepetitions": 0,
       "taskAutoClickDelaySeconds": 3,
       "taskInToDelaySeconds": 10,
@@ -125,12 +161,16 @@
         {"x" : 277, "y" : 955}
       ],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 0, "y" : 0},
+        "color" : {"r" : 0, "g" : 0, "b" : 0}
+      },
       "taskPointRepetitions": 1,
-      "taskAutoClickDelaySeconds": 1,
+      "taskAutoClickDelaySeconds": 60,
       "taskInToDelaySeconds": 20,
       "smallReturn": true,
       "enable": true,
-      "returnTop": false
+      "returnTop": true
     },
     {
       "taskId": 8,
@@ -143,11 +183,16 @@
         }
       ],
       "taskClickColors": [],
+      "missionPc": {
+        "point" : {"x" : 0, "y" : 0},
+        "color" : {"r" : 0, "g" : 0, "b" : 0}
+      },
       "taskPointRepetitions": 1,
       "taskAutoClickDelaySeconds": 60,
       "taskInToDelaySeconds": 10,
       "smallReturn": true,
-      "enable": false
+      "enable": false,
+      "returnTop": true
     }
   ]
 

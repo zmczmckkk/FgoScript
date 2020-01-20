@@ -3,6 +3,7 @@ package destinychild;
 import commons.util.MySpringUtil;
 import destinychild.entity.DcTask;
 import destinychild.entity.TaskInfo;
+import fgoScript.exception.AppNeedNextException;
 import fgoScript.exception.AppNeedRestartException;
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +39,8 @@ public class DaillyMissionTest extends DaillyMission {
             ds.startOneMission(2,2,false);
         } catch (AppNeedRestartException e) {
             e.printStackTrace();
+            e.printStackTrace();
+        } catch (AppNeedNextException e) {
             e.printStackTrace();
         }
     }

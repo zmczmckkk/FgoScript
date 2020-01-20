@@ -6,6 +6,7 @@ import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.GameUtil;
 import commons.util.MySpringUtil;
+import destinychild.entity.PointAndColor;
 
 import java.awt.*;
 import java.util.List;
@@ -20,6 +21,10 @@ public class PointInfo {
 	public static PointInfo getSpringBean(){
 		return (PointInfo) MySpringUtil.getApplicationContext().getBean("pointInfo");
 	}
+	//入口可供选点色
+	private List<PointAndColor> entranceSelects;
+	//入口可供选点色
+	private List<PointAndColor> personNotSelects;
 	//雷电启动完成点
 	private Point pLdIsOpen;
 	private Color cLdIsOpen;
@@ -251,16 +256,31 @@ public class PointInfo {
 	private Point pEventBattleLocate01;
 
     public Point getP_WEEK_ENTRANCE() {
-        String code = GameUtil.getValueFromConfig("WEEK_ENTRANCE");
-        if ("01".equals(code)) {
-            return pWeekEntrance01;
-        } else if ("02".equals(code)) {
-            return pWeekEntrance02;
-        } else if ("03".equals(code)) {
-			return pWeekEntrance03;
-		} else {
-            return pWeekEntrance02;
-        }
+    	List<PointAndColor> pacList = getEntranceSelects();
+    	int size = pacList.size();
+		PointAndColor temp;
+		Point point = null;
+		Point tempPoint = null;
+		for (int i = 0; i < size; i++) {
+			temp = pacList.get(i);
+			tempPoint = temp.getPoint();
+			if (GameUtil.likeEqualColor(temp.getColor(),GameUtil.getScreenPixel(tempPoint),8)){
+				point = tempPoint;
+				break;
+			}
+		}
+		if (point == null){
+			int dy = 160;
+			temp = pacList.get(0);
+			tempPoint = temp.getPoint();
+			for (int i = 1; i < 4; i++) {
+				if (GameUtil.likeEqualColor(temp.getColor(),GameUtil.getScreenPixel(new Point((int)tempPoint.getX(),((int) tempPoint.getY()) + dy*i)),50)){
+					point = temp.getPoint();
+					break;
+				}
+			}
+		}
+		return point;
 
     }
 	// 桌面重置位置
@@ -1577,6 +1597,22 @@ public class PointInfo {
 
 	public void setcLdIsInstalled(Color cLdIsInstalled) {
 		this.cLdIsInstalled = cLdIsInstalled;
+	}
+
+	public List<PointAndColor> getEntranceSelects() {
+		return entranceSelects;
+	}
+
+	public void setEntranceSelects(List<PointAndColor> entranceSelects) {
+		this.entranceSelects = entranceSelects;
+	}
+
+	public List<PointAndColor> getPersonNotSelects() {
+		return personNotSelects;
+	}
+
+	public void setPersonNotSelects(List<PointAndColor> personNotSelects) {
+		this.personNotSelects = personNotSelects;
 	}
 
 	public static void main(String[] args) {

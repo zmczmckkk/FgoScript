@@ -11,7 +11,7 @@ import fgoScript.constant.PointInfo;
 import fgoScript.entity.guda.ApGudaziFactory;
 import fgoScript.entity.guda.EventGudazi;
 import fgoScript.entity.panel.FgoFrame;
-import fgoScript.exception.FgoNeedNextException;
+import fgoScript.exception.AppNeedNextException;
 import fgoScript.exception.AppNeedRestartException;
 import fgoScript.exception.AppNeedUpdateException;
 import fgoScript.service.AutoAct;
@@ -114,7 +114,7 @@ public class Gudazi extends TimerTask {
                 new EventGudazi().fightAndStop(i == 0 ? false : true, 0);
 				LOGGER.info("进入下一个循环！");
 			}
-		} catch (FgoNeedNextException | AppNeedRestartException e) {
+		} catch (AppNeedNextException | AppNeedRestartException e) {
 			setIfRestart(true);
 			onlyFight();
 		}
@@ -217,7 +217,7 @@ public class Gudazi extends TimerTask {
 			CommonMethods.open2GudaOrRestart();
 			// 等待咕哒子(加号)页面
 			waitForHomePage();
-		} catch (FgoNeedNextException | AppNeedRestartException e) {
+		} catch (AppNeedNextException | AppNeedRestartException e) {
 			openEvent();
 		}
 	}
@@ -232,7 +232,7 @@ public class Gudazi extends TimerTask {
 			// 单个账号行动开启
 			try {
 				signOneFGO(tip);
-			} catch (FgoNeedNextException e) {
+			} catch (AppNeedNextException e) {
 				LOGGER.info(e.getMessage());
 			} catch (AppNeedUpdateException e) {
 				LOGGER.info(e.getMessage());
@@ -252,7 +252,7 @@ public class Gudazi extends TimerTask {
 			// 单个账号行动开启
 			try {
 				updateAndSignOneFGO(tip);
-			} catch (FgoNeedNextException e) {
+			} catch (AppNeedNextException e) {
 				LOGGER.info(e.getMessage());
 			}
 		}
@@ -270,7 +270,7 @@ public class Gudazi extends TimerTask {
 			// 单个账号行动开启
 			try {
 				oneRewardAndRoll(array[i]);
-			} catch (FgoNeedNextException e) {
+			} catch (AppNeedNextException e) {
 				LOGGER.info(e.getMessage());
 			}
 		}
