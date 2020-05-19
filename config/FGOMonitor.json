@@ -132,17 +132,31 @@
     "needUpdate": false
   },
   {
-    "name": "战败处理异常",
+    "name": "战败处理异常1",
     "checkPointList": [
       {
-        "point": {"x": 326, "y": 366},
-        "color": {"r": 185, "g": 185, "b": 185},
-        "equal": true
-      }
+		"point" : {"x" : 452, "y" : 369},
+		"color" : {"r" : 115, "g" : 115, "b" : 114},
+		"equal": true
+	  }
     ],
     "clickPointList": [{"x": 326, "y": 366},{"x": 909, "y": 410},{"x": 649, "y": 606}],
     "throwException": true,
     "extendOutTime": false,
+    "needUpdate": false
+  },
+  {
+    "name": "战败处理异常2",
+    "checkPointList": [
+	{
+		"point" : {"x" : 352, "y" : 367},
+		"color" : {"r" : 147, "g" : 147, "b" : 147},
+		"equal": true
+	}
+    ],
+    "clickPointList": [{"x": 326, "y": 366},{"x": 909, "y": 410},{"x": 649, "y": 606}],
+    "throwException": true,
+    "extendOutTime": false, 
     "needUpdate": false
   },
   {

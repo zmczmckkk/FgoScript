@@ -15,8 +15,14 @@ public class DcTask {
     private Point taskPagePoint;
     /** 执行任务页面标志色 **/
     private Color taskPageColor;
+    /** 主页标志点 **/
+    private Point homePagePoint;
+    /** 主页标志色 **/
+    private Color homePageColor;
     /** 回退按钮点 **/
     private Point taskReturnPoint;
+    /** 主页进入按钮点 **/
+    private Point intoTaskPoint;
     /** 任务列表点 **/
     private List<TaskInfo> tasklist;
 
@@ -52,4 +58,27 @@ public class DcTask {
         this.tasklist = tasklist;
     }
 
+    public Point getHomePagePoint() {
+        return homePagePoint;
+    }
+
+    public void setHomePagePoint(Point homePagePoint) {
+        this.homePagePoint = homePagePoint;
+    }
+
+    public Color getHomePageColor() {
+        return homePageColor;
+    }
+
+    public void setHomePageColor(Color homePageColor) {
+        this.homePageColor = homePageColor;
+    }
+
+    public Point getIntoTaskPoint() {
+        return intoTaskPoint;
+    }
+
+    public void setIntoTaskPoint(Point intoTaskPoint) {
+        this.intoTaskPoint = intoTaskPoint;
+    }
 }

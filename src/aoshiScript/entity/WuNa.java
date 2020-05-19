@@ -117,12 +117,14 @@ public class WuNa implements IWuNa{
 				} catch (AppNeedRestartException e) {
 					e.printStackTrace();
 				}
-			}else {
-                while (isGO()) {
-                    rb.delay(600 * factor);
-                    GameUtil.mousePressAndReleaseByDD();
-                }
-            }
+			}else if (startegy.equals("按住")) {
+					GameUtil.dd.HIVM_BTN(1);
+            }else {
+				while (isGO()) {
+					rb.delay(600 * factor);
+					GameUtil.mousePressAndReleaseByDD();
+				}
+			}
         }
 
 	}
@@ -160,7 +162,7 @@ public class WuNa implements IWuNa{
 //				LOGGER.info("配置不成对，忽略最后一次点击");
 			}
 			List<PointColor> pcList = new ArrayList<>();
-			List<Boolean> onceList = new ArrayList<>();
+			List<Integer> onceList = new ArrayList<>();
 			String pointStr;
 			String colorStr;
 			String onceStr;
@@ -175,9 +177,9 @@ public class WuNa implements IWuNa{
 				if (conditionSize > 2) {
 					onceStr = tempArray[2];
 				}else {
-					onceStr = "false";
+					onceStr = "-1";
 				}
-				onceList.add(Boolean.parseBoolean(onceStr));
+				onceList.add(Integer.valueOf(onceStr));
 				pcList.add(new PointColor(new Point(Integer.parseInt(pointStr.split(",")[0]),
 						Integer.parseInt(pointStr.split(",")[1])),
 						new Color(Integer.parseInt(colorStr.split(",")[0]),
@@ -210,6 +212,7 @@ public class WuNa implements IWuNa{
 				}
 				for (int i = 0; i < minSize; i++) {
 					if (ifThrowException) {
+						setIfThrowException(false);
 						throw new AppNeedRestartException();
 					}
 					ri = riArray[i];
@@ -231,13 +234,16 @@ public class WuNa implements IWuNa{
 						if (clickWait) {
 							GameUtil.delay(1000);
 						}
-						if(onceList.get(ri)){
+						int z = onceList.get(ri);
+						if((--z) == 0){
 							pcList.remove(ri);
 							pList.remove(ri);
                             onceList.remove(ri);
 							GameUtil.delay(1000);
 							break;
 						}
+						LOGGER.info("当前次数： "+z);
+						onceList.set(ri,z);
 					}
 					rb.delay(factor == null ? 200 * getFactor() : factor);
 				}

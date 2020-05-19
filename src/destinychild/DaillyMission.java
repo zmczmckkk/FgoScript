@@ -46,18 +46,21 @@ public class DaillyMission {
     public static DaillyMission getSpringBean(){
         return (DaillyMission) MySpringUtil.getApplicationContext().getBean("daillyMission");
     }
-    public void daillyMissionStart(){
-        String accountStr = PropertiesUtil.getValueFromFileNameAndKey("account", "DCinit", Constant.DC + "/");
-        String[] accounts = accountStr.split(",");
+    public void daillyMissionStart(boolean ifMin){
+        String accountStr = PropertiesUtil.getValueFromFileNameAndKey("account_" + NativeCp.getUserName(), "DCinit", Constant.DC + "/");
+        int[] accounts = GameUtil.strToIntArray(accountStr,false);
         int size = accounts.length;
         int account;
         for (int i = 0; i < size; i++) {
-            account = Integer.valueOf(accounts[i]);
+            account = accounts[i];
             openDC(account);
-            startOneAccount(account);
+            startOneAccount(account, ifMin);
+        }
+        if ("RZH-SERVER".equals(NativeCp.getUserName()) && ifMin) {
+            ProcessDealUtil.closeComputerInTime(2);
         }
     }
-    private void startOneAccount(int account){
+    private void startOneAccount(int account, boolean ifMin){
         setDelaySeconds(5);
         wuna.setLastClickTime(null);
         // 启动一个线程：用于终止超时点击。
@@ -70,27 +73,34 @@ public class DaillyMission {
             try {
                 stopOutTimeClick();
             } catch (AppNeedRestartException e) {
-                wuna.setIfThrowException(true);
                 e.printStackTrace();
             } catch (AppNeedUpdateException e) {
                 e.printStackTrace();
             }
         });
         // main线程：执行主要日常任务。
-        goMainMission(account);
+        goMainMission(account, ifMin);
         ProcessDealUtil.closeDC(account);
     }
-    private void goMainMission(int account) {
-        getDcTask(true, account);
+    private void goMainMission(int account, boolean ifMin) {
+        getDcTask(true, account, ifMin);
         List<TaskInfo> taskInfoList = dcTask.getTasklist();
         /** 任务列表大小 **/
         int size = taskInfoList.size();
+        /** 清空colorMonitorList **/
+        GameUtil.colorMonitorList = null;
         LOGGER.info("任务列表个数位为" + size);
+        int times = 0;
         for (int i = 0; i < size && isFlag(); i++) {
+
             try {
-                startOneMission(i, account,isIfrestart());
+                wuna.setLastClickTime(System.currentTimeMillis());
+                setDelaySeconds(9999);
+                startOneMission(i, account, times, isIfrestart());
+                times = 0;
             } catch (AppNeedRestartException e) {
                 i--;
+                times++;
                 setIfrestart(true);
                 openDC(account);
                 wuna.setLastClickTime(System.currentTimeMillis());
@@ -101,11 +111,12 @@ public class DaillyMission {
                 wuna.setLastClickTime(System.currentTimeMillis());
                 continue;
             }
+
         }
     }
-    public void startOneMission(int index, int account, boolean ifRestart) throws AppNeedRestartException, AppNeedNextException {
+    public void startOneMission(int index, int account,int times, boolean ifRestart) throws AppNeedRestartException, AppNeedNextException {
         if (ifRestart && index != 0){
-            startOneMission(0,account,false);
+            startOneMission(0,account, times, false);
             setIfrestart(false);
         }
         Point taskReturnPoint = dcTask.getTaskReturnPoint();
@@ -154,9 +165,17 @@ public class DaillyMission {
                     LOGGER.info("未到达任务页面位置，重新启动！");
                     throw new AppNeedRestartException();
                 }else{
-                    LOGGER.info("未到达任务页面位置，该任务忽略，直接跳到下一任务！");
-                    throw new AppNeedNextException();
+                    if(times == 0){
+                        LOGGER.info("未到达任务页面位置，任务还未执行过，重新启动！");
+                        throw new AppNeedRestartException();
+                    }else{
+                        LOGGER.info("未到达任务页面位置，该任务忽略，任务可能完成一半，直接跳到下一任务！");
+                        throw new AppNeedNextException();
+                    }
+
                 }
+
+            }else {
 
             }
             /** 设定自动点击最大延时 **/
@@ -208,8 +227,13 @@ public class DaillyMission {
         }
         returnCount = 0;
         while (tempTaskInfo.isReturnTop() && isFlag() && !GameUtil.likeEqualColor(GameUtil.getScreenPixel(dcTask.getTaskPagePoint()),dcTask.getTaskPageColor())){
-            GameUtil.mouseMoveByPoint(taskReturnPoint);
-            GameUtil.mousePressAndReleaseByDD();
+            if (GameUtil.likeEqualColor(GameUtil.getScreenPixel(dcTask.getHomePagePoint()),dcTask.getHomePageColor())){
+                GameUtil.mouseMoveByPoint(dcTask.getIntoTaskPoint());
+                GameUtil.mousePressAndReleaseByDD();
+            }else{
+                GameUtil.mouseMoveByPoint(taskReturnPoint);
+                GameUtil.mousePressAndReleaseByDD();
+            }
             GameUtil.delay(5000);
             if (returnCount++ > returnMaxcount) {
                 throw new AppNeedRestartException();
@@ -233,7 +257,7 @@ public class DaillyMission {
             }
             // 意外检查
             if (check != 0 && (check % 8 == 0)) {
-                GameUtil.waitInteruptSolution(check, "DCMonitor");
+                GameUtil.waitInteruptSolution(check, Constant.DCMonitor);
             }
             //进入时，首页检测
             if(tempTaskInfo!=null && tempTaskInfo.getTaskName().equals("gameInto") && GameUtil.likeEqualColor(GameUtil.getScreenPixel(dcTask.getTaskPagePoint()),dcTask.getTaskPageColor())){
@@ -268,11 +292,11 @@ public class DaillyMission {
         wuna.setForceStop(true);
         GameUtil.setSTOP_SCRIPT(true);
     }
-    public void toggle(){
+    public void toggle(Boolean ifMin){
         if (!isFlag()){
             LOGGER.info("启动每日脚本");
             setFlag(true);
-            daillyMissionStart();
+            daillyMissionStart(ifMin);
             setFlag(false);
         }else{
             LOGGER.info("关闭每日脚本");
@@ -302,9 +326,12 @@ public class DaillyMission {
         this.wuna = wuna;
     }
 
-    public DcTask getDcTask(boolean reload,int account) {
+    public DcTask getDcTask(boolean reload,int account, boolean ifMin) {
         if (reload || dcTask == null) {
             String filepath = NativeCp.getUserDir() + "/config/"+ Constant.DC +"/"+ account +"/" +"dcTask_"+NativeCp.getUserName()+".json";
+            if (ifMin){
+                filepath = NativeCp.getUserDir() + "/config/"+ Constant.DC +"/"+ account +"/" +"dcTask_min_"+NativeCp.getUserName()+".json";
+            }
             LOGGER.info("JSON路径为： " + filepath);
             dcTask = JSONObject.parseObject(GameUtil.getJsonString(filepath), DcTask.class);
         }

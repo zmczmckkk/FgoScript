@@ -261,6 +261,7 @@ public class PointInfo {
 		PointAndColor temp;
 		Point point = null;
 		Point tempPoint = null;
+		Point stepPoint = null;
 		for (int i = 0; i < size; i++) {
 			temp = pacList.get(i);
 			tempPoint = temp.getPoint();
@@ -274,11 +275,15 @@ public class PointInfo {
 			temp = pacList.get(0);
 			tempPoint = temp.getPoint();
 			for (int i = 1; i < 4; i++) {
-				if (GameUtil.likeEqualColor(temp.getColor(),GameUtil.getScreenPixel(new Point((int)tempPoint.getX(),((int) tempPoint.getY()) + dy*i)),50)){
-					point = temp.getPoint();
+				stepPoint = new Point((int)tempPoint.getX(),((int) tempPoint.getY()) + dy*i);
+				if (GameUtil.likeEqualColor(temp.getColor(),GameUtil.getScreenPixel(stepPoint),50)){
+					point = stepPoint;
 					break;
 				}
 			}
+		}
+		if (point == null){
+			point = pacList.get(0).getPoint();
 		}
 		return point;
 

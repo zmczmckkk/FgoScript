@@ -43,8 +43,8 @@ public class GameUtil {
 	private static int WAIT_COUNT = 0;
 	private static Object lock = new Object();
 	private static Map<String, Robot> rbMap = new HashMap<>();
-	private static List<ColorMonitor> colorMonitorList;
-	private static final DD dd = getDD();
+	public static List<ColorMonitor> colorMonitorList;
+	public static final DD dd = getDD();
 	private static DD getDD(){
 		return (DD) MySpringUtil.getApplicationContext().getBean("dd");
 	}
@@ -590,10 +590,20 @@ public class GameUtil {
 	 *            test1.jpg
 	 */
 	public static void img2file(String extent, String newfile) {
+		Rectangle rec = new Rectangle(45, 54, 1280, 720);
+		Img2file(rec, extent, newfile);
+	}
+	public static void fullScreen2file(String extent, String newfile) {
+		Dimension d = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
+		int width = (int) d.getWidth();
+		int height = (int) d.getHeight();
+		Rectangle rec = new Rectangle(0, 0, width, height);
+		Img2file(rec, extent, newfile);
+	}
+	private static void Img2file(Rectangle rec, String extent, String newfile) {
 		try {
 			// Toolkit tk = Toolkit.getDefaultToolkit(); // 获取缺省工具包
 			// Dimension di = tk.getScreenSize(); // 屏幕尺寸规格
-			Rectangle rec = new Rectangle(45, 54, 1280, 720);
 			File file = new File(newfile + extent);
 			if (!file.exists()) {
 				file.mkdirs();
@@ -604,7 +614,6 @@ public class GameUtil {
 			e.printStackTrace();
 		}
 	}
-
 	public static void mouseMoveByPoint(Point p) {
 			mouseMoveByDD((int) p.getX(), (int) p.getY());
 			rb.delay(GameConstant.DELAY);

@@ -1,16 +1,73 @@
 ﻿[
   {
-    "name": "再连接",
+    "name": "确认选择",
     "checkPointList": [
       {
-        "point": {"x" : 1000, "y" : 606},
-        "color": {"r" : 38, "g" : 41, "b" : 56},
+        "point": {"x" : 997, "y" : 602},
+        "color": {"r" : 242, "g" : 162, "b" : 0},
         "equal": true
       }
     ],
-    "clickPointList": [{"x": 1000, "y": 606}],
+    "clickPointList": [{"x" : 997, "y" : 602}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
+  },
+  {
+    "name": "更新",
+    "checkPointList": [
+      {
+        "point" : {"x" : 901, "y" : 526},
+		"color" : {"r" : 215, "g" : 166, "b" : 2},
+        "equal": true
+      }
+    ],
+    "clickPointList": [{"x" : 997, "y" : 602}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
+  },
+  {
+    "name": "确定",
+    "checkPointList": [
+      {
+        "point" : {"x" : 992, "y" : 593},
+		"color" : {"r" : 244, "g" : 172, "b" : 0},
+        "equal": true
+      }
+    ],
+    "clickPointList": [{"x" : 997, "y" : 602}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
+  },
+  {
+    "name": "入场券不足",
+    "checkPointList": [
+      {
+        "point": {"x" : 325, "y" : 592},
+        "color": {"r" : 245, "g" : 179, "b" : 0},
+        "equal": true
+      }
+    ],
+    "clickPointList": [{"x" : 325, "y" : 592}],
+    "throwException": false,
+    "extendOutTime": false,
+    "needUpdate": false
+  },
+  {
+    "name": "皮肤塔已刷",
+    "checkPointList": [
+      {
+        "point" : {"x" : 175, "y" : 603},
+        "color" : {"r" : 111, "g" : 87, "b" : 21},
+        "equal": true
+      }
+    ],
+    "clickPointList": [{"x" : 185, "y" : 600}],
     "throwException": false,
     "extendOutTime": false,
     "needUpdate": false
   }
+
 ]

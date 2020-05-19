@@ -88,7 +88,6 @@ public class Gudazi extends TimerTask {
 				new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
 
-		try {
 			for (int i = 0; i < GameConstant.BATTLE_COUNT; i++) {
 				singleThreadPool.execute(()-> {
 					wuna.alwaysClick();
@@ -111,13 +110,13 @@ public class Gudazi extends TimerTask {
 					LOGGER.info("线程个数" + singleThreadPool.getActiveCount());
 					GameUtil.delay(1500);
 				}
-                new EventGudazi().fightAndStop(i == 0 ? false : true, 0);
+				try {
+					new EventGudazi().fightAndStop(i == 0 ? false : true, 0);
+				} catch (AppNeedNextException | AppNeedRestartException e) {
+					LOGGER.info("无所谓！接着走~");
+				}
 				LOGGER.info("进入下一个循环！");
 			}
-		} catch (AppNeedNextException | AppNeedRestartException e) {
-			setIfRestart(true);
-			onlyFight();
-		}
 	}
 	private void autoClose() {
 		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
@@ -150,14 +149,15 @@ public class Gudazi extends TimerTask {
 				signAllFGO();
 			}
 		}
+		//执行DC挂机任务
+		DaillyMission.getSpringBean().toggle(false);
 		//小号刷资源
 		ApGudaziFactory.getInstance(qts[0],"small", null).startAllFgo();
 		//主账号刷qp
 		ApGudaziFactory.getInstance(qts[1],"big", null).startAllFgo();
 		//抽奖
 		allRewardAndRoll();
-		//执行DC挂机任务
-		DaillyMission.getSpringBean().toggle();
+
 		//是否关机
 		if (IF_CLOSE) {
 			closeComputer();
@@ -196,7 +196,7 @@ public class Gudazi extends TimerTask {
 				,40,40,40,40,40,40,40,40,40,40,40
 				,40,40,40,40,40,40,40,40,40,40,40};
 		String[] qts = GameUtil.getValueFromConfig("QP_TRAIN_SELECTS").split("_");
-		ApGudaziFactory.getInstance(qts[1], "big", expArray).startAllFgo();
+		ApGudaziFactory.getInstance("exp", "big", expArray).startAllFgo();
 
 	}
 	public void eventingFgo() throws Exception {

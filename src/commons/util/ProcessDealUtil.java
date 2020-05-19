@@ -106,6 +106,7 @@ public class ProcessDealUtil {
 		String url = getClientBaseUrl();
 		String appName = PropertiesUtil.getValueFromOpenFile("appName");
 		String line = url + "/dnconsole.exe  launchex --index " + account + " --packagename " +appName;
+		killWerFault();
 		startDnPlayer(line);
 
 	}
@@ -113,6 +114,7 @@ public class ProcessDealUtil {
 		String url = getClientBaseUrl();
 		String appName = "com.stairs.destinychild";
 		String line = url + "/dnconsole.exe  launchex --index " + account + " --packagename " +appName;
+		killWerFault();
 		closeDC(account);
 		try {
 			GameUtil.delay(3000);
@@ -229,6 +231,20 @@ public class ProcessDealUtil {
 
 	public static void killAllDnPlayer() {
 		String procName = "dnplayer.exe";
+		boolean exist = findProcess(procName);
+		try {
+			if (exist) {
+				// 存在，那么就先杀死该进程
+				killProc(procName);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			LOGGER.error("重启/杀死提取程序失败。。。");
+		}
+	}
+
+	public static void killWerFault() {
+		String procName = "WerFault.exe";
 		boolean exist = findProcess(procName);
 		try {
 			if (exist) {

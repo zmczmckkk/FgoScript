@@ -28,12 +28,24 @@ import java.util.concurrent.*;
  * @author: RENZHEHAO
  * @create: 2019-06-03 21:14
  **/
-public class Raid implements IRaid{
+public class Raid implements IRaid, IModule{
     private static final Logger LOGGER = LogManager.getLogger(Raid.class);
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     private IWuNa wuna;
     private RaidFilterMenu menu;
     private RaidStartPage rsPage;
+    private boolean ifStop;
+
+    @Override
+    public void start() {
+        setIfStop(true);
+        toggle();
+    }
+
+    @Override
+    public void stop() {
+        toggle();
+    }
 
     @Override
     public void toggle() {
@@ -56,7 +68,7 @@ public class Raid implements IRaid{
 
     public RaidFilterMenu getMenu() {
         if (menu == null) {
-            String filepath = NativeCp.getUserDir() + "/config/RaidFilterMenu_"+NativeCp.getUserName()+".json";
+            String filepath = NativeCp.getUserDir() + "/config/"+ Constant.DC+"/RaidFilterMenu_"+NativeCp.getUserName()+".json";
             menu = JSONObject.parseObject(GameUtil.getJsonString(filepath), RaidFilterMenu.class);
         }
         return menu;
@@ -64,7 +76,7 @@ public class Raid implements IRaid{
 
     public RaidStartPage getRsPage() {
         if (rsPage == null) {
-            String filepath = NativeCp.getUserDir() + "/config/RaidStartPage.json";
+            String filepath = NativeCp.getUserDir() + "/config/"+ Constant.DC+"/RaidStartPage.json";
             rsPage = JSONObject.parseObject(GameUtil.getJsonString(filepath), RaidStartPage.class);
         }
         return rsPage;
@@ -124,12 +136,23 @@ public class Raid implements IRaid{
                         && !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getTenTicketPoint()),rsPage.getTenTicketColor());
                 boolean noRank = !GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getRankPoint()),rsPage.getRankColor());
                 if (size == rightCount ){
+                    if(isIfStop() && noTicket && "RZH-SERVER".equals(NativeCp.getUserName())){
+                        setIfStop(false);
+                        toggle();
+                    }
                     if(noLevel40 || noTicket || noRank){
                         GameUtil.mouseMoveByPoint(rsPage.getReturnPoint());
                         GameUtil.mousePressAndReleaseByDD();
                         LOGGER.info("返回页面1");
                     }else {
                         wuna.setGO(false);
+                        if(GameUtil.likeEqualColor(GameUtil.getScreenPixel(rsPage.getDoubleTicketPoint()),rsPage.getDoubleTicketColor())){
+                            LOGGER.info("选择双倍票");
+                            GameUtil.mouseMoveByPoint(rsPage.getDoubleTicketPoint());
+                            GameUtil.mousePressAndReleaseByDD();
+                            GameUtil.delay(1000);
+                        }
+                        LOGGER.info("点击开始战斗");
                         GameUtil.mouseMoveByPoint(rsPage.getStartPoint());
                         GameUtil.mousePressAndReleaseByDD();
                     }
@@ -351,6 +374,14 @@ public class Raid implements IRaid{
         }
         //防止过滤超时后，仍然执行runclick脚本
         wuna.setGO(false);
+    }
+
+    public boolean isIfStop() {
+        return ifStop;
+    }
+
+    public void setIfStop(boolean ifStop) {
+        this.ifStop = ifStop;
     }
 
     public static void main(String[] args) {

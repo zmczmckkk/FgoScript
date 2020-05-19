@@ -29,17 +29,17 @@ public class RaidTest extends Raid {
 
     @Test
     public void raidBattleStartTest() {
-        DaillyMission ds = (DaillyMission) applicationContext.getBean("daillyMission");
-        DcTask dcTask = ds.getDcTask(true, 2);
-        List<TaskInfo> taskInfoList = dcTask.getTasklist();
-        try {
-            ds.startOneMission(2,2,false);
-        } catch (AppNeedRestartException e) {
-            e.printStackTrace();
-            e.printStackTrace();
-        } catch (AppNeedNextException e) {
-            e.printStackTrace();
-        }
+//        DaillyMission ds = (DaillyMission) applicationContext.getBean("daillyMission");
+//        DcTask dcTask = ds.getDcTask(true, 2);
+//        List<TaskInfo> taskInfoList = dcTask.getTasklist();
+//        try {
+//            ds.startOneMission(2,2,false);
+//        } catch (AppNeedRestartException e) {
+//            e.printStackTrace();
+//            e.printStackTrace();
+//        } catch (AppNeedNextException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Test

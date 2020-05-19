@@ -1,7 +1,9 @@
 package fgoScript.service;
 
+import commons.entity.Constant;
 import commons.entity.NativeCp;
 import commons.util.MySpringUtil;
+import commons.util.PropertiesUtil;
 import destinychild.DaillyMission;
 import fgoScript.constant.PointInfo;
 import fgoScript.entity.panel.FgoFrame;
@@ -42,6 +44,7 @@ public class TimerManager {
 		int HOUR_OF_DAY = Integer.valueOf(GameUtil.getValueFromConfig("HOUR_OF_DAY"));
 		int MINUTE = Integer.valueOf(GameUtil.getValueFromConfig("MINUTE"));
 		int SECOND = Integer.valueOf(GameUtil.getValueFromConfig("SECOND"));
+		boolean ifMinMissionStart = Boolean.parseBoolean(PropertiesUtil.getValueFromFileNameAndKey("IF_MIN_MISSION", "DCinit", Constant.DC + "/"));
 		time = HOUR_OF_DAY + " : " + MINUTE + " : " + SECOND;
 		/*** 定制每日3:10执行方法 ***/
 		calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
@@ -63,7 +66,18 @@ public class TimerManager {
 			deletePics();
 			//执行挂机任务
 			executorService.scheduleAtFixedRate(new Gudazi(), initDelay, PERIOD_TIME, TimeUnit.MILLISECONDS);
-			LOGGER.info("定时任务已启动！启动时间：" + time);
+			//执行精简日常任务
+			if (ifMinMissionStart) {
+				//执行挂机任务
+				executorService.scheduleAtFixedRate(new Runnable() {
+					@Override
+					public void run() {
+						DaillyMission dm = (DaillyMission) MySpringUtil.getApplicationContext().getBean("daillyMission");
+						dm.toggle(true);
+					}
+				}, 5000, PERIOD_TIME, TimeUnit.MILLISECONDS);
+			}
+			LOGGER.info("定时s任务已启动！启动时间：" + time);
 
 		}
 		//执行切换壁纸任务

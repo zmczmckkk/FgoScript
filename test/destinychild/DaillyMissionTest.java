@@ -29,14 +29,13 @@ public class DaillyMissionTest extends DaillyMission {
     public void setApplicationContext(ClassPathXmlApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-    @Override
     @Test
     public void daillyMissionStart() {
         DaillyMission ds = (DaillyMission) applicationContext.getBean("daillyMission");
-        DcTask dcTask = ds.getDcTask(true, 2);
+        DcTask dcTask = ds.getDcTask(true, 2, false);
         List<TaskInfo> taskInfoList = dcTask.getTasklist();
         try {
-            ds.startOneMission(2,2,false);
+            ds.startOneMission(2,2, 0, false);
         } catch (AppNeedRestartException e) {
             e.printStackTrace();
             e.printStackTrace();

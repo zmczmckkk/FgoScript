@@ -435,6 +435,7 @@ public class FgoFrame extends JFrame {
 		List<String> changeList = new ArrayList<>();
 		changeList.add("左键");
 		changeList.add("判断");
+		changeList.add("按住");
 		jbTemp = BaseZButton.getChangeListButton(changeList,"changeButton_" + NativeCp.getUserName(),"", "clickStrategy", true, true, BaseZButton.pink);
 		jbTemp.setBounds(220, 5 + (12 * (30+len)), 50, 25+len);
 		toolPanel.add(jbTemp);

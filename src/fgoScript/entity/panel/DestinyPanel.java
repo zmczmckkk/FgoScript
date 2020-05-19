@@ -52,7 +52,15 @@ public class DestinyPanel extends Zpanel implements PanelModel {
             private static final long serialVersionUID = -7389326247723796445L;
             @Override
             public void runMethod() {
-                daillyMission.toggle();
+                daillyMission.toggle(false);
+            }
+        };
+        // 日常任务精简按钮
+        BaseZButton daillyMissionMinButton = new BaseZButton(null, 0,"日常任务精简(ALT+M)",JIntellitype.MOD_ALT, (int) 'M',false, false, BaseZButton.pink) {
+            private static final long serialVersionUID = -7389326247723796445L;
+            @Override
+            public void runMethod() {
+                daillyMission.toggle(true);
             }
         };
         // 模拟器定位按钮
@@ -103,11 +111,13 @@ public class DestinyPanel extends Zpanel implements PanelModel {
         simoLocateButton.setBounds(5, 5 + (3 * (30+len)), 320, 25+len);
         openDcBtn.setBounds(5, 5 + (5 * (30+len)), 80, 25+len);
         accountZt.setBounds(85, 5 + (5 * (30+len)), 240, 25+len);
+        daillyMissionMinButton.setBounds(5, 5 + (6 * (30+len)), 320, 25+len);
 
         ghostButton.setAllowRepeat(true);
         raidButton.setAllowRepeat(true);
         daillyMissionButton.setAllowRepeat(true);
         simoLocateButton.setAllowRepeat(true);
+        daillyMissionMinButton.setAllowRepeat(true);
 
         this.setLayout(null);
         this.setVisible(false);
@@ -115,6 +125,7 @@ public class DestinyPanel extends Zpanel implements PanelModel {
         this.add(ghostButton);
         this.add(raidButton);
         this.add(daillyMissionButton);
+        this.add(daillyMissionMinButton);
         this.add(simoLocateButton);
         this.add(openDcBtn);
         this.add(accountZt);

@@ -1,48 +1,13 @@
 ﻿{
-  "levelColor": {
-    "r": 234,
-    "g": 234,
-    "b": 234,
-    "alpha": 255
-  },
-  "levelPoint": {
-    "x": 593,
-    "y": 217
-  },
-  "noTicketColor": {
-    "r": 156,
-    "g": 156,
-    "b": 156,
-    "alpha": 255
-  },
-  "noTicketPoint": {
-    "x": 1210,
-    "y": 372
-  },
-  "rankColor": {
-    "r": 229,
-    "g": 218,
-    "b": 141,
-    "alpha": 255
-  },
-  "startColor": {
-    "r": 167,
-    "g": 56,
-    "b": 0,
-    "alpha": 255
-  },
-  "rankPoint": {
-    "x": 438,
-    "y": 500
-  },
-  "returnPoint": {
-    "x": 1240,
-    "y": 62
-  },
-  "startPoint": {
-    "x": 1215,
-    "y": 330
-  },
+  "levelColor": {"r" : 173, "g" : 173, "b" : 173},
+  "levelPoint": {"x" : 225, "y" : 259},
+  "noTicketColor": {"r" : 239, "g" : 239, "b" : 239},
+  "noTicketPoint": {"x" : 482, "y" : 463},
+  "rankColor":{"r" : 234, "g" : 224, "b" : 155},
+  "startColor": {"r" : 31, "g" : 5, "b" : 0},
+  "rankPoint":  {"x" : 39, "y" : 602},
+  "returnPoint": {"x" : 516, "y" : 77},
+  "startPoint": {"x" : 488, "y" : 394},
   "ticketColor": {
     "r": 0,
     "g": 0,
@@ -53,14 +18,6 @@
     "x": 0,
     "y": 0
   },
-  "tenTicketColor": {
-    "r": 255,
-    "g": 255,
-    "b": 255,
-    "alpha": 255
-  },
-  "tenTicketPoint": {
-    "x": 1201,
-    "y": 374
-  }
+  "tenTicketColor": {"r" : 246, "g" : 246, "b" : 246},
+  "tenTicketPoint": {"x" : 470, "y" : 453}
 }

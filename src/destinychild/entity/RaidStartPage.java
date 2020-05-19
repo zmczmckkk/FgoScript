@@ -40,6 +40,11 @@ public class RaidStartPage {
     /** 开始色 */
     private Color startColor;
 
+    /** 双倍票点 */
+    private Point doubleTicketPoint;
+    /** 双倍票色 */
+    private Color doubleTicketColor;
+
     /** 回退点 */
     private Point returnPoint;
 
@@ -145,6 +150,22 @@ public class RaidStartPage {
 
     public void setTenTicketColor(Color tenTicketColor) {
         this.tenTicketColor = tenTicketColor;
+    }
+
+    public Point getDoubleTicketPoint() {
+        return doubleTicketPoint;
+    }
+
+    public void setDoubleTicketPoint(Point doubleTicketPoint) {
+        this.doubleTicketPoint = doubleTicketPoint;
+    }
+
+    public Color getDoubleTicketColor() {
+        return doubleTicketColor;
+    }
+
+    public void setDoubleTicketColor(Color doubleTicketColor) {
+        this.doubleTicketColor = doubleTicketColor;
     }
 
     public static void main(String[] args) {
